@@ -145,6 +145,8 @@ const userData = {
   resumeUrl: "/CVShah2023.pdf",
   SSRNUrl: "https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=261155",
   GoogleSUrl: "https://scholar.google.com/citations?user=J6N60VcAAAAJ&hl=en",
+  MediumUrl: "https://medium.com/@rajistics",
+  BlogUrl: "http://projects.rajivshah.com/blog/",
   socialLinks: {
     instagram: "https://instagram.com/rajistics",
     twitter: "https://twitter.com/rajistics",

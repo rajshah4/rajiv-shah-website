@@ -140,7 +140,7 @@ export default function Bio() {
           </div>
           {/* Text area */}
           <div className="col-span-1 md:col-span-2">
-            {userData.about.description?.map((desc, idx) => (
+            {userData.bio.description?.map((desc, idx) => (
               <p
                 key={idx}
                 className="text-xl text-gray-700 mb-4 dark:text-gray-300 "
