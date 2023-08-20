@@ -1,11 +1,11 @@
 const userData = {
   githubUsername: "manuarora700",
-  name: "Manu Arora",
-  designation: "Full-Stack Developer",
+  name: "Rajiv Shah",
+  designation: "Data Scientist",
   avatarUrl: "/avatar.png",
-  email: "manuarorawork@gmail.com",
-  phone: "+91 9587738861",
-  address: "Jaipur, Rajasthan, India.",
+  email: "rshah@pobox.com",
+  phone: "1-309-310-3622",
+  address: "Illinois, USA",
   projects: [
     {
       title: "Tailwind Master Kit",
@@ -50,11 +50,11 @@ const userData = {
   ],
   about: {
     title:
-      "I'm a software developer that loves building products and web applications that impact millions of lives",
+      "I'm a data scientist that focuses on accelerating Enterprise AI with a side mission of educating folks about data science / AI / ML",
     description: [
-      `I've been developing full-stack application since I was 10 years old. I didn't know what full-stack meant at that time because the term was not coined back then. I'm so out of content right now that I'm literally crying writing this text since lorem text is so 2012 now.`,
-      `After learning HTML and struggling with CSS, I came up with a brilliant idea of using bootstrap so that I don't have to style everything by myself and - for obvious reasons - if you knew bootstrap, you were cool.`,
-      `But now, I'm a legend. I've been coding in React, Angular, Vue, Svelte, Node.js, Express, Fastify, MongoDB, MySQL, Bootstrap, Tailwind, C, C++, C#, Rust, Haskell, Perl, PHP, Assembly, Logo and YouDontKnowShit programming language etc to name a few. Although I barely know the syntax (Psst, Stack overflow!), I consider myself a Ninja developer I'm laughing right now.`,
+      `Rajiv Shah is a machine learning engineer at Hugging Face who focuses on enabling enterprise teams to succeed with AI. Rajiv is a leading expert in the practical application of AI. Previously, he led data science enablement efforts across hundreds of data scientists at DataRobot. He was also a part of data science teams at Snorkel AI, Caterpillar, and State Farm.`,
+      `Rajiv is a widely recognized speaker on AI, published over 20 research papers, and received over 20 patents, including sports analytics, deep learning, and interpretability.`,  
+      `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos , @rajistics, (Tik Toks) with several million views.`
     ],
     currentProject: "Tailwind Master Kit",
     currentProjectUrl: "https://tailwindmasterkit.com",
@@ -103,14 +103,14 @@ const userData = {
       desc: "Subjects being PCM - I barely survived with 93.6% marks aggregate. Flex fridays, fellas.",
     },
   ],
-  resumeUrl:
-    "https://drive.google.com/file/d/1xmE3BOmgM7TAOOgVp36xQIQvYDntDYoo/view?usp=sharing",
+  resumeUrl: "http://www.rajivshah.com/CV.html",
   socialLinks: {
-    instagram: "https://instagram.com/maninthere",
-    twitter: "https://twitter.com/mannupaaji",
-    linkedin: "https://linkedin.com/in/manuarora28",
-    github: "https://github.com/manuarora700",
+    instagram: "https://instagram.com/rajistics",
+    twitter: "https://twitter.com/rajistics",
+    linkedin: "https://linkedin.com/in/rajistics",
+    github: "https://github.com/rajshah4",
     facebook: "https://facebook.com/",
+    tiktok: "https://www.tiktok.com/@rajistics",
     peerlist: "https://peerlist.io/manuarora",
   },
 };
