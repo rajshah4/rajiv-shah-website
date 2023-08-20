@@ -18,14 +18,14 @@ export default function Bio() {
                 Contact
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                For any sort inquiry / help, shoot a{" "}
+                For any sort inquiry / help, send me a{" "}
                 <a
                   href={`mailto:${userData.email}`}
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
                   mail
                 </a>{" "}
-                and I'll get back. I swear.
+                and I'll get back soon.
               </p>
             </div>
             <div className="mt-8">
@@ -33,15 +33,30 @@ export default function Bio() {
                 Academia
               </h1>
               <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
-                I spent many years in Academia, here is my CV{" "}
+                I spent many years in Academia, here is my {" "}
                 <a
                   href={userData.resumeUrl}
                   target="__blank"
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
-                  CV
+                CV
                 </a>{" "}
-                 .
+                Also find my publications on 
+                <a
+                  href={userData.SSRNUrl}
+                  target="__blank"
+                  className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
+                >
+                SSRN
+                </a> and 
+                <a
+                  href={userData.GoogleSUrl}
+                  target="__blank"
+                  className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
+                >
+                Google Scholar
+                </a>
+                .
               </p>
             </div>
             {/* Social Links */}

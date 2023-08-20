@@ -35,11 +35,6 @@ export default function Publications() {
         </div>
       </div>
       <div className="max-w-6xl mx-auto h-48 bg-white dark:bg-gray-800">
-<head>
-<title>Research Topics</title>
-</head>
-<body>
-
 <h2>Surveillance - Empirical studies on surveillance cameras.</h2>
 <p>Shah, R. C., & McQuade, Brendan (2016). Surveillance, Security, and Intelligence-Led Policing in Chicago.  In (Bennett, Larry; Garner, Roberta and Hague, Euan,eds), Neoliberal Chicago: University of Illinois Press.</p>
 <p>Shah, R. C., & Braithwaite, J. (2012). Spread Too Thin: Analyzing the Effectiveness of the Chicago Camera Network on Crime. Police Practice and Research: An International Journal</p>
@@ -78,9 +73,6 @@ export default function Publications() {
 <p>The Internet's origins date back to the 1960s with government funded research into computer networks. This work traces the history and implications of shifting control over the Internet to the private sector, a process called privatization.</p>
 <p>Shah, R. C., & Kesan, J. P. (2007). The Privatization of the Internet's Backbone Network. Journal of Broadcasting and Electronic Media, 51(1), 93-109.</p>
 <p>Kesan, J. P., & Shah, R. C. (2001). Fool Us Once Shame on You - Fool Us Twice Shame on Us: What We Can Learn from the Privatizations of the Internet Backbone Network and the Domain Name System. Washington University Law Quarterly, 79(1), 89-220.</p>
-
-</body>
-
       </div>
     </section>
   );
