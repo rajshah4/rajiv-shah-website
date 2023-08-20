@@ -15,6 +15,7 @@ export default function Upcoming() {
           {userData.upcoming.map((proj, idx) => (
             <ProjectCard
               title={proj.title}
+              date=(proj.date)
               link={proj.link}
               imgUrl={proj.imgUrl}
               number={`${idx + 1}`}
@@ -38,7 +39,8 @@ const ProjectCard = ({ title, link, imgUrl, number }) => {
           />
         </div>
         <h1 className="absolute top-10 left-10 text-gray-50 font-bold text-xl bg-red-500 rounded-md px-2">
-          {title}
+          {title}<p></p>
+          {date}
         </h1>
         <h1 className="absolute bottom-10 left-10 text-gray-50 font-bold text-xl">
           {number.length === 1 ? "0" + number : number}

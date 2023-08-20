@@ -8,24 +8,22 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "ODSC Talk on Evaluation",
-      link: "https://tailwindmasterkit.com",
-      imgUrl: "/tmk.jpg",
+      title: "ODSC: Evaluation of LLMs",
+      date: "October 30 - November 2nd"
+      link: "https://odsc.com/california/training/",
+      imgUrl: "/ODSC2023.jpeg",
     },
     {
-      title: "GEN AI MLOpe Conference",
-      link: "https://placeholdertech.in",
-      imgUrl: "/placeholdertech.png",
+      title: "Gen AI/MLOps World Summit: Evaluation of LLMs,",
+      date: "October 25-26"
+      link: "https://generative-ai-summit.com/",
+      imgUrl: "/GenAI2023.png",
     },
     {
-      title: "American Family Insurance Talk",
-      link: "https://manuarora.in",
-      imgUrl: "/portfolio.png",
-    },
-    {
-      title: "Podocast",
-      link: "https://covidrescue.co.in",
-      imgUrl: "/covidrescue.png",
+      title: "Keynote at American Family Insurance Analytics Conference",
+      date: "October 4"
+      link: "https://www.amfam.com/",
+      imgUrl: "/AFI2023.png",
     },
   ],
   highlight: [
@@ -90,28 +88,15 @@ const userData = {
   about: {
     title:
       "I'm focus on helping enterprises with AI with a side mission of educating folks about AI",
-    description: [
-      `Rajiv Shah is a machine learning engineer at Hugging Face who focuses on enabling enterprise teams to succeed with AI. Rajiv is a leading expert in the practical application of AI. Previously, he led data science enablement efforts across hundreds of data scientists at DataRobot. He was also a part of data science teams at Snorkel AI, Caterpillar, and State Farm.`,
-      `Rajiv is a widely recognized speaker on AI, published over 20 research papers, and received over 20 patents, including sports analytics, deep learning, and interpretability.`,  
-      `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos , @rajistics, (Tik Toks) with several million views.`
-    ],
     currentPosition: "Machine Learning Engineer at Hugging Face",
     currentPositiontUrl: "https://hf.co",
-    currentProject: "Tailwind Master Kit",
-    currentProjectUrl: "https://tailwindmasterkit.com",
   },
   bio: {
-    title:
-      "I'm a data scientist that focuses on accelerating Enterprise AI with a side mission of educating folks about data science / AI / ML",
     description: [
       `Rajiv Shah is a machine learning engineer at Hugging Face who focuses on enabling enterprise teams to succeed with AI. Rajiv is a leading expert in the practical application of AI. Previously, he led data science enablement efforts across hundreds of data scientists at DataRobot. He was also a part of data science teams at Snorkel AI, Caterpillar, and State Farm.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
       `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos , @rajistics, (Tik Toks) with several million views.`
     ],
-    currentPosition: "Enterprise AI at Hugging Face",
-    currentPositiontUrl: "https://hf.co",
-    currentProject: "Tailwind Master Kit",
-    currentProjectUrl: "https://tailwindmasterkit.com",
   },
   experience: [
     {
