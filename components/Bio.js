@@ -41,14 +41,14 @@ export default function Bio() {
                 >
                 CV
                 </a>{" "}
-                Also find my publications on 
+                Also find my publications on {" "}
                 <a
                   href={userData.SSRNUrl}
                   target="__blank"
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
                 SSRN
-                </a> and 
+                </a> and {" "}
                 <a
                   href={userData.GoogleSUrl}
                   target="__blank"
