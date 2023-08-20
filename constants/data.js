@@ -6,6 +6,45 @@ const userData = {
   email: "rshah@pobox.com",
   phone: "1-309-310-3622",
   address: "Illinois, USA",
+ upcoming: [
+    {
+      title: "ODSC Talk on Evaluation",
+      link: "https://tailwindmasterkit.com",
+      imgUrl: "/tmk.jpg",
+    },
+    {
+      title: "GEN AI MLOpe Conference",
+      link: "https://placeholdertech.in",
+      imgUrl: "/placeholdertech.png",
+    },
+    {
+      title: "American Family Insurance Talk",
+      link: "https://manuarora.in",
+      imgUrl: "/portfolio.png",
+    },
+    {
+      title: "Podocast",
+      link: "https://covidrescue.co.in",
+      imgUrl: "/covidrescue.png",
+    },
+  ],
+  highlight: [
+    {
+      title: "Practical AI",
+      link: "https://tailwindmasterkit.com",
+      imgUrl: "/tmk.jpg",
+    },
+    {
+      title: "Baptist Health",
+      link: "https://placeholdertech.in",
+      imgUrl: "/placeholdertech.png",
+    },
+    {
+      title: "Long Youtube Video",
+      link: "https://manuarora.in",
+      imgUrl: "/portfolio.png",
+    },
+  ],
   projects: [
     {
       title: "Tailwind Master Kit",
@@ -50,7 +89,7 @@ const userData = {
   ],
   about: {
     title:
-      "I'm a data scientist that focuses on accelerating Enterprise AI with a side mission of educating folks about data science / AI / ML",
+      "I'm a data scientist that focuses on accelerating Enterprise AI with a side mission of educating folks about AI.",
     description: [
       `Rajiv Shah is a machine learning engineer at Hugging Face who focuses on enabling enterprise teams to succeed with AI. Rajiv is a leading expert in the practical application of AI. Previously, he led data science enablement efforts across hundreds of data scientists at DataRobot. He was also a part of data science teams at Snorkel AI, Caterpillar, and State Farm.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, and received over 20 patents, including sports analytics, deep learning, and interpretability.`,  

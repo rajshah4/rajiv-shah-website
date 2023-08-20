@@ -15,12 +15,12 @@ export default function AboutMe() {
             className="leading-loose text-2xl md:text-4xl font-semibold  mx-4"
             style={{ lineHeight: "3rem" }}
           >
-            {userData.about.title}. Currently working on{" "}
+            {userData.about.title}. Currently working at{" "}
             <a
               className="bg-red-500 rounded-md px-2 py-1 text-white"
-              href={userData.about.currentProjectUrl}
+              href={userData.about.currentPositionUrl}
             >
-              {userData.about.currentProject} ✈️
+              {userData.about.currentPosition} ✈️
             </a>
           </p>
         </div>
