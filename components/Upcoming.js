@@ -15,7 +15,7 @@ export default function Upcoming() {
           {userData.upcoming.map((proj, idx) => (
             <ProjectCard
               title={proj.title}
-              date=(proj.date)
+              date={proj.date}
               link={proj.link}
               imgUrl={proj.imgUrl}
               number={`${idx + 1}`}
