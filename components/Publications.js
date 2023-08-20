@@ -12,7 +12,7 @@ export default function Publications() {
       <div className="bg-[#F1F1F1] dark:bg-gray-900 -mt-4">
         <div className="grid grid-cols-1 dark:bg-gray-900 max-w-xl mx-auto pt-20">
           {/* Publications card */}
-          {userData.Publications.map((exp, idx) => (
+          {userData.experience.map((exp, idx) => (
             <>
               <ExperienceCard
                 key={idx}

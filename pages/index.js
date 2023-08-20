@@ -17,7 +17,6 @@ export default function Home({ repositories }) {
       <Hero />
       <AboutMe />
       <FavouriteProjects />
-      <LatestCode repositories={repositories} />
     </ContainerBlock>
   );
 }
