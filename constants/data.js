@@ -157,7 +157,7 @@ const userData = {
       desc: "Subjects being PCM - I barely survived with 93.6% marks aggregate. Flex fridays, fellas.",
     },
   ],
-  resumeUrl: "http://www.rajivshah.com/CV.html",
+  resumeUrl: "/CVShah2023.pdf",
   socialLinks: {
     instagram: "https://instagram.com/rajistics",
     twitter: "https://twitter.com/rajistics",
