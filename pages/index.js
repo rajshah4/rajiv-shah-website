@@ -9,6 +9,7 @@ import userData from "@constants/data";
 import AboutMe from "@components/AboutMe";
 import Upcoming from "@components/Upcoming";
 import Projects from "@components/Projects";
+import Highlight from "@components/Highlight";
 
 export default function Home({ repositories }) {
   return (
@@ -20,6 +21,7 @@ export default function Home({ repositories }) {
       <AboutMe />
       <Projects />
       <Upcoming />
+      <Highlight />
     </ContainerBlock>
   );
 }
