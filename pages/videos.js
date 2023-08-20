@@ -1,11 +1,11 @@
 import React from "react";
 import ContainerBlock from "../components/ContainerBlock";
-import Talks from "../components/Talks";
+import Videos from "../components/Videos";
 
 export default function projects() {
   return (
-    <ContainerBlock title="Talks - Rajiv Shah">
-      <Talks />
+    <ContainerBlock title="Videos - Rajiv Shah">
+      <Videos />
     </ContainerBlock>
   );
 }

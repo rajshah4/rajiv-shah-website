@@ -62,7 +62,7 @@ export default function Navbar() {
                 : "text-gray-600 dark:text-gray-300 font-normal "
             }`}
           >
-            Projects
+            Talks
             {router.asPath === "/talks" && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +87,7 @@ export default function Navbar() {
                 : "text-gray-600 dark:text-gray-300 font-normal "
             }`}
           >
-            Projects
+            Videos
             {router.asPath === "/videos" && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ export default function Navbar() {
                 : "text-gray-600 dark:text-gray-300 font-normal "
             }`}
           >
-            Projects
+            Publications
             {router.asPath === "/publications" && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
