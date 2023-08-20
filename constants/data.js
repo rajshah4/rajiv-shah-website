@@ -105,7 +105,7 @@ const userData = {
       "I'm a data scientist that focuses on accelerating Enterprise AI with a side mission of educating folks about data science / AI / ML",
     description: [
       `Rajiv Shah is a machine learning engineer at Hugging Face who focuses on enabling enterprise teams to succeed with AI. Rajiv is a leading expert in the practical application of AI. Previously, he led data science enablement efforts across hundreds of data scientists at DataRobot. He was also a part of data science teams at Snorkel AI, Caterpillar, and State Farm.`,
-      `Rajiv is a widely recognized speaker on AI, published over 20 research papers, and received over 20 patents, including sports analytics, deep learning, and interpretability.`,  
+      `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
       `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos , @rajistics, (Tik Toks) with several million views.`
     ],
     currentPosition: "Enterprise AI at Hugging Face",

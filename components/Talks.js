@@ -34,7 +34,7 @@ export default function Talks() {
           ))}
         </div>
       </div>
-      <div className="max-w-6xl mx-auto h-48 bg-white dark:bg-gray-1600">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800">
         <b>Older Talks</b>
           <p></p>
           <p>
