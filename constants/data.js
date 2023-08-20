@@ -111,7 +111,7 @@ const userData = {
     github: "https://github.com/rajshah4",
     facebook: "https://facebook.com/",
     tiktok: "https://www.tiktok.com/@rajistics",
-    peerlist: "https://peerlist.io/manuarora",
+    youtube: "https://www.youtube.com/c/Rajistics",
   },
 };
 
