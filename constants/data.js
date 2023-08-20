@@ -14,7 +14,7 @@ const userData = {
       imgUrl: "/ODSC2023.jpeg",
     },
     {
-      title: "Gen AI/MLOps World Summit: Evaluation of LLMs,",
+      title: "Gen AI/MLOps World Summit: Evaluation of LLMs",
       date: "October 25-26",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GenAI2023.png",
