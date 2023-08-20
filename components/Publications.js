@@ -67,6 +67,7 @@ export default function Publications() {
                 .
               </p>
             </div>
+            </div>
           {/* Text area */}
           <div className="col-span-1 md:col-span-2">
               <b>Older Academic Publications</b>
@@ -111,7 +112,6 @@ export default function Publications() {
               <p>Kesan, J. P., & Shah, R. C. (2001). Fool Us Once Shame on You - Fool Us Twice Shame on Us: What We Can Learn from the Privatizations of the Internet Backbone Network and the Domain Name System. Washington University Law Quarterly, 79(1), 89-220.</p>
           </div>
         </div>
-      </div>
       </div>
     </section>
   );
