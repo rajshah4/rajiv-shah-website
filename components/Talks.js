@@ -36,18 +36,20 @@ export default function Talks() {
       </div>
       <div className="max-w-6xl mx-auto h-48 bg-white dark:bg-gray-800">
         <b>Older Talks</b>
-          <p>
+          <p></p>
           <p>
           May 22, 2018, Presentation, Connected Claims - <a href='http://events.insurancenexus.com/connectedclaimsusa/conference-agenda.php'>http://events.insurancenexus.com/connectedclaimsusa/conference-agenda.php</a> 
+          </p>
           <p>
-
           May 16, 2018, "Sharpen Cyber Defenses with AI and Machine Learning", SIGNAL Innovation Showcase, AFCEA, 
           <a href='http://events.afcea.org/AFCEACyberOps18/public/enter.aspx'>http://events.afcea.org/AFCEACyberOps18/public/enter.aspx</a>
+          </p>
           <p>
           May 8, 2018, Automated AI, St. Louis, Prepare.ai - <a href='http://www.prepare.ai/conference/'>http://www.prepare.ai/conference/</a> 
+          </p>
           <p>
           April 18, 2018, Automated AI: The Next Frontier in Analytics, Twin Cities Spark and Hadoop User Group - <a href='https://www.meetup.com/Twin-Cities-Hadoop-User-Group/events/249498506/'>https://www.meetup.com/Twin-Cities-Hadoop-User-Group/events/249498506/</a>
-          <p>
+          </p>
       </div>
     </section>
   );
