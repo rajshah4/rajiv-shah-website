@@ -9,19 +9,19 @@ const userData = {
  upcoming: [
     {
       title: "ODSC: Evaluation of LLMs",
-      date: "October 30 - November 2nd"
+      date: "October 30 - November 2nd",
       link: "https://odsc.com/california/training/",
       imgUrl: "/ODSC2023.jpeg",
     },
     {
       title: "Gen AI/MLOps World Summit: Evaluation of LLMs,",
-      date: "October 25-26"
+      date: "October 25-26",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GenAI2023.png",
     },
     {
       title: "Keynote at American Family Insurance Analytics Conference",
-      date: "October 4"
+      date: "October 4",
       link: "https://www.amfam.com/",
       imgUrl: "/AFI2023.png",
     },
