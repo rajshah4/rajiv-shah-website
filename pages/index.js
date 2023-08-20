@@ -6,6 +6,7 @@ import LatestCode from "../components/LatestCode";
 import Hero from "../components/Hero";
 import getLatestRepos from "@lib/getLatestRepos";
 import userData from "@constants/data";
+import AboutMe from "@components/AboutMe";
 
 export default function Home({ repositories }) {
   return (
@@ -14,6 +15,7 @@ export default function Home({ repositories }) {
       description="Welcome to my personal web site to learn more about me, my activities, and my past work."
     >
       <Hero />
+      <AboutMe />
       <FavouriteProjects />
       <LatestCode repositories={repositories} />
     </ContainerBlock>
