@@ -9,9 +9,10 @@ export default function Talks() {
           ML/AI Talks
         </h1>
       </div>
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-1 py-20 pb-10 pr-8">
+      <div className="bg-[#F1F1F1] dark:bg-gray-900 px-4">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-1 py-5 pb-10 pr-8">
       <br></br>
-          <b>Recent Public Talks</b>
+          <b>Recent Public Talks or Interviews</b>
                   {userData.talks.map((proj, idx) => (
                     <TalksCard
                       title={proj.title}
@@ -53,6 +54,7 @@ export default function Talks() {
           </p><p>
           Feb 3, 2017, Image Classification using Keras and Tensorflow, Champaign Data Science Group,  <a href='https://www.meetup.com/CU-DSUG/events/236236341/'>https://www.meetup.com/CU-DSUG/events/236236341/</a>
           </p> 
+      </div>
       </div>
     </section>
   );
