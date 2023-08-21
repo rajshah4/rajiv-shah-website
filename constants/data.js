@@ -56,7 +56,7 @@ const userData = {
   ],
   about: {
     title1: "I help enterprises with AI.",
-    title2: "Along with a side mission of educating folks about AI",
+    title2: "I keep a side mission of educating folks about AI",
     currentPosition: "Machine Learning Engineer at Hugging Face",
     currentPositiontUrl: "https://hf.co",
   },
