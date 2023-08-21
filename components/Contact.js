@@ -17,7 +17,7 @@ export default function Contact() {
                 Get in touch, let's talk.
               </h1>
               <p className="font-light text-base text-gray-200 mt-2">
-                Connect with me on LinkedIn, DM me on social media, or drop me an email at rshah AT pobox.com
+                Connect with me on LinkedIn, DM me on social media, or drop me an email at rshah@pobox.com
               </p>
             </header>
             </div>

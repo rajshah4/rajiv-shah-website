@@ -40,7 +40,7 @@ export default function Bio() {
                   className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
                 >
                 CV
-                </a>{" "}
+                </a>{". "}
                 Also find my publications on {" "}
                 <a
                   href={userData.SSRNUrl}

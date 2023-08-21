@@ -5,8 +5,8 @@ export default function Upcoming() {
   return (
     <section className="bg-white dark:bg-gray-800">
       <div className="max-w-6xl mx-auto h-48 bg-white dark:bg-gray-800">
-        <h1 className=" text-5xl md:text-9xl font-bold py-20 text-center md:text-left">
-          Upcoming
+        <h1 className=" text-5xl md:text-6xl font-bold py-20 text-center md:text-left">
+          Upcoming Talks:
         </h1>
       </div>
       {/* Grid starts here */}
@@ -41,7 +41,7 @@ const ProjectCard = ({ title, date, link, imgUrl, number }) => {
         <h1 className="absolute top-10 left-10 text-gray-50 font-bold text-xl bg-red-500 rounded-md px-2">
           {title}
         </h1>
-        <h3 className="absolute top-10 left-10 text-gray-50 font-bold text-xl bg-red-500 rounded-md px-2">
+        <h3 className="absolute top-20 left-10 text-gray-50 font-bold text-l bg-red-500 rounded-md px-2">
           {date}
         </h3>
         <h1 className="absolute bottom-10 left-10 text-gray-50 font-bold text-xl">

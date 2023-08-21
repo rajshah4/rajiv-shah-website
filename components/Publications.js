@@ -36,6 +36,7 @@ export default function Publications() {
                 .
               </p>
             </div>
+            <br></br>
             <div className="mt-8">
               <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
                 Academia
@@ -67,10 +68,55 @@ export default function Publications() {
                 .
               </p>
             </div>
+            <br></br>
+            <br></br>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
+                Coding Projects
+              </h1>
+              <p className="text-lg text-gray-500 mt-4 dark:text-gray-300">
+                My older coding projects are found on my {" "}
+                <a
+                  href="http://projects.rajivshah.com"
+                  target="__blank"
+                  className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
+                >
+                personal project server
+                </a> and {" "}
+                <a
+                  href={userData.socialLinks.github}
+                  target="__blank"
+                  className="text-gray-800 border-b-2 border-gray-800 dark:border-gray-300 font-bold dark:text-gray-300"
+                >
+                Github
+                </a>
+                .
+              </p>
             </div>
-          {/* Text area */}
+
+
+            </div>
+          {/* AI Text area */}
           <div className="col-span-1 md:col-span-2">
+          <b>AI/ML Publications</b>
+          <p>Y Zhao, R Yang, G Chevalier, RC Shah, R Romijnders, Applying deep bidirectional LSTM and mixture density network for basketball trajectory prediction. Optik 158, 266-272 </p>
+          <p>R Shah, R Romijnders, Applying deep learning to basketball trajectories, <a href="https://arxiv.org/abs/1608.03793" className="underline-link text-blue-500">arXiv preprint arXiv:1608.03793</a> </p>
+          <p>A Chou, A Torres-Espin, N Kyritsis, JR Huie, S Khatry, R Shah, et al. Expert-augmented automated machine learning optimizes hemodynamic predictors of spinal cord injury outcome. <a href="https://pubmed.ncbi.nlm.nih.gov/35390006/" className="underline-link text-blue-500">Plos one 17 (4), e0265254 </a></p>
+          <p>B Hodel [R Shah recognized as contributing], Learning to Operate an Excavator via Policy Optimization. <a href="https://www.sciencedirect.com/science/article/pii/S1877050918319744" className="underline-link text-blue-500"> Procedia Computer Science Volume </a>140, 2018, Pages 376-382 </p>
+          <br></br>
+          <b>AI/ML Blog Posts</b>
+                  {userData.blogpost.map((proj, idx) => (
+                    <PaperCard
+                      title={proj.title}
+                      date={proj.date}
+                      link={proj.link}
+                      number={`${idx + 1}`}
+                    />
+                  ))}
+              <br></br>
+              <br></br>
               <b>Older Academic Publications</b>
+              <br></br>
               <br></br>
               <b>Surveillance - Empirical studies on surveillance cameras.</b>
               <p>Shah, R. C., & McQuade, Brendan (2016). Surveillance, Security, and Intelligence-Led Policing in Chicago.  In (Bennett, Larry; Garner, Roberta and Hague, Euan,eds), Neoliberal Chicago: University of Illinois Press.</p>
@@ -116,3 +162,14 @@ export default function Publications() {
     </section>
   );
 }
+
+const PaperCard = ({ title, date, link, number }) => {
+  return (
+    <div className="">
+    <p>
+        {title},
+        <a href={link} className="underline-link text-blue-500"> Link </a> {" "}({date})
+    </p>
+    </div>
+  );
+};
