@@ -54,48 +54,6 @@ const userData = {
       imgUrl: "/WorldSummit2023.jpeg",
     },
   ],
-  projects: [
-    {
-      title: "Tailwind Master Kit",
-      link: "https://tailwindmasterkit.com",
-      imgUrl: "/tmk.jpg",
-    },
-    {
-      title: "PlaceholderTech",
-      link: "https://placeholdertech.in",
-      imgUrl: "/placeholdertech.png",
-    },
-    {
-      title: "Portfolio",
-      link: "https://manuarora.in",
-      imgUrl: "/portfolio.png",
-    },
-    {
-      title: "CovidRescue",
-      link: "https://covidrescue.co.in",
-      imgUrl: "/covidrescue.png",
-    },
-    {
-      title: "Algochurn",
-      link: "https://algochurn.com",
-      imgUrl: "/algochurn.png",
-    },
-    {
-      title: "Playground",
-      link: "https://play.placeholdertech.in",
-      imgUrl: "/playground.png",
-    },
-    {
-      title: "Feedmeback",
-      link: "https://feedmeback.vercel.app",
-      imgUrl: "/feedmeback.png",
-    },
-    {
-      title: "Devmedium",
-      link: "https://devmedium.vercel.app",
-      imgUrl: "/devmedium.png",
-    },
-  ],
   about: {
     title1: "I help enterprises with AI.",
     title2: "Along with a side mission of educating folks about AI",
@@ -137,20 +95,6 @@ const userData = {
       year: "2019",
       companyLink: "https://intel.com",
       desc: "Developed pothole detection system with OpenCV and computer vision, detects potholes on roads and informs the driver.",
-    },
-    {
-      title: "Graduation",
-      company: "UPES, Dehradun.",
-      year: "2019",
-      companyLink: "https://upes.co.in",
-      desc: "Major in Computer Science and Engineering with a CGPA of 7.0. Nobody asks this but it's okay.",
-    },
-    {
-      title: "High School",
-      company: "Delhi Public School, Jaipur.",
-      year: "2015",
-      companyLink: "https://upes.co.in",
-      desc: "Subjects being PCM - I barely survived with 93.6% marks aggregate. Flex fridays, fellas.",
     },
   ],
   resumeUrl: "/CVShah2023.pdf",
@@ -318,16 +262,87 @@ const userData = {
   ],
   talks: [
     {
-      title: "Reasoning in Large Language Models",
-      date:  "Feb 2023",
-      link: "https://medium.com/@rajistics/reasoning-in-large-language-models-2ff33c318a94",
+      title: "AI Done Right: Practical Applications for IP Professionals",
+      date: "July 2023",
+      link: "https://www.americanbar.org/groups/intellectual_property_law/events_cle/other-entity-events/ai-done-right-using-practical-ai-in-ip-law-practice/", 
     },
     {
-      title: "Data Science News Sources",
-      date: "Dec 2022",
-      link: "https://medium.com/@rajistics/data-science-news-sources-71ad418242b4", 
+      title: "Identifying Useful Large Language Models",
+      date: "July 2023",
+      link: "https://www.youtube.com/live/_jCBqJYQ9zc?feature=share", 
+    },
+    {
+      title: "Arize AI: Practical Perspective on LLMs",
+      date:  "Jun 2023",
+      link: "https://youtu.be/dKBD-3hnjW0",
+    },
+    {
+      title: "Baptist Health: Lets Talk AI",
+      date:  "May 2023",
+      link: "https://baptisthealth.zoom.us/rec/share/gmKZf097DjLnmv98Bg4jTv9WuOyl2yv6CKPiHr7TPy03HFqlr7i2Pa2kWf10el6N.meU20VcGa5JxjPWu?startTime=1685030429000",
+    },
+    {
+      title: "AI4Diversity: Generative AI tools change the nature of work",
+      date:  "May 2023",
+      link: "https://youtu.be/wnKTld4CtR0",
+    },
+    {
+      title: "Analytics India: The Peaks and Pits of Open-Source with Hugging Face",
+      date:  "May 2023",
+      link: "https://analyticsindiamag.com/the-peaks-and-pits-of-open-source-with-hugging-face/",
+    },
+    {
+      title: "Practical AI Podcast: Capabilities of LLMs",
+      date: "Apr 2023",
+      link: "https://changelog.com/practicalai/219", 
+    },
+    {
+      title: "World Summit AI: Challenges and Opportunities for Keeping AI Open",
+      date: "Apr 2023",
+      link: "https://www.youtube.com/watch?v=aR3MvGy1PzM", 
+    },
+    {
+      title: "ChatGPT and the coming Generative AI Revolution | DataHour by Rajiv Shah",
+      date: "Jan 2023",
+      link: "https://youtu.be/7zhgYrOQBeE", 
+    },
+    {
+      title: "Introduction to programmatic labeling",
+      date: "Aug 2022",
+      link: "https://youtu.be/tvuu5OGyMfE", 
+    },
+    {
+      title: "Rules: A Simple & Effective Machine Learning Approach",
+      date: "Nov 2021",
+      link: "https://youtu.be/_Q3q4-UYZkA", 
+    },
+    {
+      title: "Practical AI Podcast: When data leakage turns into a flood of trouble",
+      date: "Oct 2020",
+      link: "https://changelog.com/practicalai/109", 
+    },
+    {
+      title: "Model Interpretability",
+      date: "Oct 2020",
+      link: "https://youtu.be/Oh6R47pGTfc", 
+    },
+    {
+      title: "GOTO Conference: COVID-19: Data Science & Expertise • Rajiv Shah",
+      date: "Jun 2020",
+      link: "https://youtu.be/YVv01-f8TZE", 
+    },
+    {
+      title: "Data Skeptic: Reproducing Deep Learning Models",
+      date: "Oct 2019",
+      link: "https://dataskeptic.com/blog/episodes/2019/reproducing-deep-learning-models", 
+    },
+    {
+      title: "Using Interpretability Tools To Improve Your Model - Rajiv Shah - NAS2019",
+      date: "Sep 2019",
+      link: "https://www.youtube.com/live/syU6ubX9kVM?feature=share", 
     },
   ]
 };
 
 export default userData;
+
