@@ -101,7 +101,7 @@ const VideoCard = ({title, date, source, link}) => {
     <div className="col-span-1 md:col-span-2">
        <p>
         {title},
-         <a href={link} className="underline-link text-blue-500"> {source} </a> {" "}({date})
+         <a href={link} className="underline-link text-blue-300"> {source} </a> {" "}({date})
        </p>
     </div>
   );

@@ -10,7 +10,7 @@ export default function Publications() {
         </h1>
       </div>
       <div className="bg-[#F1F1F1] dark:bg-gray-900 px-4">
-        <div className="pt-20 grid grid-cols-1 md:grid-cols-3 max-w-6xl mx-auto gap-y-20 gap-x-20">
+        <div className="pt-10 grid grid-cols-1 md:grid-cols-3 max-w-6xl mx-auto gap-y-20 gap-x-20">
           {/* Social Buttons */}
           <div className="inline-flex flex-col">
             <div>
@@ -103,6 +103,7 @@ export default function Publications() {
                     <PaperCard
                       title={proj.title}
                       date={proj.date}
+                      source={proj.source}
                       link={proj.link}
                       number={`${idx + 1}`}
                     />
@@ -111,9 +112,9 @@ export default function Publications() {
               <br></br>
               <b>AI/ML Publications</b>
           <p>Y Zhao, R Yang, G Chevalier, RC Shah, R Romijnders, Applying deep bidirectional LSTM and mixture density network for basketball trajectory prediction. Optik 158, 266-272 </p>
-          <p>R Shah, R Romijnders, Applying deep learning to basketball trajectories, <a href="https://arxiv.org/abs/1608.03793" className="underline-link text-blue-500">arXiv preprint arXiv:1608.03793</a> </p>
-          <p>A Chou, A Torres-Espin, N Kyritsis, JR Huie, S Khatry, R Shah, et al. Expert-augmented automated machine learning optimizes hemodynamic predictors of spinal cord injury outcome. <a href="https://pubmed.ncbi.nlm.nih.gov/35390006/" className="underline-link text-blue-500">Plos one 17 (4), e0265254 </a></p>
-          <p>B Hodel [R Shah recognized as contributing], Learning to Operate an Excavator via Policy Optimization. <a href="https://www.sciencedirect.com/science/article/pii/S1877050918319744" className="underline-link text-blue-500"> Procedia Computer Science Volume </a>140, 2018, Pages 376-382 </p>
+          <p>R Shah, R Romijnders, Applying deep learning to basketball trajectories, <a href="https://arxiv.org/abs/1608.03793" className="underline-link text-blue-300">arXiv preprint arXiv:1608.03793</a> </p>
+          <p>A Chou, A Torres-Espin, N Kyritsis, JR Huie, S Khatry, R Shah, et al. Expert-augmented automated machine learning optimizes hemodynamic predictors of spinal cord injury outcome. <a href="https://pubmed.ncbi.nlm.nih.gov/35390006/" className="underline-link text-blue-300">Plos one 17 (4), e0265254 </a></p>
+          <p>B Hodel [R Shah recognized as contributing], Learning to Operate an Excavator via Policy Optimization. <a href="https://www.sciencedirect.com/science/article/pii/S1877050918319744" className="underline-link text-blue-300"> Procedia Computer Science Volume </a>140, 2018, Pages 376-382 </p>
               <br></br>
               <br></br>
               <b>Older Academic Publications</b>
@@ -164,12 +165,12 @@ export default function Publications() {
   );
 }
 
-const PaperCard = ({ title, date, link, number }) => {
+const PaperCard = ({ title, date, source, link, number }) => {
   return (
     <div className="">
     <p>
         {title},
-        <a href={link} className="underline-link text-blue-500"> Link </a> {" "}({date})
+        <a href={link} className="underline-link text-blue-300"> {source} </a> {" "}({date})
     </p>
     </div>
   );
