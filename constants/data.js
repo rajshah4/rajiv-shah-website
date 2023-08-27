@@ -20,7 +20,7 @@ const userData = {
       imgUrl: "/AFI2023.png",
     },
     {
-      title: "GOTO: Decoding Transfomers with Hugging Face  ",
+      title: "GOTO: Decoding Transfomers with Hugging Face",
       date: "October 23-25",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GOTO2023.png",
