@@ -17,6 +17,7 @@ export default function Talks() {
                     <TalksCard
                       title={proj.title}
                       date={proj.date}
+                      source={proj.source}
                       link={proj.link}
                       number={`${idx + 1}`}
                     />
@@ -60,12 +61,12 @@ export default function Talks() {
   );
 }
 
-const TalksCard = ({ title, date, link, number }) => {
+const TalksCard = ({ title, date, source, link}) => {
   return (
     <div className="">
     <p>
         {title},
-        <a href={link} className="underline-link text-blue-500"> Link </a> {" "}({date})
+        <a href={link} className="underline-link text-blue-500"> {source} </a> {" "}({date})
     </p>
     </div>
   );
