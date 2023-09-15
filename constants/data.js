@@ -304,6 +304,12 @@ const userData = {
   ],
   video: [
     {
+      title: "NanoGPT using Simpsons Data: Get Started with Large Language Models",
+      date:  "Sep 2023",
+      source: "Youtube",
+      link: "https://youtu.be/Ty2_bR1mrBQ",
+    },
+    {
       title: "16 Challenges for LLMs - Paper Highlights",
       date:  "Aug 2023",
       source: "Youtube",
@@ -420,7 +426,7 @@ const userData = {
       link: "https://www.youtube.com/watch?v=aR3MvGy1PzM", 
     },
     {
-      title: "ChatGPT and the coming Generative AI Revolution | DataHour by Rajiv Shah",
+      title: "ChatGPT and the coming Generative AI Revolution",
       date: "Jan 2023",
       source: "DataHour by Analytics Vidhya",
       link: "https://youtu.be/7zhgYrOQBeE", 
@@ -456,7 +462,7 @@ const userData = {
       link: "https://youtu.be/Oh6R47pGTfc", 
     },
     {
-      title: "COVID-19: Data Science & Expertise • Rajiv Shah",
+      title: "COVID-19: Data Science & Expertise",
       date: "Jun 2020",
       source: "GOTO Conference",
       link: "https://youtu.be/YVv01-f8TZE", 
