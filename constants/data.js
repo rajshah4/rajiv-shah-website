@@ -374,7 +374,7 @@ const userData = {
       date: "Aug 2022",
       source: "Youtube",
       link: "https://youtu.be/ahgB8c_TgA8", 
-    },
+    }
   ],
   talks: [
     {
@@ -450,6 +450,18 @@ const userData = {
       link: "https://youtu.be/_Q3q4-UYZkA", 
     },
     {
+      title: "Overcoming Issues with Small Data Sets when Building Machine Learning Models",
+      date: "Dec 2020",
+      source: "DataRobot",
+      link: "https://www.youtube.com/watch?v=Ly3ogCE-GuI&t=1591s&ab_channel=DataRobot", 
+    },
+    {
+      title: "Model Explainability with SHAP in DataRobot",
+      date: "Dec 2020",
+      source: "DataRobot",
+      link: "https://www.youtube.com/watch?v=O4ZtUcZksQE&t=13s&ab_channel=DataRobot", 
+    },
+    {
       title: "When data leakage turns into a flood of trouble",
       date: "Oct 2020",
       source: "Practical AI Podcast",
@@ -478,7 +490,7 @@ const userData = {
       date: "Sep 2019",
       source: "Nashville Data Science",
       link: "https://www.youtube.com/live/syU6ubX9kVM?feature=share", 
-    },
+    }
   ]
 };
 
