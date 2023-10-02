@@ -34,6 +34,11 @@ const userData = {
   ],
   highlight: [
     {
+      title: "The Future of Generative AI: Vision and Challenges",
+      link: "https://www.youtube.com/live/2mvvx9puQ_E?si=RXv7mU6hOE03xnvR",
+      imgUrl: "/Harpreet.png",
+    },
+    {
       title: "Arize AI: Practical Perspective on LLMs",
       link: "https://youtu.be/dKBD-3hnjW0",
       imgUrl: "/Arize2023.png",
@@ -377,6 +382,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "The Future of Generative AI: Vision and Challenges",
+      date: "September 2023",
+      source: "Generative AI World Summit",
+      link: "https://www.youtube.com/live/2mvvx9puQ_E?si=REQos2ZRqOY9eCNJ", 
+    },
     {
       title: "AI Done Right: Practical Applications for IP Professionals",
       date: "July 2023",
