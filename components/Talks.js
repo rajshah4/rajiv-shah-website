@@ -12,7 +12,7 @@ export default function Talks() {
       <div className="bg-[#F1F1F1] dark:bg-gray-900 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-1 py-5 pb-10 pr-8">
       <br></br>
-          <b>Recent Public Talks or Interviews</b>
+          <b>Recent Publicly Available Talks or Interviews</b>
                   {userData.talks.map((proj, idx) => (
                     <TalksCard
                       title={proj.title}

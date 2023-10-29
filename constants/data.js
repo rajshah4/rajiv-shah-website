@@ -14,14 +14,14 @@ const userData = {
       imgUrl: "/ODSC2023.jpeg",
     },
     {
-      title: "Keynote at American Family Insurance Analytics Conference",
-      date: "October 4",
-      link: "https://www.amfam.com/",
-      imgUrl: "/AFI2023.png",
+      title: "Data Innovation Summit - Sweden",
+      date: "April 24-25",
+      link: "https://datainnovationsummit.com/",
+      imgUrl: "/datainnov2024.png",
     },
     {
       title: "GOTO: Decoding Transfomers with Hugging Face",
-      date: "October 23-25",
+      date: "May 13-14",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GOTO2023.png",
     },
@@ -52,12 +52,7 @@ const userData = {
       title: "How to Leverage Open-Source LLMs in Your Project",
       link: "https://www.turingpost.com/p/practicalllms",
       imgUrl: "/Turing2023.png",
-    },
-    {
-      title: "World Summit AI: Challenges and Opportunities for Keeping AI Open",
-      link: "https://www.youtube.com/watch?v=aR3MvGy1PzM",
-      imgUrl: "/WorldSummit2023.jpeg",
-    },
+    }
   ],
   about: {
     title1: "I help enterprises with AI.",
@@ -104,7 +99,7 @@ const userData = {
     {
       title: "Senior Data Scientist",
       company: "Caterpillar",
-      year: "2017",
+      year: "2016",
       companyLink: "https://caterpillar.com",
       desc: "Multiple projects, but based in the Global Supply Network Divsion",
     },
