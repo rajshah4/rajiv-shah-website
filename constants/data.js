@@ -134,6 +134,30 @@ const userData = {
   },
   blogpost: [
     {
+      title: "GPT-4 Loses: Data Labeling with LLMs",
+      date:  "Oct 2023",
+      source: "LinkedIn",
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7120746362236792832",
+    },
+    {
+      title: "FinBERT beats GPT-4",
+      date:  "Sep 2023",
+      source: "LinkedIn",
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7108090020875444225",
+    },
+    {
+      title: "Lessons earned from Bloomberg GPT",
+      date:  "Aug 2023",
+      source: "LinkedIn",
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7089609531961348096",
+    },
+    {
+      title: "FinBERT beats GPT-3",
+      date:  "Feb 2023",
+      source: "LinkedIn",
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7024363501318000640",
+    },
+    {
       title: "Reasoning in Large Language Models",
       date:  "Feb 2023",
       source: "Medium",
