@@ -9,25 +9,25 @@ const userData = {
  upcoming: [
     {
       title: "ODSC: Evaluation of LLMs",
-      date: "October 30 - November 2nd",
+      date: "October 30 - November 2nd 2023",
       link: "https://odsc.com/california/training/",
       imgUrl: "/ODSC2023.jpeg",
     },
     {
-      title: "Data Innovation Summit - Sweden",
-      date: "April 24-25",
+      title: "Data Innovation Summit: Evaluation Techniques for Large Language Models",
+      date: "April 24-25 2024",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
     },
     {
       title: "GOTO: Decoding Transfomers with Hugging Face",
-      date: "May 13-14",
+      date: "May 13-14 2024",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GOTO2023.png",
     },
     {
       title: "Gen AI/MLOps World Summit: Evaluation of LLMs",
-      date: "October 25-26",
+      date: "October 25-26 2023",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GenAI2023.png",
     },
