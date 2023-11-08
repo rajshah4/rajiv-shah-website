@@ -34,6 +34,11 @@ const userData = {
   ],
   highlight: [
     {
+      title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
+      link: "https://youtu.be/iQl03pQlYWY?si=kvQxuiYzUVDyIuCm",
+      imgUrl: "/Evaluation2023.png",
+    },
+    {
       title: "The Future of Generative AI: Vision and Challenges",
       link: "https://www.youtube.com/live/2mvvx9puQ_E?si=RXv7mU6hOE03xnvR",
       imgUrl: "/Harpreet.png",
@@ -47,11 +52,6 @@ const userData = {
       title: "Practical AI Podcast: Capabilities of LLMs",
       link: "https://changelog.com/practicalai/219",
       imgUrl: "/PracticalAI2023.png",
-    },
-    {
-      title: "How to Leverage Open-Source LLMs in Your Project",
-      link: "https://www.turingpost.com/p/practicalllms",
-      imgUrl: "/Turing2023.png",
     }
   ],
   about: {
@@ -328,6 +328,12 @@ const userData = {
   ],
   video: [
     {
+      title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
+      date:  "Nov 2023",
+      source: "Youtube",
+      link: "https://youtu.be/iQl03pQlYWY?si=kvQxuiYzUVDyIuCm",
+    },
+    {
       title: "NanoGPT using Simpsons Data: Get Started with Large Language Models",
       date:  "Sep 2023",
       source: "Youtube",
@@ -406,6 +412,12 @@ const userData = {
       date: "September 2023",
       source: "Generative AI World Summit",
       link: "https://www.youtube.com/live/2mvvx9puQ_E?si=REQos2ZRqOY9eCNJ", 
+    },
+    {
+      title: "How to Leverage Open-Source LLMs in Your Project",
+      date:"August 2023",
+      source: "Turing Post",
+      link: "https://www.turingpost.com/p/practicalllms"
     },
     {
       title: "AI Done Right: Practical Applications for IP Professionals",
