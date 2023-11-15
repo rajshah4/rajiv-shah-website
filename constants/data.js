@@ -14,7 +14,7 @@ const userData = {
       imgUrl: "/ODSC2023.jpeg",
     },
     {
-      title: "Data Innovation Summit: Evaluation Techniques for Large Language Models",
+      title: "",
       date: "April 24-25 2024",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
