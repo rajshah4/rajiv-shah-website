@@ -14,8 +14,8 @@ const userData = {
       imgUrl: "/ODSC2023.jpeg",
     },
     {
-      title: "",
-      date: "",
+      title: "Evaluation for LLMs",
+      date: "April 24 2024",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
     },
