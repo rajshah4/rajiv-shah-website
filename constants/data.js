@@ -15,7 +15,7 @@ const userData = {
     },
     {
       title: "",
-      date: "April 24-25 2024",
+      date: "",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
     },
