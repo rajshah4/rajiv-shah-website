@@ -8,10 +8,16 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "ODSC: Evaluation of LLMs",
-      date: "October 30 - November 2nd 2023",
-      link: "https://odsc.com/california/training/",
-      imgUrl: "/ODSC2023.jpeg",
+      title: "Constructing an Evaluation Approach for Generative AI Models",
+      date: "December 15 2023",
+      link: "https://arize.com/arize-holiday-special/",
+      imgUrl: "/ArizeDec2023.png",
+    },
+    {
+      title: "Choosing the Best LLM for Your Organization",
+      date: "December 19 2023",
+      link: "https://www.datarobot.com/webinars/choosing-the-best-llm-for-your-organization/",
+      imgUrl: "/DataRobot2023.webp",
     },
     {
       title: "Evaluation for LLMs",
@@ -24,13 +30,7 @@ const userData = {
       date: "May 13-14 2024",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GOTO2023.png",
-    },
-    {
-      title: "Gen AI/MLOps World Summit: Evaluation of LLMs",
-      date: "October 25-26 2023",
-      link: "https://generative-ai-summit.com/",
-      imgUrl: "/GenAI2023.png",
-    },
+    }
   ],
   highlight: [
     {
