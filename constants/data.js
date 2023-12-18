@@ -8,12 +8,6 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Constructing an Evaluation Approach for Generative AI Models",
-      date: "December 15 2023",
-      link: "https://arize.com/arize-holiday-special/",
-      imgUrl: "/ArizeDec2023.png",
-    },
-    {
       title: "Choosing the Best LLM for Your Organization",
       date: "December 19 2023",
       link: "https://www.datarobot.com/webinars/choosing-the-best-llm-for-your-organization/",
@@ -39,14 +33,14 @@ const userData = {
       imgUrl: "/Evaluation2023.png",
     },
     {
+      title: "Arize AI: Evaluation Approach for Generative AI Models",
+      link: "https://youtu.be/k9s_0PiepNs?si=SZUqNL7BjqCi1W-N&t=6608",
+      imgUrl: "/ArizeDec2023.png",
+    },
+    {
       title: "The Future of Generative AI: Vision and Challenges",
       link: "https://www.youtube.com/live/2mvvx9puQ_E?si=RXv7mU6hOE03xnvR",
       imgUrl: "/Harpreet.png",
-    },
-    {
-      title: "Arize AI: Practical Perspective on LLMs",
-      link: "https://youtu.be/dKBD-3hnjW0",
-      imgUrl: "/Arize2023.png",
     },
     {
       title: "Practical AI Podcast: Capabilities of LLMs",
@@ -407,6 +401,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Constructing an Evaluation Approach for Generative AI Models",
+      date: "December 2023",
+      source: "Arize AI Holiday Special",
+      link: "https://youtu.be/k9s_0PiepNs?si=SZUqNL7BjqCi1W-N&t=6608", 
+    },
     {
       title: "The Future of Generative AI: Vision and Challenges",
       date: "September 2023",
