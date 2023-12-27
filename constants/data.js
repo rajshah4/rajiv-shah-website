@@ -34,7 +34,7 @@ const userData = {
     },
     {
       title: "Arize AI: Evaluation Approach for Generative AI Models",
-      link: "https://youtu.be/k9s_0PiepNs?si=SZUqNL7BjqCi1W-N&t=6608",
+      link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147",
       imgUrl: "/ArizeDec2023.png",
     },
     {
@@ -405,7 +405,7 @@ const userData = {
       title: "Constructing an Evaluation Approach for Generative AI Models",
       date: "December 2023",
       source: "Arize AI Holiday Special",
-      link: "https://youtu.be/k9s_0PiepNs?si=SZUqNL7BjqCi1W-N&t=6608", 
+      link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147", 
     },
     {
       title: "The Future of Generative AI: Vision and Challenges",
