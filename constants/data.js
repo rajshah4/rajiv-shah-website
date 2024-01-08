@@ -8,12 +8,6 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Choosing the Best LLM for Your Organization",
-      date: "December 19 2023",
-      link: "https://www.datarobot.com/webinars/choosing-the-best-llm-for-your-organization/",
-      imgUrl: "/DataRobot2023.webp",
-    },
-    {
       title: "Evaluation for LLMs",
       date: "April 24 2024",
       link: "https://datainnovationsummit.com/",
@@ -401,6 +395,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Choosing the Right LLM for Your Organization’s Needs",
+      date: "December 2023",
+      source: "DataRobot Webinar",
+      link: "https://www.datarobot.com/webinars/choosing-the-best-llm-for-your-organization/", 
+    },
     {
       title: "Constructing an Evaluation Approach for Generative AI Models",
       date: "December 2023",
