@@ -49,14 +49,14 @@ const userData = {
     }
   ],
   about: {
-    title1: "I help enterprises with AI.",
+    title1: "I help enterprises with the latest AI.",
     title2: "I keep a side mission of educating folks about AI.",
     currentPosition: "Machine Learning Engineer at Hugging Face",
     currentPositiontUrl: "https://hf.co",
   },
   bio: {
     description: [
-      `Rajiv Shah is a machine learning engineer at Hugging Face who focuses on enabling enterprise teams to succeed with AI. Rajiv is a leading expert in the practical application of AI. Previously, he led data science enablement efforts across hundreds of data scientists at DataRobot. He was also a part of data science teams at Snorkel AI, Caterpillar, and State Farm.`,
+      `Rajiv Shah is a machine learning engineer with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
       `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos, @rajistics, with several million views.`
     ],
