@@ -34,10 +34,10 @@ const userData = {
     {
       title: "Exploring Language Model Evaluation",
       link: "https://www.youtube.com/watch?v=io8FlI-_gOo&ab_channel=LLMDaily",
-      imgUrl: "/LLMDaily_2004.png",
+      imgUrl: "/LLMDaily_2024.png",
     },
     {
-      title: "Practical AI Podcast: Capabilities of LLMs",
+      title: "Pra4ctical AI Podcast: Capabilities of LLMs",
       link: "https://changelog.com/practicalai/219",
       imgUrl: "/PracticalAI2023.png",
     }
