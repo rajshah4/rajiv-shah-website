@@ -32,9 +32,9 @@ const userData = {
       imgUrl: "/ArizeDec2023.png",
     },
     {
-      title: "The Future of Generative AI: Vision and Challenges",
-      link: "https://www.youtube.com/live/2mvvx9puQ_E?si=RXv7mU6hOE03xnvR",
-      imgUrl: "/Harpreet.png",
+      title: "Exploring Language Model Evaluation",
+      link: "https://www.youtube.com/watch?v=io8FlI-_gOo&ab_channel=LLMDaily",
+      imgUrl: "/LLMDaily_2004.png",
     },
     {
       title: "Practical AI Podcast: Capabilities of LLMs",
@@ -395,6 +395,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Exploring Language Model Evaluation with Rajiv Shah",
+      date:  "Jan 2024",
+      source: "LLM Daily",
+      link: "https://www.youtube.com/watch?v=io8FlI-_gOo&ab_channel=LLMDaily",
+    },
     {
       title: "Choosing the Right LLM for Your Organization’s Needs",
       date: "December 2023",
