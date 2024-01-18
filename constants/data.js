@@ -8,6 +8,12 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
+      title: "Making Sense of the Generative AI Explosion",
+      date: "Feb 22 2024",
+      link: "https://rgovys.github.io/",
+      imgUrl: "/Rgov2024.png",
+    },
+    {
       title: "Evaluation for LLMs",
       date: "April 24 2024",
       link: "https://datainnovationsummit.com/",
@@ -37,7 +43,7 @@ const userData = {
       imgUrl: "/LLMDaily_2024.png",
     },
     {
-      title: "Pra4ctical AI Podcast: Capabilities of LLMs",
+      title: "Practical AI Podcast: Capabilities of LLMs",
       link: "https://changelog.com/practicalai/219",
       imgUrl: "/PracticalAI2023.png",
     }
