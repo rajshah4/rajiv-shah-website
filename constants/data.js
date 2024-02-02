@@ -28,6 +28,11 @@ const userData = {
   ],
   highlight: [
     {
+      title: "Evaluation Techniques for Large Language Models – Interview with Rajiv Shah, Hugging Face",
+      link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
+      imgUrl: "/HR_Interview_Feb2024.png",
+    },
+    {
       title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
       link: "https://youtu.be/iQl03pQlYWY?si=kvQxuiYzUVDyIuCm",
       imgUrl: "/Evaluation2023.png",
@@ -401,6 +406,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Evaluation Techniques for Large Language Models – Interview with Rajiv Shah, Hugging Face",
+      date:  "Feb 2024",
+      source: "Hyperight",
+      link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
+    },
     {
       title: "Exploring Language Model Evaluation with Rajiv Shah",
       date:  "Jan 2024",
