@@ -17,12 +17,12 @@ export default function AboutMe() {
           >
             {userData.about.title1} {<br></br>}
             {userData.about.title2} {<br></br>}
-            Currently a{" "}
+            Currently {" "}
             <a
               className="bg-red-500 rounded-md px-2 py-1 text-white"
               href={userData.about.currentPositionUrl}
             >
-              {userData.about.currentPosition} 🤗
+              {userData.about.currentPosition} ❄️
             </a>
           </p>
         </div>
