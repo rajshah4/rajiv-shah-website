@@ -56,8 +56,8 @@ const userData = {
   about: {
     title1: "I help enterprises with the latest AI.",
     title2: "I keep a side mission of educating folks about AI.",
-    currentPosition: "Machine Learning Engineer at Hugging Face",
-    currentPositiontUrl: "https://hf.co",
+    currentPosition: "AI/ML Strategy at Snowflake",
+    currentPositiontUrl: "https://www.snowflake.com/en/",
   },
   bio: {
     description: [
@@ -67,6 +67,13 @@ const userData = {
     ],
   },
   experience: [
+    {
+      title: "AI/ML Strategy",
+      company: "Snowflake",
+      year: "2024",
+      companyLink: "https://www.snowflake.com/en/",
+      desc: " ",
+    },
     {
       title: "Machine Learning Engineer",
       company: "Hugging Face",
