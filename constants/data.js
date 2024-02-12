@@ -9,19 +9,19 @@ const userData = {
  upcoming: [
     {
       title: "Making Sense of the Generative AI Explosion",
-      date: "Feb 22 2024",
+      date: "Feb 22, 2024",
       link: "https://rgovys.github.io/",
       imgUrl: "/Rgov2024.png",
     },
     {
       title: "Evaluation for LLMs",
-      date: "April 24 2024",
+      date: "April 24, 2024",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
     },
     {
       title: "GOTO: Decoding Transfomers with Hugging Face",
-      date: "May 13-14 2024",
+      date: "May 13-14, 2024",
       link: "https://generative-ai-summit.com/",
       imgUrl: "/GOTO2023.png",
     }
@@ -46,11 +46,6 @@ const userData = {
       title: "Exploring Language Model Evaluation",
       link: "https://www.youtube.com/watch?v=io8FlI-_gOo&ab_channel=LLMDaily",
       imgUrl: "/LLMDaily_2024.png",
-    },
-    {
-      title: "Practical AI Podcast: Capabilities of LLMs",
-      link: "https://changelog.com/practicalai/219",
-      imgUrl: "/PracticalAI2023.png",
     }
   ],
   about: {
@@ -61,7 +56,7 @@ const userData = {
   },
   bio: {
     description: [
-      `Rajiv Shah is a machine learning engineer with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
+      `Rajiv Shah is a machine learning engineer at Snowflake with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
       `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos, @rajistics, with several million views.`
     ],
@@ -333,6 +328,12 @@ const userData = {
     },
   ],
   video: [
+    {
+      title: "Large Language Models (LLMs) Can Explain Their Predictions",
+      date:  "Jan 2024",
+      source: "Youtube",
+      link: "https://youtu.be/9RFz3cQ9NqE?si=yGIJUFkMSCalbLob",
+    },
     {
       title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
       date:  "Nov 2023",
