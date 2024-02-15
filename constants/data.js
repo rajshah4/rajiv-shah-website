@@ -10,7 +10,7 @@ const userData = {
     {
       title: "Making Sense of the Generative AI Explosion",
       date: "Feb 22, 2024",
-      link: "https://rgovys.github.io/",
+      link: "https://www.meetup.com/rgovys/events/298631765/",
       imgUrl: "/Rgov2024.png",
     },
     {
