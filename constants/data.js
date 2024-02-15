@@ -28,6 +28,11 @@ const userData = {
   ],
   highlight: [
     {
+      title: "Journey from Military Curiosity to AI Leadership with Analytics Vidhya",
+      link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
+      imgUrl: "/AV_2024.png",
+    },
+    {
       title: "Evaluation Techniques for Large Language Models – Interview with Rajiv Shah, Hugging Face",
       link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
       imgUrl: "/HR_Interview_Feb2024.png",
@@ -42,11 +47,6 @@ const userData = {
       link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147",
       imgUrl: "/ArizeDec2023.png",
     },
-    {
-      title: "Exploring Language Model Evaluation",
-      link: "https://www.youtube.com/watch?v=io8FlI-_gOo&ab_channel=LLMDaily",
-      imgUrl: "/LLMDaily_2024.png",
-    }
   ],
   about: {
     title1: "I help enterprises with the latest AI.",
@@ -414,6 +414,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Journey from Military Curiosity to AI Leadership",
+      date: "Feb 2024",
+      source: "Analytics Vidhya",
+      link: "https://youtu.be/d6CZoXh670o?si=4_EKe1sesr7qjfkh",
+    },
     {
       title: "Evaluation Techniques for Large Language Models – Interview with Rajiv Shah, Hugging Face",
       date:  "Feb 2024",
