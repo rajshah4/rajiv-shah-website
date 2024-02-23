@@ -20,10 +20,10 @@ const userData = {
       imgUrl: "/datainnov2024.png",
     },
     {
-      title: "GOTO: Decoding Transfomers with Hugging Face",
-      date: "May 13-14, 2024",
-      link: "https://generative-ai-summit.com/",
-      imgUrl: "/GOTO2023.png",
+      title: "Snowflake Summit",
+      date: "Jun 3-6, 2024",
+      link: "https://www.snowflake.com/summit/",
+      imgUrl: "/summitt_2004.png",
     }
   ],
   highlight: [
