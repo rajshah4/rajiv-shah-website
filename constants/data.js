@@ -23,7 +23,7 @@ const userData = {
       title: "Snowflake Summit",
       date: "Jun 3-6, 2024",
       link: "https://www.snowflake.com/summit/",
-      imgUrl: "/summitt_2004.png",
+      imgUrl: "/summitt_2024.png",
     }
   ],
   highlight: [
