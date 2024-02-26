@@ -24,6 +24,12 @@ const userData = {
       date: "Jun 3-6, 2024",
       link: "https://www.snowflake.com/summit/",
       imgUrl: "/summitt_2024.png",
+    },
+    {
+      title: "GOTO Chicago",
+      date: "Oct 21-22, 2024",
+      link: "https://gotochgo.com/2024",
+      imgUrl: "/GOTO_2024.png",
     }
   ],
   highlight: [
