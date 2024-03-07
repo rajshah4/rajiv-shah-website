@@ -415,6 +415,12 @@ const userData = {
   ],
   talks: [
     {
+      title: "Generative AI: A Survey of Current Practices, Challenges, and Best Practices",
+      date: "March 2024",
+      source: "R Govsys",
+      link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147",
+    },
+    {
       title: "Journey from Military Curiosity to AI Leadership",
       date: "Feb 2024",
       source: "Analytics Vidhya",
