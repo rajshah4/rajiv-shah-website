@@ -8,12 +8,6 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Making Sense of the Generative AI Explosion",
-      date: "Feb 22, 2024",
-      link: "https://www.meetup.com/rgovys/events/298631765/",
-      imgUrl: "/Rgov2024.png",
-    },
-    {
       title: "Evaluation for LLMs",
       date: "April 24, 2024",
       link: "https://datainnovationsummit.com/",
@@ -34,8 +28,13 @@ const userData = {
   ],
   highlight: [
     {
+      title: "Generative AI: A Survey of Current Practices, Challenges, and Best Practices",
+      link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147",
+      imgUrl: "/Rgov2024.png",
+    },
+    {
       title: "Journey from Military Curiosity to AI Leadership with Analytics Vidhya",
-      link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
+      link: "https://www.youtube.com/watch?v=d6CZoXh670o&ab_channel=AnalyticsVidhya",
       imgUrl: "/AV_2024.png",
     },
     {
@@ -47,11 +46,6 @@ const userData = {
       title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
       link: "https://youtu.be/iQl03pQlYWY?si=kvQxuiYzUVDyIuCm",
       imgUrl: "/Evaluation2023.png",
-    },
-    {
-      title: "Arize AI: Evaluation Approach for Generative AI Models",
-      link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147",
-      imgUrl: "/ArizeDec2023.png",
     },
   ],
   about: {
