@@ -29,7 +29,7 @@ const userData = {
   highlight: [
     {
       title: "Generative AI: A Survey of Current Practices, Challenges, and Best Practices",
-      link: "https://youtu.be/PtXOQDHPddE?si=PQ4N1B2mX2d_9PwC&t=147",
+      link: "https://youtu.be/UHDIgsWmqtE?si=k7pkkvWhanwRsgff",
       imgUrl: "/Rgov2024.png",
     },
     {
