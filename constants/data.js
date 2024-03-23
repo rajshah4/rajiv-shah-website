@@ -8,8 +8,14 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Evaluation for LLMs",
+      title: "Practical Perspective on Generative AI",
       date: "April 24, 2024",
+      link: "https://www.g2iconference.com/agenda",
+      imgUrl: "/G2I_2024.png",
+    },
+    {
+      title: "Evaluation for LLMs",
+      date: "May 1, 2024",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
     },
@@ -20,11 +26,11 @@ const userData = {
       imgUrl: "/summitt_2024.png",
     },
     {
-      title: "GOTO Chicago",
-      date: "Oct 21-22, 2024",
-      link: "https://gotochgo.com/2024",
-      imgUrl: "/GOTO_2024.png",
-    }
+      title: "Insurance Collection Execeutives",
+      date: "Oct 21-24, 2024",
+      link: "https://www.theicesite.com/content.aspx?page_id=22&club_id=180006&module_id=496322",
+      imgUrl: "/ICE_2024.png",
+    },
   ],
   highlight: [
     {
