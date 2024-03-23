@@ -8,16 +8,16 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Practical Perspective on Generative AI",
-      date: "April 24, 2024",
-      link: "https://www.g2iconference.com/agenda",
-      imgUrl: "/G2I_2024.png",
-    },
-    {
       title: "Evaluation for LLMs",
-      date: "May 1, 2024",
+      date: "April 24, 2024",
       link: "https://datainnovationsummit.com/",
       imgUrl: "/datainnov2024.png",
+    },
+    {
+      title: "Practical Perspective on Generative AI",
+      date: "May 1, 2024",
+      link: "https://www.g2iconference.com/agenda",
+      imgUrl: "/G2I_2024.png",
     },
     {
       title: "Snowflake Summit",
