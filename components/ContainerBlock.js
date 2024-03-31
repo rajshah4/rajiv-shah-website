@@ -22,17 +22,18 @@ export default function ContainerBlock({ children, ...customMeta }) {
         <meta content={meta.description} name="description" />
         <meta
           property="og:url"
-          content={`https://yourwebsite.com${router.asPath}`}
+          content={`https://rajivshah.com${router.asPath}`}
         />
         <link
           rel="canonical"
-          href={`https://yourwebsite.com${router.asPath}`}
+          href={`https://rajivshah.com${router.asPath}`}
         />
         <meta property="og:type" content={meta.type} />
         <meta property="og:site_name" content="Rajiv Shah" />
         <meta property="og:description" content={meta.description} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:image" content={meta.image} />
+        <meta name="google-site-verification" content="i2BBFzPIdJqsFVldtpEpWxm3AcLMF981UFPXIwQLZBM" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@rajistics" />
         <meta name="twitter:title" content={meta.title} />
