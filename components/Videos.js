@@ -15,7 +15,7 @@ export default function Videos() {
           {/* Social Buttons */}
           <div className="inline-flex flex-col">
             <div>
-            Find current videos at TikTok, Instagram, or YouTube. <br></br> I have an <a href="https://airtable.com/applJStOqSfa57iYV/shryF2ldzrRA66O1x" className="underline-link text-blue-500">AirTable</a> that provides links and descriptions to many of my shorter videos.
+            Find current videos at TikTok, Instagram, or YouTube. <br></br> I have an <a href="https://docs.google.com/spreadsheets/d/11D0Wla7odvvOgcvoETvJ7pHwKObeXEU7nB8envGnvBI/edit?usp=sharing" className="underline-link text-blue-500">Google Sheet</a> that provides links and descriptions to many of my shorter videos.
             </div>
             {/* Social Links */}
             <h1 className="text-xl font-semibold text-gray-700 mt-8 dark:text-gray-200">
