@@ -1,5 +1,6 @@
 import userData from "@constants/data";
 import videodata from "@constants/videos";
+import { useState } from 'react';
 
 
 import React from "react";
@@ -104,6 +105,7 @@ export default function Videos() {
                 Instagram_link={videos.Instagram_link}
                 YouTube_link={videos.YouTube_link}
                 linkedin_link={videos.linkedin_link}
+                description={videos.Desc}  
               />
             </> 
           ))}
@@ -125,17 +127,75 @@ const VideoCard = ({title, date, source, link}) => {
   );
 };
 
-const SVideoCard = ({ title, date, TikTok_link, Instagram_link, YouTube_link, linkedin_link }) => {
+const SVideoCard = ({ title, date, TikTok_link, Instagram_link, YouTube_link, linkedin_link,description }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const truncatedDescription = description.length > 100 ? description.substring(0, 100) + '...' : description;
+  
+  // Inline styles
+  const itemStyle = {
+    border: '1px solid #eaeaea',
+    padding: '16px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    marginBottom: '20px',
+    backgroundColor: '#f9f9f9',
+  };
+
+  const linkStyle = {
+    textDecoration: 'underline',
+    color: '#4F96D8',
+    marginRight: '5px',
+  };
+
+  const hiddenStyle = {
+      display: 'none', // Hide by default
+    };
+
+  const showMoreButtonStyle = {
+    // Styles for the 'Read More' button
+    cursor: 'pointer',
+    color: '#0056b3',
+    textDecoration: 'underline',
+    backgroundColor: 'transparent',
+    border: 'none',
+    padding: '0',
+    font: 'inherit',
+  };
+
+  const hiddenButSearchableStyle = {
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    overflow: 'hidden',
+    clip: 'rect(0, 0, 0, 0)',
+    whiteSpace: 'nowrap', // Prevent content from wrapping
+    border: 0,
+  };
   return (
-    <div className="col-span-1 md:col-span-2">
+    <div className="col-span-1 md:col-span-2" style={itemStyle}>
       <p>
-        {title}, 
-        {TikTok_link && <a href={TikTok_link} className="underline_link text-blue-300"> TikTok,</a>} 
-        {Instagram_link && <a href={Instagram_link} className="underline_link text-blue-300"> Instagram,</a>} 
-        {YouTube_link && <a href={YouTube_link} className="underline_link text-blue-300"> YouTube,</a>} 
-        {linkedin_link && <a href={linkedin_link} className="underline_link text-blue-300"> LinkedIn,</a>}
-        <>{' '}</>    {date}
+        <strong>{title}</strong>, {date},<> </> 
+        {TikTok_link && <a href={TikTok_link} style={linkStyle}>TikTok</a>}
+        {Instagram_link && <a href={Instagram_link} style={linkStyle}>Instagram</a>}
+        {YouTube_link && <a href={YouTube_link} style={linkStyle}>YouTube</a>}
+        {linkedin_link && <a href={linkedin_link} style={linkStyle}>LinkedIn</a>}
       </p>
+      <p style={isExpanded ? {} : hiddenButSearchableStyle}>
+        {description}
+      </p>
+      <p style={isExpanded ? hiddenButSearchableStyle : {}}>
+        {truncatedDescription}
+        {description.length > 100 && (
+          <button style={showMoreButtonStyle} onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? 'Read Less' : 'Read More'}
+          </button>
+        )}
+      </p>
+      {isExpanded && (
+        <button style={showMoreButtonStyle} onClick={() => setIsExpanded(false)}>
+          Read Less
+        </button>
+      )}
     </div>
   );
 };
