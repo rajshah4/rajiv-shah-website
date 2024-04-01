@@ -1,4 +1,7 @@
 import userData from "@constants/data";
+import videodata from "@constants/videos";
+
+
 import React from "react";
 
 export default function Videos() {
@@ -86,9 +89,24 @@ export default function Videos() {
                 source={video.source}
                 link={video.link}
               />
-            </>
+            </> 
           ))}
-
+          <br></br>
+        <b>Short Form Videos</b>
+          {/* Video card2 */}
+          {videodata.videos.map((videos, idx) => (
+            <>
+              <SVideoCard
+                key={idx}
+                title={videos.Title}
+                date={videos.create_date}
+                TikTok_link={videos.TikTok_link}
+                Instagram_link={videos.Instagram_link}
+                YouTube_link={videos.YouTube_link}
+                linkedin_link={videos.linkedin_link}
+              />
+            </> 
+          ))}
       </div>
       </div>
       </div>
@@ -103,6 +121,21 @@ const VideoCard = ({title, date, source, link}) => {
         {title},
          <a href={link} className="underline-link text-blue-300"> {source} </a> {" "}({date})
        </p>
+    </div>
+  );
+};
+
+const SVideoCard = ({ title, date, TikTok_link, Instagram_link, YouTube_link, linkedin_link }) => {
+  return (
+    <div className="col-span-1 md:col-span-2">
+      <p>
+        {title}, 
+        {TikTok_link && <a href={TikTok_link} className="underline_link text-blue-300"> TikTok,</a>} 
+        {Instagram_link && <a href={Instagram_link} className="underline_link text-blue-300"> Instagram,</a>} 
+        {YouTube_link && <a href={YouTube_link} className="underline_link text-blue-300"> YouTube,</a>} 
+        {linkedin_link && <a href={linkedin_link} className="underline_link text-blue-300"> LinkedIn,</a>}
+        <>{' '}</>    {date}
+      </p>
     </div>
   );
 };
