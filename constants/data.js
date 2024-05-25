@@ -8,18 +8,6 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Evaluation for LLMs",
-      date: "April 24, 2024",
-      link: "https://datainnovationsummit.com/",
-      imgUrl: "/datainnov2024.png",
-    },
-    {
-      title: "Practical Perspective on Generative AI",
-      date: "May 1, 2024",
-      link: "https://www.g2iconference.com/agenda",
-      imgUrl: "/G2I_2024.png",
-    },
-    {
       title: "Snowflake Summit",
       date: "Jun 3-6, 2024",
       link: "https://www.snowflake.com/summit/",
@@ -39,14 +27,9 @@ const userData = {
       imgUrl: "/Rgov2024.png",
     },
     {
-      title: "Journey from Military Curiosity to AI Leadership with Analytics Vidhya",
-      link: "https://www.youtube.com/watch?v=d6CZoXh670o&ab_channel=AnalyticsVidhya",
-      imgUrl: "/AV_2024.png",
-    },
-    {
-      title: "Evaluation Techniques for Large Language Models – Interview with Rajiv Shah, Hugging Face",
-      link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
-      imgUrl: "/HR_Interview_Feb2024.png",
+      title: "GenAI in the Enterprise w/ Raj Shah, ML Engineer at Snowflake",
+      link: "https://youtu.be/cEN_dA4mEA8?si=XbfVDDw2avIjtkpc",
+      imgUrl: "/Keyhole_2024.png",
     },
     {
       title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
@@ -421,6 +404,18 @@ const userData = {
   ],
   talks: [
     {
+      title: "GenAI in the Enterprise w/ Raj Shah, ML Engineer at Snowflake",
+      date: "May 2024",
+      source: "Zach Gardner / Keyhole Software",
+      link: "https://youtu.be/cEN_dA4mEA8?si=XbfVDDw2avIjtkpc",
+    },
+    {
+      title: "Practical Perspective on Generative AI",
+      date: "May 2024",
+      source: "Gateway to Innovation Conference",
+      link: "https://www.g2iconference.com/agenda",
+    },
+    {
       title: "Generative AI: A Survey of Current Practices, Challenges, and Best Practices",
       date: "March 2024",
       source: "R Govsys",
@@ -435,7 +430,7 @@ const userData = {
     {
       title: "Evaluation Techniques for Large Language Models – Interview with Rajiv Shah, Hugging Face",
       date:  "Feb 2024",
-      source: "Hyperight",
+      source: "Hyperight / Data Innovation Summit 2024",
       link: "https://hyperight.com/evaluation-techniques-for-large-language-models-interview-with-rajiv-shah-hugging-face/",
     },
     {
