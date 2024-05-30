@@ -22,6 +22,11 @@ const userData = {
   ],
   highlight: [
     {
+      title: "E13: Navigating the Evolving World of Open Source AI with Rajiv Shah (Practically Intelligent Podcast)",
+      link: "https://youtu.be/lhAyZoYMdxM?si=kdyFkrOAWGQh-o-8",
+      imgUrl: "/PI_2024.png",
+    },
+    {
       title: "Generative AI: A Survey of Current Practices, Challenges, and Best Practices",
       link: "https://youtu.be/UHDIgsWmqtE?si=k7pkkvWhanwRsgff",
       imgUrl: "/Rgov2024.png",
@@ -403,6 +408,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "E13: Navigating the Evolving World of Open Source AI with Rajiv Shah",
+      date: "May 2024",
+      source: "Practically Intelligent Podcast",
+      link: "https://youtu.be/lhAyZoYMdxM?si=kdyFkrOAWGQh-o-8",
+    },
     {
       title: "GenAI in the Enterprise w/ Raj Shah, ML Engineer at Snowflake",
       date: "May 2024",
