@@ -14,6 +14,18 @@ const userData = {
       imgUrl: "/summitt_2024.png",
     },
     {
+      title: "Baptist Health",
+      date: "Jun 25, 2024",
+      link: "https://baptisthealth.zoom.us/webinar/register/WN_ORKhRURwQmWgu2gkQUPxfA#/registration",
+      imgUrl: "/podcast_2024.png",
+    },
+    {
+      title: "Transfer Learning",
+      date: "Sep 4, 2024",
+      link: "https://www.uc.edu",
+      imgUrl: "/Cinci_2024.png",
+    },
+    {
       title: "Insurance Collection Execeutives",
       date: "Oct 21-24, 2024",
       link: "https://www.theicesite.com/content.aspx?page_id=22&club_id=180006&module_id=496322",
@@ -44,7 +56,7 @@ const userData = {
   ],
   about: {
     title1: "I help enterprises with the latest AI.",
-    title2: "I keep a side mission of educating folks about AI.",
+    title2: "I keep a side mission of educating folks about AI - follow @rajistics.",
     currentPosition: "AI/ML Strategy at Snowflake",
     currentPositiontUrl: "https://www.snowflake.com/en/",
   },
@@ -68,7 +80,7 @@ const userData = {
       company: "Hugging Face",
       year: "2022",
       companyLink: "https://huggingface.co",
-      desc: "Founding member of Enterprise GTM team focusing on Pre-Sales. Large! Customer Growth",
+      desc: "Founding member of Enterprise GTM team focusing on Pre-Sales. 5X Customer Growth",
     },
     {
       title: "Machine Learning Solutions Engineer",
@@ -128,6 +140,12 @@ const userData = {
     youtube: "https://www.youtube.com/c/Rajistics",
   },
   blogpost: [
+    {
+      title: "The honeymoon phase of generative AI is over",
+      date:  "Jun 2024",
+      source: "LinkedIn",
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7207753303546372098",
+    },
     {
       title: "GPT-4 Loses: Data Labeling with LLMs",
       date:  "Oct 2023",
@@ -322,6 +340,18 @@ const userData = {
     },
   ],
   video: [
+    {
+      title: "Intro to Generative AI and Trends (March 2024)",
+      date:  "Jun 2024",
+      source: "Youtube",
+      link: "https://youtu.be/HWL66sD1uo0?si=DLSTFAOVE_fRWlVS",
+    },
+    {
+      title: "Model Interpretability and Explainability for Machine Learning Models",
+      date:  "Jun 2024",
+      source: "Youtube",
+      link: "https://youtu.be/ZRckw_fE56Q?si=s8cZdXOVI-KZupFU",
+    },
     {
       title: "Large Language Models (LLMs) Can Explain Their Predictions",
       date:  "Jan 2024",
