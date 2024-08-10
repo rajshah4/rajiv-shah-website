@@ -8,22 +8,16 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Snowflake Summit",
-      date: "Jun 3-6, 2024",
-      link: "https://www.snowflake.com/summit/",
-      imgUrl: "/summitt_2024.png",
-    },
-    {
-      title: "Baptist Health",
-      date: "Jun 25, 2024",
-      link: "https://baptisthealth.zoom.us/webinar/register/WN_ORKhRURwQmWgu2gkQUPxfA#/registration",
-      imgUrl: "/podcast_2024.png",
-    },
-    {
       title: "Transfer Learning",
       date: "Sep 4, 2024",
       link: "https://www.uc.edu",
       imgUrl: "/Cinci_2024.png",
+    },
+    {
+      title: "Intro to LLMs",
+      date: "Sep 13, 2024",
+      link: "https://giesbusiness.illinois.edu/",
+      imgUrl: "/gies_2004.jpeg",
     },
     {
       title: "Insurance Collection Execeutives",
@@ -341,6 +335,12 @@ const userData = {
   ],
   video: [
     {
+      title: "Rules: A Simple & Effective Machine Learning Approach",
+      date:  "Aug 2024",
+      source: "Youtube",
+      link: "https://youtu.be/lx4SJOVtxI8?si=J-lxG8ECG9tbvPi0",
+    },
+    {
       title: "Intro to Generative AI and Trends (March 2024)",
       date:  "Jun 2024",
       source: "Youtube",
@@ -438,6 +438,18 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "AV Luminary Awards for the Top 10 AI Community Contributors",
+      date: "Aug 2024",
+      source: "Analytics Vidhya",
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7226906469428867072/",
+    },
+    {
+      title: "Want ROI from genAI? Rethink what both terms mean",
+      date: "Jul 2024",
+      source: "ComputerWorld",
+      link: "https://www.computerworld.com/article/2517737/want-roi-from-genai-rethink-what-both-terms-mean.html",
+    },
     {
       title: "E13: Navigating the Evolving World of Open Source AI with Rajiv Shah",
       date: "May 2024",
