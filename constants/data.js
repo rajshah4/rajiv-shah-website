@@ -17,7 +17,7 @@ const userData = {
       title: "Intro to LLMs",
       date: "Sep 13, 2024",
       link: "https://giesbusiness.illinois.edu/",
-      imgUrl: "/gies_2004.jpeg",
+      imgUrl: "/gies_2004.jpg",
     },
     {
       title: "Insurance Collection Execeutives",
