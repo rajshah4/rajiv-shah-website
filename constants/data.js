@@ -56,9 +56,9 @@ const userData = {
   },
   bio: {
     description: [
-      `Rajiv Shah is a machine learning engineer at Snowflake with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
+      `Rajiv Shah is a AI/ML strategist at Snowflake with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
-      `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He has recently started making short videos, @rajistics, with several million views.`
+      `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He is well known on social media with his short videos, @rajistics, that have receeived over ten million views.`
     ],
   },
   experience: [
@@ -334,6 +334,12 @@ const userData = {
     },
   ],
   video: [
+    {
+      title: "Spark of AI: How Transfer Learning Unlocked AI's Potential",
+      date:  "Sep 2024",
+      source: "Youtube",
+      link: "https://youtu.be/6NuGEukBfcA?si=--wU8BUi75rxPOoY",
+    },
     {
       title: "Rules: A Simple & Effective Machine Learning Approach",
       date:  "Aug 2024",
