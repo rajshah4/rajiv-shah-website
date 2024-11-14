@@ -56,7 +56,7 @@ const userData = {
   },
   bio: {
     description: [
-      `Rajiv Shah is a AI/ML strategist at Snowflake with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
+      `Rajiv Shah is technical sales leader with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, Snowflake in cloud computing, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
       `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He is well known on social media with his short videos, @rajistics, that have received over ten million views.`
     ],
@@ -67,7 +67,7 @@ const userData = {
       company: "Snowflake",
       year: "2024",
       companyLink: "https://www.snowflake.com/en/",
-      desc: " ",
+      desc: "Focused on GTM for AI/ML for the largest Enterprise Accounts at Snowflake.",
     },
     {
       title: "Machine Learning Engineer",
@@ -123,7 +123,7 @@ const userData = {
   SSRNUrl: "https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=261155",
   GoogleSUrl: "https://scholar.google.com/citations?user=J6N60VcAAAAJ&hl=en",
   MediumUrl: "https://medium.com/@rajistics",
-  BlogUrl: "http://projects.rajivshah.com/blog/",
+  BlogUrl: "https://projects.rajivshah.com/blog/",
   socialLinks: {
     instagram: "https://instagram.com/rajistics",
     twitter: "https://twitter.com/rajistics",
@@ -134,6 +134,12 @@ const userData = {
     youtube: "https://www.youtube.com/c/Rajistics",
   },
   blogpost: [
+    {
+      title: "Feature Selection Methods and Feature Selection Curves",
+      date:  "Oct 2024",
+      source: "RajivShah",
+      link: "https://projects.rajivshah.com/blog/Feature_Selection.html",
+    },
     {
       title: "The honeymoon phase of generative AI is over",
       date:  "Jun 2024",
@@ -334,6 +340,30 @@ const userData = {
     },
   ],
   video: [
+    {
+      title: "Training Kolmogorov-Arnold Networks (KAN) using Pytorch and Nixtla on M3/M4 Time Series Datasets",
+      date:  "Nov 2024",
+      source: "Youtube",
+      link: "https://youtu.be/LaAlEqMtzLU",
+    },
+    {
+      title: "Feature Selection Methods for Machine Learning, plus Feature Selection Curves",
+      date:  "Oct 2024",
+      source: "Youtube",
+      link: "https://youtu.be/jm7TYGv32zs",
+    },
+    {
+      title: "Start using Llama 3.2 Vision Models with Hugging Face Transformers (on Snowflake)",
+      date:  "Oct 2024",
+      source: "Youtube",
+      link: "https://youtu.be/uNbG7P7EEFY",
+    },
+    {
+      title: "Practical Lessons in Building Generative AI: RAG and Text to SQL",
+      date:  "Sep 2024",
+      source: "Youtube",
+      link: "https://youtu.be/OyY4uxUShys",
+    },
     {
       title: "Spark of AI: How Transfer Learning Unlocked AI's Potential",
       date:  "Sep 2024",
