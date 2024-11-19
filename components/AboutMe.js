@@ -22,7 +22,7 @@ export default function AboutMe() {
               className="bg-red-500 rounded-md px-2 py-1 text-white"
               href={userData.about.currentPositionUrl}
             >
-              {userData.about.currentPosition} ❄️
+              {userData.about.currentPosition}
             </a>
           </p>
         </div>
