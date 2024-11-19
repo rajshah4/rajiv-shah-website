@@ -51,8 +51,8 @@ const userData = {
   about: {
     title1: "I help enterprises with the latest AI.",
     title2: "I keep a side mission of educating folks about AI - follow @rajistics.",
-    currentPosition: "AI/ML Strategy at Snowflake",
-    currentPositiontUrl: "https://www.snowflake.com/en/",
+    currentPosition: "AI/ML GTM at Contextual AI",
+    currentPositiontUrl: "https://www.contextual.ai",
   },
   bio: {
     description: [
