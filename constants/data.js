@@ -8,22 +8,10 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Transfer Learning",
-      date: "Sep 4, 2024",
-      link: "https://www.uc.edu",
-      imgUrl: "/Cinci_2024.png",
-    },
-    {
-      title: "Intro to LLMs",
-      date: "Sep 13, 2024",
-      link: "https://giesbusiness.illinois.edu/",
-      imgUrl: "/gies_2024.png",
-    },
-    {
-      title: "Insurance Collection Execeutives",
-      date: "Oct 21-24, 2024",
-      link: "https://www.theicesite.com/content.aspx?page_id=22&club_id=180006&module_id=496322",
-      imgUrl: "/ICE_2024.png",
+      title: "Hill Climbing: Best Practices for Evaluating LLMs",
+      date: "May 2024",
+      link: "https://odsc.com/boston/",
+      imgUrl: "/ODSCE_2025.png",
     },
   ],
   highlight: [
@@ -62,6 +50,13 @@ const userData = {
     ],
   },
   experience: [
+    {
+      title: "AI/ML Strategy",
+      company: "Contextual AI",
+      year: "2024",
+      companyLink: "https://contextual.ai/",
+      desc: "Focused on GTM for AI/ML for Production-Ready AI Enterprise AI.",
+    },
     {
       title: "AI/ML Strategy",
       company: "Snowflake",
@@ -474,6 +469,18 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Practical Generative AI for Executives",
+      date: "Oct 2024",
+      source: "Insurance Collection Executives",
+      link: "https://theicesite.com/content.aspx?page_id=22&club_id=180006&module_id=671206",
+    },
+    {
+      title: "Spark of the AI Revolution: How Transfer Learning Unlocked AI's Potential",
+      date: "Sep 2024",
+      source: "LinkedIn",
+      link: "https://www.linkedin.com/posts/rajistics_how-does-ai-learn-lets-dig-into-transfer-activity-7234220838982410240-b56W/",
+    },
     {
       title: "AV Luminary Awards for the Top 10 AI Community Contributors",
       date: "Aug 2024",
