@@ -51,7 +51,7 @@ const userData = {
   },
   experience: [
     {
-      title: "AI/ML Strategy",
+      title: "Machine Learning Engineer",
       company: "Contextual AI",
       year: "2024",
       companyLink: "https://contextual.ai/",
@@ -478,7 +478,7 @@ const userData = {
     {
       title: "Spark of the AI Revolution: How Transfer Learning Unlocked AI's Potential",
       date: "Sep 2024",
-      source: "LinkedIn",
+      source: "University of Cincinnati",
       link: "https://www.linkedin.com/posts/rajistics_how-does-ai-learn-lets-dig-into-transfer-activity-7234220838982410240-b56W/",
     },
     {
