@@ -8,11 +8,23 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
+      title: "Gartner: Contextual AI",
+      date: "March 2024",
+      link: "https://www.gartner.com/en/conferences/na/data-analytics-us",
+      imgUrl: "/GARTNER_2025.png",
+    },
+    {
+      title: "Google Next: Contextual AI",
+      date: "April 2024",
+      link: "https://cloud.withgoogle.com/next/25",
+      imgUrl: "/GOOGLE_2025.png",
+    },
+    {
       title: "Hill Climbing: Best Practices for Evaluating LLMs",
       date: "May 2024",
       link: "https://odsc.com/boston/",
       imgUrl: "/ODSCE_2025.png",
-    },
+    }
   ],
   highlight: [
     {
