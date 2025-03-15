@@ -8,20 +8,26 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
+      title: "Executive Education: Discount Code: SHAH25",
+      date: "April 2025",
+      link: "https://genai.works/executive-education",
+      imgUrl: "/GENAI_WORKS.png",
+    },
+    {
       title: "Gartner: Contextual AI",
-      date: "March 2024",
+      date: "March 2025",
       link: "https://www.gartner.com/en/conferences/na/data-analytics-us",
       imgUrl: "/GARTNER_2025.png",
     },
     {
       title: "Google Next: Contextual AI",
-      date: "April 2024",
-      link: "https://cloud.withgoogle.com/next/25",
+      date: "April 2025",
+      link: "https://cloud.withgoogle.com/next/25/session-library?filters=featured-startup-studio&session=SU208#all,
       imgUrl: "/GOOGLE_2025.png",
     },
     {
       title: "Hill Climbing: Best Practices for Evaluating LLMs",
-      date: "May 2024",
+      date: "May 2025",
       link: "https://odsc.com/boston/",
       imgUrl: "/ODSCE_2025.png",
     }
@@ -67,7 +73,7 @@ const userData = {
       company: "Contextual AI",
       year: "2024",
       companyLink: "https://contextual.ai/",
-      desc: "Focused on GTM for AI/ML for Production-Ready AI Enterprise AI.",
+      desc: "Focused on GTM for AI/ML for Production-Ready RAG Enterprise AI.",
     },
     {
       title: "AI/ML Strategy",
@@ -347,6 +353,18 @@ const userData = {
     },
   ],
   video: [
+    {
+      title: "Get Started with Deepseek's GRPO using QWEN and Hugging Face",
+      date:  "Feb 2025",
+      source: "Youtube",
+      link: "https://youtu.be/AjcvMN1kK-g?si=iNHaoedLUiD_ThDL",
+    },
+    {
+      title: "Unit Testing for Natural Language (LLMs) + LMUnit model",
+      date:  "Feb 2025",
+      source: "Youtube",
+      link: "https://youtu.be/5KRUvmO7LyQ?si=ONmhZsLdByfksgkg",
+    },
     {
       title: "Training Kolmogorov-Arnold Networks (KAN) using Pytorch and Nixtla on M3/M4 Time Series Datasets",
       date:  "Nov 2024",
