@@ -1,5 +1,5 @@
 const userData = {
-  githubUsername: "manuarora700",
+  githubUsername: "rajshah4",
   name: "Rajiv Shah",
   designation: "Data Scientist",
   avatarUrl: "/avatar.png",
@@ -22,7 +22,7 @@ const userData = {
     {
       title: "Google Next: Contextual AI",
       date: "April 2025",
-      link: "https://cloud.withgoogle.com/next/25/session-library?filters=featured-startup-studio&session=SU208#all,
+      link: "https://cloud.withgoogle.com/next/25/session-library?filters=featured-startup-studio&session=SU208#all",
       imgUrl: "/GOOGLE_2025.png",
     },
     {
