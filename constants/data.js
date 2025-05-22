@@ -8,16 +8,10 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
     {
-      title: "Executive Education: Discount Code: SHAH25",
-      date: "April 2025",
-      link: "https://genai.works/executive-education",
-      imgUrl: "/GENAI_WORKS.png",
-    },
-    {
-      title: "Gartner: Contextual AI",
-      date: "March 2025",
-      link: "https://www.gartner.com/en/conferences/na/data-analytics-us",
-      imgUrl: "/GARTNER_2025.png",
+      title: "Forget RAG Pipelines—Build Production-Ready AI Agents in 15 Minutes",
+      date: "June 2025",
+      link: "https://www.ai.engineer/",
+      imgUrl: "/AIEng_2025.png",
     },
     {
       title: "Google Next: Contextual AI",
@@ -57,17 +51,24 @@ const userData = {
   about: {
     title1: "I help enterprises with the latest AI.",
     title2: "I keep a side mission of educating folks about AI - follow @rajistics.",
-    currentPosition: "AI/ML GTM at Contextual AI",
+    currentPosition: "Chief Evangelist at Contextual AI",
     currentPositiontUrl: "https://www.contextual.ai",
   },
   bio: {
     description: [
-      `Rajiv Shah is technical sales leader with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, Snowflake in cloud computing, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
+      `Rajiv Shah is the Chief Evangelist at Contextual AI with a passion and expertise in Practical AI. He focuses on enabling enterprise teams to succeed with AI. Rajiv has worked on GTM teams at leading AI companies, including Hugging Face in open-source AI, Snorkel in data-centric AI, Snowflake in cloud computing, and DataRobot in AutoML. He started his career in data science at State Farm and Caterpillar.`,
       `Rajiv is a widely recognized speaker on AI, published over 20 research papers, been cited over 1000 times, and received over 20 patents. His recent work in AI covers topics such as sports analytics, deep learning, and interpretability.`,  
       `Rajiv holds a PhD in Communications and a Juris Doctor from the University of Illinois at Urbana Champaign. While earning his degrees, he received a fellowship in Digital Government from the John F. Kennedy School of Government at Harvard University. He is well known on social media with his short videos, @rajistics, that have received over ten million views.`
     ],
   },
   experience: [
+    {
+      title: "Chief Evangelist",
+      company: "Contextual AI",
+      year: "2025",
+      companyLink: "https://contextual.ai/",
+      desc: "Sharing the Possibilities of Agentic RAG",
+    },
     {
       title: "Machine Learning Engineer",
       company: "Contextual AI",
@@ -145,8 +146,21 @@ const userData = {
     facebook: "https://facebook.com/",
     tiktok: "https://www.tiktok.com/@rajistics",
     youtube: "https://www.youtube.com/c/Rajistics",
+    reddit: "https://www.reddit.com/user/rajistics",
   },
   blogpost: [
+    {
+      title: "Evaluation Mindset: Taming the Gen AI Dragon",
+      date:  "Apr 2025",
+      source: "Medium",
+      link: "https://medium.com/@rajistics/evaluation-mindset-taming-the-gen-ai-dragon-aa16bf7c8694",
+    },
+    {
+      title: "Understanding Sparse Matrices through Interactive Visualizations",
+      date:  "Mar 2025",
+      source: "RajivShah",
+      link: "https://projects.rajivshah.com/blog/sparsedataframe.html",
+    },
     {
       title: "Feature Selection Methods and Feature Selection Curves",
       date:  "Oct 2024",
@@ -354,6 +368,18 @@ const userData = {
   ],
   video: [
     {
+      title: "Evaluation for Generative AI - A simply explained starting point",
+      date:  "May 2025",
+      source: "Youtube",
+      link: "https://youtu.be/hWlv4e6SQbU",
+    },
+    {
+      title: "Using Reasoning LLMs (Claude with Python or Agno)",
+      date:  "Apr 2025",
+      source: "Youtube",
+      link: "https://youtu.be/3mV56gcGt84",
+    },
+    {
       title: "Get Started with Deepseek's GRPO using QWEN and Hugging Face",
       date:  "Feb 2025",
       source: "Youtube",
@@ -499,6 +525,12 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "Evaluation for Generative AI",
+      date: "May 2025",
+      source: "ODSC East",
+      link: "https://youtu.be/hWlv4e6SQbU",
+    },
     {
       title: "Practical Generative AI for Executives",
       date: "Oct 2024",
