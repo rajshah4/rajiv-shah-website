@@ -146,7 +146,7 @@ const userData = {
     facebook: "https://facebook.com/",
     tiktok: "https://www.tiktok.com/@rajistics",
     youtube: "https://www.youtube.com/c/Rajistics",
-    reddit: "https://www.reddit.com/user/rajistics",
+    reddit: "https://www.reddit.com/r/rajistics/",
   },
   blogpost: [
     {
