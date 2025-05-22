@@ -136,6 +136,18 @@ export default function Bio() {
                   </div>
                 </a>
               </div>
+              <div className="flex flex-row justify-start items-center">
+                <a
+                  href={userData.socialLinks.reddit}
+                  className="flex flex-row items-center space-x-4 group"
+                >
+                  <div className="my-4">&rarr;</div>
+                  <div className="text-lg text-gray-500 font-mono relative overflow-hidden dark:text-gray-300">
+                    <div className="absolute h-0.5 w-full bg-gray-400 bottom-0 transform -translate-x-28 group-hover:translate-x-0 transition duration-300"></div>
+                    YouTube
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
           {/* Text area */}
