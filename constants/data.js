@@ -603,6 +603,12 @@ const userData = {
       source: "DataRobot Webinar",
       link: "https://www.datarobot.com/webinars/choosing-the-best-llm-for-your-organization/", 
     },
+       {
+      title: "Evaluation Techniques for Large Language Models",
+      date: "Novemeber 2023",
+      source: "MLOPS World",
+      link: "https://youtu.be/vqO7ks7DFZw?si=x69yYhZjRnOp4xP8", 
+    },
     {
       title: "Constructing an Evaluation Approach for Generative AI Models",
       date: "December 2023",
