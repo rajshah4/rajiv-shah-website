@@ -12,35 +12,18 @@ const userData = {
       date: "June 2025",
       link: "https://www.ai.engineer/",
       imgUrl: "/AIEng_2025.png",
-    },
-    {
-      title: "Google Next: Contextual AI",
-      date: "April 2025",
-      link: "https://cloud.withgoogle.com/next/25/session-library?filters=featured-startup-studio&session=SU208#all",
-      imgUrl: "/GOOGLE_2025.png",
-    },
-    {
-      title: "Hill Climbing: Best Practices for Evaluating LLMs",
-      date: "May 2025",
-      link: "https://odsc.com/boston/",
-      imgUrl: "/ODSCE_2025.png",
     }
   ],
   highlight: [
     {
-      title: "E13: Navigating the Evolving World of Open Source AI with Rajiv Shah (Practically Intelligent Podcast)",
-      link: "https://youtu.be/lhAyZoYMdxM?si=kdyFkrOAWGQh-o-8",
-      imgUrl: "/PI_2024.png",
+      title: "Forget RAG Pipelines—Build Production Ready Agents in 15 Mins",
+      link: "https://www.youtube.com/watch?v=lArgRvBV3tQ",
+      imgUrl: "/AIEngineer_2025.jpg",
     },
     {
-      title: "Generative AI: A Survey of Current Practices, Challenges, and Best Practices",
-      link: "https://youtu.be/UHDIgsWmqtE?si=k7pkkvWhanwRsgff",
-      imgUrl: "/Rgov2024.png",
-    },
-    {
-      title: "GenAI in the Enterprise w/ Raj Shah, ML Engineer at Snowflake",
-      link: "https://youtu.be/cEN_dA4mEA8?si=XbfVDDw2avIjtkpc",
-      imgUrl: "/Keyhole_2024.png",
+      title: "Evaluation for Large Language Models and Generative AI -- Updated 2025",
+      link: "https://youtu.be/hWlv4e6SQbU",
+      imgUrl: "/Evaluation2023.png",
     },
     {
       title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
