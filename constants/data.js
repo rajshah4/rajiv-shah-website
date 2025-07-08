@@ -23,7 +23,7 @@ const userData = {
     {
       title: "Evaluation for Large Language Models and Generative AI -- Updated 2025",
       link: "https://youtu.be/hWlv4e6SQbU",
-      imgUrl: "/Evaluation2023.png",
+      imgUrl: "/Evaluation_2025.png",
     },
     {
       title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
