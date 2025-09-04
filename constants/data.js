@@ -7,11 +7,23 @@ const userData = {
   phone: "1-309-310-3622",
   address: "Illinois, USA",
  upcoming: [
+      {
+      title: "MLOps World 2025: From Vectors to Agents: Managing RAG in an Agentic World",
+      date: "October 2025",
+      link: "https://mlopsworld.com/",
+      imgUrl: "/MLOps_2025.png",
+    },
     {
-      title: "Forget RAG Pipelines—Build Production-Ready AI Agents in 15 Minutes",
+      title: "ODSC: Evaliuation for Generative AI",
+      date: "October 2025",
+      link: "https://odsc.ai/west",
+      imgUrl: "/ODSC_2025.png",
+    },
+        {
+      title: "Midwest AI Summit",
       date: "June 2025",
-      link: "https://www.ai.engineer/",
-      imgUrl: "/AIEng_2025.png",
+      link: "https://midwestaisummit.com/",
+      imgUrl: "/MID_2025.png",
     }
   ],
   highlight: [
