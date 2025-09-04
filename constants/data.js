@@ -14,14 +14,14 @@ const userData = {
       imgUrl: "/MLOps_2025.png",
     },
     {
-      title: "ODSC: Evaliuation for Generative AI",
+      title: "ODSC: Evaluation for Generative AI",
       date: "October 2025",
       link: "https://odsc.ai/west",
       imgUrl: "/ODSC_2025.png",
     },
         {
       title: "Midwest AI Summit",
-      date: "June 2025",
+      date: "November 2025",
       link: "https://midwestaisummit.com/",
       imgUrl: "/MID_2025.png",
     }
