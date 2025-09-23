@@ -20,7 +20,7 @@ const userData = {
       imgUrl: "/ODSC_2025.png",
     },
         {
-      title: "Midwest AI Summit",
+      title: "Midwest AI Summit: 95% Failures. 5% Winners. How to Beat the Odds in AI.",
       date: "November 2025",
       link: "https://midwestaisummit.com/",
       imgUrl: "/MID_2025.png",
