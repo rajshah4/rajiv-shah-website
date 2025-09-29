@@ -28,6 +28,11 @@ const userData = {
   ],
   highlight: [
     {
+      title: "We've all done RAG, now what? (Practical AI Podcast)",
+      link: "https://practicalai.fm/330",
+      imgUrl: "/practical_2025.png",
+    },
+    {
       title: "Forget RAG Pipelines—Build Production Ready Agents in 15 Mins",
       link: "https://www.youtube.com/watch?v=lArgRvBV3tQ",
       imgUrl: "/AIEngineer_2025.jpg",
