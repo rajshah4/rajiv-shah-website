@@ -19,6 +19,12 @@ const userData = {
       link: "https://odsc.ai/west",
       imgUrl: "/ODSC_2025.png",
     },
+    {
+      title: "WANDB: Fully Connected London",
+      date: "Nov 2025",
+      link: "https://wandb.ai/site/resources/events/fully-connected/london/",
+      imgUrl: "/WANDB_2025.webp",
+    },
         {
       title: "Midwest AI Summit: 95% Failures. 5% Winners. How to Beat the Odds in AI",
       date: "November 2025",
