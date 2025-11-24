@@ -8,22 +8,10 @@ const userData = {
   address: "Illinois, USA",
  upcoming: [
       {
-      title: "MLOps World 2025: From Vectors to Agents: Managing RAG in an Agentic World",
-      date: "October 2025",
-      link: "https://mlopsworld.com/",
-      imgUrl: "/MLOps_2025.png",
-    },
-    {
-      title: "ODSC: Evaluation for Generative AI",
-      date: "October 2025",
-      link: "https://odsc.ai/west",
-      imgUrl: "/ODSC_2025.png",
-    },
-    {
-      title: "WANDB: Fully Connected London",
-      date: "Nov 2025",
-      link: "https://wandb.ai/site/resources/events/fully-connected/london/",
-      imgUrl: "/WANDB_2025.webp",
+      title: "The Context Layer: Your Shortcut to AI-Driven Alpha",
+      date: "December 2025",
+      link: "https://newyork.theaisummit.com/conference-agenda",
+      imgUrl: "/AI_Summit_2025.webp",
     },
         {
       title: "Midwest AI Summit: 95% Failures. 5% Winners. How to Beat the Odds in AI",
@@ -33,6 +21,11 @@ const userData = {
     }
   ],
   highlight: [
+    {
+      title: "WANDB: Power of Context Engineering and RAG",
+      link: "https://www.youtube.com/watch?v=JYZXsH1Xz0I",
+      imgUrl: "/WANDB_2025.webp",
+    },
     {
       title: "We've all done RAG, now what? (Practical AI Podcast)",
       link: "https://practicalai.fm/330",
@@ -47,12 +40,7 @@ const userData = {
       title: "Evaluation for Large Language Models and Generative AI -- Updated 2025",
       link: "https://youtu.be/hWlv4e6SQbU",
       imgUrl: "/Evaluation_2025.png",
-    },
-    {
-      title: "Evaluation for Large Language Models and Generative AI - A Deep Dive",
-      link: "https://youtu.be/iQl03pQlYWY?si=kvQxuiYzUVDyIuCm",
-      imgUrl: "/Evaluation2023.png",
-    },
+    }
   ],
   about: {
     title1: "I help enterprises with the latest AI.",
