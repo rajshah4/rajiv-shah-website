@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-10-08">
+
+<title>Feature Selection Methods and Feature Selection Curves</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="Feature_Selection_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Feature_Selection_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Feature_Selection_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Feature_Selection_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Feature_Selection_files/libs/quarto-html/popper.min.js"></script>
+<script src="Feature_Selection_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Feature_Selection_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Feature_Selection_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Feature_Selection_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Feature_Selection_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Feature_Selection_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Feature_Selection_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Feature Selection Methods and Feature Selection Curves</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">featureselection</div>
+                <div class="quarto-category">MLOps</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 8, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>How to Select the Best Features for Machine Learning!</p>
+<p>Let’s deep dive into several feature selection techniques and help you figure out when to use each one. The notebook includes two data sources: the MNIST dataset and the Madelon dataset. The MNIST dataset is a collection of 28x28 pixel images of handwritten digits. The Madelon dataset is a synthetic dataset that you can control.</p>
+<p>The notebook uses the following feature selection techniques:</p>
+<ul>
+<li>F-statistic</li>
+<li>Mutual Information</li>
+<li>Logistic Regression</li>
+<li>Logistics Regression with Lasso (L1) Regularization</li>
+<li>Feature Importance</li>
+<li>Boruta</li>
+<li>MRMR (Minimum Redundancy Maximum Relevance)</li>
+<li>Recursive Feature Elimination</li>
+<li>Feature importance rank ensembling (FIRE)</li>
+</ul>
+<p>To help visualize the feature selection process, the notebook includes a feature selection curve. The feature selection curve plots the number of features against the accuracy of the model. This helps you understand how many features you need to achieve a certain level of accuracy.</p>
+<p>This notebook is based on the following articles:<br>
+<a href="https://towardsdatascience.com/feature-selection-how-to-throw-away-95-of-your-data-and-get-95-accuracy-ad41ca016877">Feature Selection: How to Throw Away 95% of Your Features and Get 95% Accuracy</a> and the associated <a href="https://github.com/smazzanti/mrmr/blob/15cb0983a3e53114bbab94a9629e404c1d42f5d8/notebooks/mnist.ipynb">notebook</a>.</p>
+<p>A companion video to this can be found on my youtube site, <span class="citation" data-cites="rajistics">@rajistics</span>: <a href="https://youtu.be/jm7TYGv32zs">Feature Selection Methods and Feature Selection Curves</a>, it’s about 15 minutes and gives more context to the notebook.</p>
+<p>This blog post can be found at http://bit.ly/raj_fs or https://projects.rajivshah.com/blog/Feature_Selection.html</p>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings<span class="op">;</span> warnings.filterwarnings(<span class="st">"ignore"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"KERAS_BACKEND"</span>] <span class="op">=</span> <span class="st">"torch"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="import-data" class="level1">
+<h1>Import data</h1>
+<section id="a.-mnist-very-visual-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="a.-mnist-very-visual-dataset">A. MNIST (Very visual dataset)</h3>
+<div id="cell-6" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.datasets <span class="im">import</span> mnist</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>(X_train, y_train), (X_test, y_test) <span class="op">=</span> mnist.load_data()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.reshape(<span class="dv">60000</span>, <span class="dv">28</span> <span class="op">*</span> <span class="dv">28</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.reshape(<span class="dv">10000</span>, <span class="dv">28</span> <span class="op">*</span> <span class="dv">28</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(X_train[<span class="dv">7</span>, :]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-8" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(X_train[<span class="dv">7</span>, :].reshape(<span class="dv">28</span>, <span class="dv">28</span>), cmap <span class="op">=</span> <span class="st">'binary'</span>, vmin <span class="op">=</span> <span class="dv">0</span>, vmax <span class="op">=</span> <span class="dv">255</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.xticks([])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.yticks([])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'sample_image.png'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> pd.DataFrame(X_train)  <span class="co"># Assuming X_mnist is the MNIST feature data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> pd.Series(y_train)   </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> pd.DataFrame(X_test)  <span class="co"># Assuming X_mnist is the MNIST feature data</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> pd.Series(y_test)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="b.-madelon-very-high-dimensional-dataset-that-you-control" class="level3">
+<h3 class="anchored" data-anchor-id="b.-madelon-very-high-dimensional-dataset-that-you-control">B. Madelon (Very high-dimensional dataset that you control)</h3>
+<p>If you run the following cells, Madelon will be the dataset you use. If you want to use MNIST, you should skip the following cells.</p>
+<p>Madelon is a favorite of mine because you know which features are carrying the signal and which ones are noise. In this case, the first 5 features will be informative. I often modify Madelon to include other types of noisy features, interactions, correlations, and then use this dataset to test various machine learning techniques. Since I know what the true signal is, this is very effective at helping me guage the effectiveness of these methods.</p>
+<div id="cell-11" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_classification</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_classification(n_samples<span class="op">=</span><span class="dv">10000</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                           n_features<span class="op">=</span><span class="dv">40</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                           n_informative<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                           n_classes<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                           n_redundant <span class="op">=</span> <span class="dv">3</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                           random_state<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                           flip_y <span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                           class_sep <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                           n_clusters_per_class<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                           shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>X_df <span class="op">=</span> pd.DataFrame(X, columns<span class="op">=</span>[<span class="ss">f'</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">1</span>])])</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>y_df <span class="op">=</span> pd.Series(y, name<span class="op">=</span><span class="st">'target'</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_df, y_df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>X_train.columns <span class="op">=</span> X_train.columns.astype(<span class="bu">int</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>X_test.columns <span class="op">=</span> X_test.columns.astype(<span class="bu">int</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-12" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_train</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+<th data-quarto-table-cell-role="th">5</th>
+<th data-quarto-table-cell-role="th">6</th>
+<th data-quarto-table-cell-role="th">7</th>
+<th data-quarto-table-cell-role="th">8</th>
+<th data-quarto-table-cell-role="th">9</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">30</th>
+<th data-quarto-table-cell-role="th">31</th>
+<th data-quarto-table-cell-role="th">32</th>
+<th data-quarto-table-cell-role="th">33</th>
+<th data-quarto-table-cell-role="th">34</th>
+<th data-quarto-table-cell-role="th">35</th>
+<th data-quarto-table-cell-role="th">36</th>
+<th data-quarto-table-cell-role="th">37</th>
+<th data-quarto-table-cell-role="th">38</th>
+<th data-quarto-table-cell-role="th">39</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">9254</th>
+<td>0.926694</td>
+<td>-1.773357</td>
+<td>0.172527</td>
+<td>0.217298</td>
+<td>-1.733944</td>
+<td>0.319415</td>
+<td>0.185012</td>
+<td>1.907097</td>
+<td>-0.649596</td>
+<td>0.121499</td>
+<td>...</td>
+<td>0.706101</td>
+<td>-0.880984</td>
+<td>-0.980460</td>
+<td>-1.040219</td>
+<td>-1.495820</td>
+<td>2.793184</td>
+<td>0.206932</td>
+<td>-0.357897</td>
+<td>-1.633463</td>
+<td>-0.358298</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1561</th>
+<td>1.692096</td>
+<td>-1.412235</td>
+<td>1.294343</td>
+<td>-0.672776</td>
+<td>-0.576808</td>
+<td>1.088448</td>
+<td>0.446408</td>
+<td>1.081032</td>
+<td>-0.355654</td>
+<td>-0.940438</td>
+<td>...</td>
+<td>-2.334601</td>
+<td>-0.446046</td>
+<td>-0.577543</td>
+<td>-0.692218</td>
+<td>-0.311946</td>
+<td>0.329447</td>
+<td>-1.312834</td>
+<td>0.339797</td>
+<td>-0.291047</td>
+<td>0.931088</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1670</th>
+<td>-0.721183</td>
+<td>-1.430124</td>
+<td>0.776395</td>
+<td>0.226875</td>
+<td>-1.209252</td>
+<td>-0.458278</td>
+<td>-1.011414</td>
+<td>1.682210</td>
+<td>-1.048116</td>
+<td>-1.783993</td>
+<td>...</td>
+<td>1.440083</td>
+<td>-0.666334</td>
+<td>-0.909174</td>
+<td>0.377606</td>
+<td>1.303421</td>
+<td>-0.655019</td>
+<td>0.003210</td>
+<td>-0.802838</td>
+<td>-1.305648</td>
+<td>-0.170390</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">6087</th>
+<td>1.429094</td>
+<td>1.539467</td>
+<td>0.230706</td>
+<td>0.256132</td>
+<td>-0.478975</td>
+<td>-1.493286</td>
+<td>1.738055</td>
+<td>0.888900</td>
+<td>0.164039</td>
+<td>-2.488486</td>
+<td>...</td>
+<td>1.454662</td>
+<td>0.493267</td>
+<td>0.079875</td>
+<td>-1.390000</td>
+<td>1.330840</td>
+<td>0.212113</td>
+<td>1.955695</td>
+<td>-0.567808</td>
+<td>-0.883676</td>
+<td>-0.472567</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6669</th>
+<td>0.207305</td>
+<td>0.600810</td>
+<td>0.477484</td>
+<td>-0.784978</td>
+<td>-0.651178</td>
+<td>-0.362503</td>
+<td>1.032674</td>
+<td>0.369245</td>
+<td>-0.659173</td>
+<td>-1.210180</td>
+<td>...</td>
+<td>-3.207426</td>
+<td>0.423698</td>
+<td>1.538654</td>
+<td>-0.856037</td>
+<td>0.343482</td>
+<td>-0.119711</td>
+<td>-0.355270</td>
+<td>0.724913</td>
+<td>1.702261</td>
+<td>-1.597048</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5734</th>
+<td>0.484935</td>
+<td>0.695846</td>
+<td>1.481478</td>
+<td>0.223780</td>
+<td>-1.012330</td>
+<td>-2.116814</td>
+<td>0.613437</td>
+<td>2.080326</td>
+<td>-0.730603</td>
+<td>1.408916</td>
+<td>...</td>
+<td>0.328236</td>
+<td>0.413631</td>
+<td>0.337577</td>
+<td>-0.747556</td>
+<td>0.020008</td>
+<td>-0.202360</td>
+<td>1.484470</td>
+<td>-0.465176</td>
+<td>1.391591</td>
+<td>0.294199</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5191</th>
+<td>-0.715630</td>
+<td>-1.895183</td>
+<td>-1.091845</td>
+<td>-0.579646</td>
+<td>-0.474871</td>
+<td>2.217163</td>
+<td>-0.666726</td>
+<td>-0.763180</td>
+<td>0.261672</td>
+<td>1.570425</td>
+<td>...</td>
+<td>0.280017</td>
+<td>0.836381</td>
+<td>0.115396</td>
+<td>-0.044588</td>
+<td>0.516398</td>
+<td>-0.630678</td>
+<td>0.755802</td>
+<td>0.016894</td>
+<td>0.183862</td>
+<td>-0.401010</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5390</th>
+<td>1.091513</td>
+<td>-1.606975</td>
+<td>-1.678945</td>
+<td>-0.706068</td>
+<td>-0.547585</td>
+<td>2.905629</td>
+<td>0.827132</td>
+<td>-0.997257</td>
+<td>-0.983815</td>
+<td>-0.609981</td>
+<td>...</td>
+<td>0.001994</td>
+<td>0.411601</td>
+<td>-0.809740</td>
+<td>-0.163079</td>
+<td>0.020689</td>
+<td>-0.731637</td>
+<td>-0.154384</td>
+<td>0.599125</td>
+<td>1.094542</td>
+<td>-1.020837</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">860</th>
+<td>-1.696127</td>
+<td>1.277728</td>
+<td>0.043566</td>
+<td>0.659020</td>
+<td>0.537680</td>
+<td>-1.793380</td>
+<td>-0.878325</td>
+<td>-0.168647</td>
+<td>-0.712758</td>
+<td>2.285642</td>
+<td>...</td>
+<td>0.233483</td>
+<td>0.551602</td>
+<td>0.139338</td>
+<td>0.805881</td>
+<td>-0.628342</td>
+<td>0.532257</td>
+<td>-0.107130</td>
+<td>1.449110</td>
+<td>-0.499819</td>
+<td>-0.826810</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7270</th>
+<td>2.113646</td>
+<td>-2.644226</td>
+<td>-0.097455</td>
+<td>-0.645787</td>
+<td>-1.748579</td>
+<td>2.288712</td>
+<td>0.920350</td>
+<td>1.266990</td>
+<td>0.545140</td>
+<td>-0.652207</td>
+<td>...</td>
+<td>-0.048207</td>
+<td>1.331188</td>
+<td>-0.683416</td>
+<td>-0.014705</td>
+<td>0.185842</td>
+<td>1.100054</td>
+<td>-0.244144</td>
+<td>-1.529671</td>
+<td>-1.914142</td>
+<td>0.072284</td>
+</tr>
+</tbody>
+</table>
+
+<p>8000 rows × 40 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="feature-selection" class="level1">
+<h1>Feature selection</h1>
+<p>Let’s go through a couple of different methods for feature selection</p>
+</section>
+<section id="feature-selection-methods-comparison" class="level1">
+<h1>Feature Selection Methods Comparison</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 26%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Pros</th>
+<th>Cons</th>
+<th>Best Used When</th>
+<th>Computational Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>F-statistic</td>
+<td>- Fast and simple<br>- Works well for linear relationships<br>- Easy to interpret</td>
+<td>- Assumes linear relationship<br>- Considers features independently<br>- May miss interaction effects</td>
+<td>- Initial screening<br>- Linear problems<br>- Need interpretable results</td>
+<td>O(n)</td>
+</tr>
+<tr class="even">
+<td>Mutual Information</td>
+<td>- Captures non-linear relationships<br>- No assumptions about distribution</td>
+<td>- Can be computationally intensive<br>- May overfit with small samples</td>
+<td>- Non-linear relationships<br>- Complex interactions</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="odd">
+<td>Logistic Regression</td>
+<td>- Fast for high-dimensional data<br>- Provides feature coefficients</td>
+<td>- Assumes linear decision boundary<br>- Sensitive to correlated features</td>
+<td>- Binary classification<br>- Need interpretable coefficients</td>
+<td>O(n^2)</td>
+</tr>
+<tr class="even">
+<td>Lasso (L1)</td>
+<td>- Fast for high-dimensional data<br>- Automatically does feature selection</td>
+<td>- May struggle with correlated features<br>- Can be sensitive to outliers</td>
+<td>- High-dimensional data<br>- Need sparse solutions</td>
+<td>O(n^2)</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>- Handles non-linear relationships<br>- Considers feature interactions</td>
+<td>- Can be computationally intensive<br>- May overfit with small samples</td>
+<td>- Complex relationships<br>- Large datasets</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="even">
+<td>MRMR</td>
+<td>- Considers feature redundancy<br>- Good for correlated features</td>
+<td>- Can be computationally intensive<br>- May struggle with non-linear relationships</td>
+<td>- Datasets with correlated features<br>- Need diverse feature set</td>
+<td>O(n^2)</td>
+</tr>
+<tr class="odd">
+<td>RFE</td>
+<td>- Considers feature interactions<br>- Can capture complex relationships</td>
+<td>- Computationally intensive<br>- Can be unstable with small changes in data</td>
+<td>- When computational cost isn’t an issue<br>- Need very precise feature selection</td>
+<td>O(n^2 log n)</td>
+</tr>
+</tbody>
+</table>
+<section id="f-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="f-statistic">1. F-statistic</h3>
+<p>f_classif relies on the Analysis of Variance (ANOVA) F-statistic to evaluate the relationship between each feature and the target variable. It tests whether the mean values of the target variable differ significantly across the groups defined by each feature. The higher the F-value, the more likely it is that the feature discriminates between different classes. Assumes a linear relationship between the features and the target, and that the target is categorical.</p>
+<p>See: https://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection</p>
+<div id="cell-16" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> f_classif</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> f_classif(X_train, y_train)[<span class="dv">0</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>f</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>array([2.40810399e+02, 6.64390517e+01, 5.42587843e+01, 1.71099993e-01,
+       4.27226542e+01, 9.64735668e+01, 4.72136845e+01, 5.71846457e+01,
+       1.27834979e+00, 1.42650284e+00, 3.40020422e-01, 4.08232233e-01,
+       1.30120819e-01, 3.36734714e+00, 4.55665866e-01, 3.62300510e-01,
+       1.57485437e-01, 6.93572687e-02, 1.64816305e+00, 2.91782944e+00,
+       1.24026934e+00, 9.32533895e-01, 7.07099908e-01, 1.87544216e+00,
+       1.10130690e+00, 3.54044700e-01, 1.15417945e+00, 2.59156089e-01,
+       7.45820681e-01, 7.75403854e-01, 1.35835715e-01, 3.34985292e+00,
+       8.36576456e-02, 5.15026453e-02, 4.33788709e-01, 3.12140721e-01,
+       3.55118575e+00, 7.37076241e+00, 1.17274619e+00, 4.36532461e+00])</code></pre>
+</div>
+</div>
+</section>
+<section id="mutual-information" class="level3">
+<h3 class="anchored" data-anchor-id="mutual-information">2. Mutual information</h3>
+<p>mutual_info_classif uses the concept of mutual information, which measures the dependency between each feature and the target variable. Mutual information quantifies the amount of information gained about the target by knowing the value of the feature. It captures both linear and non-linear dependencies.</p>
+<p>See: https://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection</p>
+<div id="cell-18" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> mutual_info_classif</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>mi <span class="op">=</span> mutual_info_classif(X_train, y_train)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>mi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>array([0.05548077, 0.01340894, 0.04092611, 0.00099355, 0.00516085,
+       0.06952759, 0.02752171, 0.04043945, 0.00083431, 0.        ,
+       0.        , 0.        , 0.        , 0.01146672, 0.        ,
+       0.00298292, 0.        , 0.        , 0.0068234 , 0.00961735,
+       0.00935105, 0.00586449, 0.00561433, 0.        , 0.        ,
+       0.        , 0.        , 0.        , 0.00876386, 0.00049355,
+       0.        , 0.00478042, 0.00487523, 0.00268551, 0.00118896,
+       0.        , 0.00583264, 0.        , 0.        , 0.        ])</code></pre>
+</div>
+</div>
+</section>
+<section id="logistic-regression" class="level3">
+<h3 class="anchored" data-anchor-id="logistic-regression">3. Logistic regression</h3>
+<p>Logistic regression is a linear model for classification rather than regression. It is used to estimate the probability that an instance belongs to a particular class. The coefficients of the model can be used to determine feature importance.</p>
+<div id="cell-20" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>logreg <span class="op">=</span> LogisticRegression().fit(X_train, y_train)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>logreg.coef_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>array([[-0.08669758,  0.06064912, -0.04063592,  0.00704782,  0.05079063,
+        -0.02366404, -0.03246196, -0.07613473, -0.02216845,  0.00405511,
+         0.00890925, -0.01289459, -0.00446435,  0.00330386,  0.01287983,
+        -0.00599418,  0.00494212, -0.00385749,  0.03721175, -0.03849129,
+        -0.0032749 , -0.01534965, -0.00908255,  0.02016669, -0.00175419,
+         0.00918138,  0.01908963,  0.01357562, -0.01804835,  0.00266229,
+         0.00180036, -0.00624841, -0.00351875,  0.00131487, -0.01573702,
+        -0.00485053, -0.03744854,  0.05047984,  0.0174477 , -0.00658735],
+       [ 0.22615114, -0.09497312, -0.04870109,  0.08462927, -0.00434942,
+         0.0845374 ,  0.05186658,  0.05312074,  0.01121456,  0.0271935 ,
+        -0.00027397,  0.01737956,  0.0080553 , -0.04770429, -0.00379082,
+        -0.00963934,  0.00274429,  0.00688572, -0.03159925,  0.02737958,
+        -0.0220797 , -0.00789503, -0.01134082, -0.02724488, -0.02432216,
+         0.00543336, -0.02498671, -0.00919296,  0.01043275,  0.01323123,
+        -0.00059363, -0.02632891, -0.00159478, -0.00753653,  0.01697607,
+         0.01247471,  0.04553467, -0.05091659, -0.02028138,  0.03615948],
+       [-0.13945356,  0.03432401,  0.089337  , -0.09167709, -0.04644121,
+        -0.06087336, -0.01940462,  0.02301399,  0.0109539 , -0.03124862,
+        -0.00863527, -0.00448497, -0.00359095,  0.04440043, -0.00908901,
+         0.01563352, -0.00768641, -0.00302823, -0.0056125 ,  0.01111171,
+         0.02535461,  0.02324468,  0.02042338,  0.0070782 ,  0.02607635,
+        -0.01461474,  0.00589708, -0.00438266,  0.0076156 , -0.01589352,
+        -0.00120673,  0.03257732,  0.00511353,  0.00622166, -0.00123904,
+        -0.00762418, -0.00808614,  0.00043674,  0.00283369, -0.02957212]])</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-selection-with-l1-lasso-regularization" class="level3">
+<h3 class="anchored" data-anchor-id="feature-selection-with-l1-lasso-regularization">3.5 Feature Selection with L1 (Lasso) Regularization</h3>
+<p>Lasso is a great feature selection technique. It’s fast, easy to use, and works well with high-dimensional data. I have often used it when very wide data, greater than 100 features (or even &gt;10k features) to help parse down the number of features. It uses L1 regularization to penalize the absolute size of the coefficients. This leads to sparse solutions, where many of the coefficients are zero. The features with non-zero coefficients are selected. Lasso can be used for feature selection by setting the regularization parameter to a value that results in a sparse solution. The regularization parameter can be tuned using cross-validation.</p>
+<p>Try modifying the regularization parameter to see how it affects the number of features selected.</p>
+<div id="cell-22" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Standardize the features</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>X_test_scaled <span class="op">=</span> scaler.transform(X_test)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Apply Logistic Regression with L1 regularization for feature selection</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>logregL1 <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l1'</span>, solver<span class="op">=</span><span class="st">'saga'</span>, multi_class<span class="op">=</span><span class="st">'multinomial'</span>, C<span class="op">=</span><span class="fl">0.01</span>)  <span class="co"># C is inverse of regularization strength</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>logregL1.fit(X_train_scaled, y_train)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 6: Get the selected features using the original DataFrame 'X'</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>selected_features <span class="op">=</span> X_train.columns[(logregL1.coef_ <span class="op">!=</span> <span class="dv">0</span>).<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">0</span>)]</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Selected features: "</span>, selected_features)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: Check the coefficients</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#print("Logistic Regression coefficients: ", logreg.coef_)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Selected features:  Index([0, 1, 2, 4, 5, 13, 19, 36, 37], dtype='int64')</code></pre>
+</div>
+</div>
+</section>
+<section id="lightgbm" class="level3">
+<h3 class="anchored" data-anchor-id="lightgbm">4. LightGBM</h3>
+<p>LightGBM is a gradient boosting framework that uses tree-based learning algorithms. It is designed for efficiency and can handle large datasets. It can be used to determine feature importance.</p>
+<div id="cell-24" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lightgbm <span class="im">import</span> LGBMClassifier</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>lgbm <span class="op">=</span> LGBMClassifier(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    objective <span class="op">=</span> <span class="st">'multiclass'</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    metric <span class="op">=</span> <span class="st">'multi_logloss'</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    importance_type <span class="op">=</span> <span class="st">'gain'</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>).fit(X_train, y_train)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>lgbm.feature_importances_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001096 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 10200
+[LightGBM] [Info] Number of data points in the train set: 8000, number of used features: 40
+[LightGBM] [Info] Start training from score -1.108284
+[LightGBM] [Info] Start training from score -1.094371
+[LightGBM] [Info] Start training from score -1.093252</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>array([7030.24782425, 4036.90086633, 7197.39050466, 5339.74033117,
+       2017.793881  , 8113.67321557, 3905.26838762, 4383.72206521,
+        550.03625131,  531.02187729,  472.12624365,  678.28547454,
+        526.57803982,  586.75292325,  552.92263156,  433.08122051,
+        552.18078488,  534.15573859,  566.58704376,  630.01932001,
+        635.43262064,  636.71719581,  560.95981157,  586.52648336,
+        553.7755444 ,  563.13766581,  547.99060541,  523.01072556,
+        676.76891661,  616.94216621,  634.27822083,  489.91742009,
+        680.71264285,  620.95509708,  618.59545827,  418.22946733,
+        568.21738124,  592.29172051,  553.43465978,  655.03435677])</code></pre>
+</div>
+</div>
+</section>
+<section id="boruta" class="level3">
+<h3 class="anchored" data-anchor-id="boruta">5. Boruta</h3>
+<p>Boruta is an all-relevant feature selection method. It is an extension of the Random Forest algorithm. It selects all features that are relevant to the target variable, rather than just the most important features.</p>
+<div id="cell-26" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">### long training time &gt; 1 hour</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> boruta <span class="im">import</span> BorutaPy</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#boruta = BorutaPy(</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#    estimator = RandomForestClassifier(max_depth = 5), </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#    n_estimators = 'auto', </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#    max_iter = 100</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#).fit(X_train, y_train)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="mrmr" class="level3">
+<h3 class="anchored" data-anchor-id="mrmr">6. MRMR</h3>
+<p>MRMR (Minimum Redundancy Maximum Relevance) is a feature selection method that selects features based on their relevance to the target variable and their redundancy with other features. It aims to select features that are highly correlated with the target variable but uncorrelated with each other.</p>
+<p>There are several implementations of MRMR available in Python: https://github.com/smazzanti/mrmr https://koaning.github.io/scikit-lego/api/feature-selection/ https://github.com/AutoViML/featurewiz?tab=readme-ov-file</p>
+<div id="cell-28" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mrmr <span class="im">import</span> mrmr_classif</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#mrmr = mrmr_classif(pd.DataFrame(X_train), pd.Series(y_train), K = 784)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>mrmr <span class="op">=</span> mrmr_classif(pd.DataFrame(X_train), pd.Series(y_train), K <span class="op">=</span> X_train.shape[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 40/40 [00:03&lt;00:00, 11.45it/s]</code></pre>
+</div>
+</div>
+</section>
+<section id="store-results" class="level3">
+<h3 class="anchored" data-anchor-id="store-results">Store results</h3>
+<div id="cell-30" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>ranking <span class="op">=</span> pd.DataFrame(index <span class="op">=</span> <span class="bu">range</span>(X_train.shape[<span class="dv">1</span>]))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'f'</span>] <span class="op">=</span> pd.Series(f, index <span class="op">=</span> ranking.index).fillna(<span class="dv">0</span>).rank(ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'mi'</span>] <span class="op">=</span> pd.Series(mi, index <span class="op">=</span> ranking.index).fillna(<span class="dv">0</span>).rank(ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'logreg'</span>] <span class="op">=</span> pd.Series(np.<span class="bu">abs</span>(logreg.coef_).mean(axis <span class="op">=</span> <span class="dv">0</span>), index <span class="op">=</span> ranking.index).rank(ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'lasso'</span>]<span class="op">=</span> pd.Series(np.<span class="bu">abs</span>(logregL1.coef_).mean(axis <span class="op">=</span> <span class="dv">0</span>), index <span class="op">=</span> ranking.index).rank(ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'lightgbm'</span>] <span class="op">=</span> pd.Series(lgbm.feature_importances_, index <span class="op">=</span> ranking.index).rank(ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co">#ranking['boruta'] = boruta.support_* 1 + boruta.support_weak_ * 2 + (1 - boruta.support_ - boruta.support_weak_) * X_train.shape[1]</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'mrmr'</span>] <span class="op">=</span> pd.Series(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(mrmr) <span class="op">+</span> <span class="dv">1</span>)) <span class="op">+</span> [<span class="bu">len</span>(mrmr) <span class="op">+</span> <span class="dv">1</span>] <span class="op">*</span> (X_train.shape[<span class="dv">1</span>] <span class="op">-</span> <span class="bu">len</span>(mrmr)),</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> mrmr <span class="op">+</span> <span class="bu">list</span>(<span class="bu">set</span>(ranking.index) <span class="op">-</span> <span class="bu">set</span>(mrmr))</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>).sort_index()</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>ranking[<span class="st">'lasso'</span>]<span class="op">=</span> pd.Series(np.<span class="bu">abs</span>(logregL1.coef_).mean(axis <span class="op">=</span> <span class="dv">0</span>), index <span class="op">=</span> ranking.index).rank(ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>ranking <span class="op">=</span> ranking.replace(to_replace <span class="op">=</span> ranking.<span class="bu">max</span>(), value <span class="op">=</span> X_train.shape[<span class="dv">1</span>])</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#ranking.to_csv('ranking.csv', index = False)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="evaluate-feature-selection-methods" class="level1">
+<h1>Evaluate Feature Selection Methods</h1>
+<p>Let’s see how the predictive performance of the model changes as we add more features. We will use the top features selected by each method to train a model and evaluate its performance.</p>
+<div id="cell-32" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> catboost <span class="im">import</span> CatBoostClassifier</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, roc_auc_score</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">## 22 minutes for mnist</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>algos <span class="op">=</span> [<span class="st">'f'</span>, <span class="st">'mi'</span>, <span class="st">'logreg'</span>, <span class="st">'lasso'</span>, <span class="st">'lightgbm'</span>, <span class="st">'mrmr'</span>] <span class="co">##Feel free to change this</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>] </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>] <span class="co">##Feel free to change this</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> pd.DataFrame(index <span class="op">=</span> ks, columns <span class="op">=</span> algos)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>roc <span class="op">=</span> pd.DataFrame(index <span class="op">=</span> ks, columns <span class="op">=</span> algos)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> algo <span class="kw">in</span> algos:</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (algo)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> ks:</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        cols <span class="op">=</span> ranking[algo].sort_values().head(k).index.to_list()</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        clf <span class="op">=</span> CatBoostClassifier().fit(</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>            X_train[cols], y_train,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>            eval_set<span class="op">=</span>(X_test[cols], y_test),</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>            early_stopping_rounds <span class="op">=</span> <span class="dv">20</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>            verbose <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Store accuracy</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        accuracy.loc[k, algo] <span class="op">=</span> accuracy_score(</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>            y_true<span class="op">=</span>y_test, y_pred<span class="op">=</span>clf.predict(X_test[cols])</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>accuracy.to_csv(<span class="st">'accuracyMC.csv'</span>, index <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>roc.to_csv(<span class="st">'rocMC.csv'</span>, index <span class="op">=</span> <span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>f
+mi
+logreg
+lasso
+lightgbm
+mrmr</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-selection-curves" class="level1">
+<h1>Feature Selection Curves</h1>
+<p>Let’s visualize how the model’s accuracy changes as a function of feature selection.<br>
+Notice how for Madelon, there is an optimal number of features. Too many features that are noise end up reducing the performance of the model</p>
+<div id="cell-34" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> algo, label, color <span class="kw">in</span> <span class="bu">zip</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'mrmr'</span>, <span class="st">'f'</span>, <span class="st">'mi'</span>, <span class="st">'lightgbm'</span>, <span class="st">'logreg'</span>,<span class="st">"lasso"</span>],</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'MRMR'</span>, <span class="st">'F-statistic'</span>, <span class="st">'Mutual Info'</span>, <span class="st">'LightGBM'</span>, <span class="st">'Log Reg'</span>,<span class="st">'Log Reg (L1/Lasso)'</span>],</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'orangered'</span>, <span class="st">'blue'</span>, <span class="st">'yellow'</span>, <span class="st">'lime'</span>, <span class="st">'black'</span>, <span class="st">'pink'</span>]):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        plt.plot(accuracy.index, accuracy[algo], label <span class="op">=</span> label, color <span class="op">=</span> color, lw <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    [<span class="dv">1</span>, <span class="dv">40</span>], [pd.Series(y_test).value_counts(normalize <span class="op">=</span> <span class="va">True</span>).iloc[<span class="dv">0</span>]] <span class="op">*</span> <span class="dv">2</span>, </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> <span class="st">'[Random]'</span>, color <span class="op">=</span> <span class="st">'grey'</span>, ls <span class="op">=</span> <span class="st">'--'</span>, lw <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>plt.legend(fontsize <span class="op">=</span> <span class="dv">13</span>, loc <span class="op">=</span> <span class="st">'center left'</span>, bbox_to_anchor <span class="op">=</span> (<span class="dv">1</span>, <span class="fl">0.5</span>))</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of features'</span>, fontsize <span class="op">=</span> <span class="dv">13</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Accuracy'</span>, fontsize <span class="op">=</span> <span class="dv">13</span>)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'accuracy.png'</span>, dpi <span class="op">=</span> <span class="dv">300</span>, bbox_inches <span class="op">=</span> <span class="st">'tight'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Feature_Selection_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-selection-combined-with-feature-elimination-techniques" class="level1">
+<h1>Feature Selection combined with Feature Elimination Techniques</h1>
+<section id="recursive-feature-elimination" class="level3">
+<h3 class="anchored" data-anchor-id="recursive-feature-elimination">Recursive Feature Elimination</h3>
+<p>One of the best methods for feature selection consistently is feature importance with LightGBM. We can refine and improve this in several ways: Recursive Feature Elimination uses the same feature importance method, but then iteratively removes the least important features. This iterative process requires training a model several times, but can provide an improvement in feature selection. This method is a version of Recursive Feature Elimination that is widely accepted as a best practice for feature selection.</p>
+<div id="cell-37" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> RFE</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVR</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> XGBClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#model = SVR(kernel="linear")  #took 3 minutes, ok results but not as good as XGB on Madelon</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>rfe <span class="op">=</span> RFE(model, n_features_to_select<span class="op">=</span><span class="dv">7</span>, step<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">#rfe = RFE(model, n_features_to_select=50, step=200,verbose=2) #for MNIST</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>rfe.fit(X_train, y_train)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>rfe.support_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>array([ True,  True,  True,  True, False,  True,  True,  True, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False])</code></pre>
+</div>
+</div>
+<div id="cell-38" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train an XGBoost model with the selected features from RFE</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>model_selected <span class="op">=</span> XGBClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>X_selected <span class="op">=</span> X_train.loc[:, rfe.support_]</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>model_selected.fit(X_selected, y_train)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set with both models</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>y_pred_selected <span class="op">=</span> model_selected.predict(X_test.loc[:, rfe.support_])</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>accuracy_selected <span class="op">=</span> accuracy_score(y_test, y_pred_selected)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy with selected features: </span><span class="sc">{</span>accuracy_selected<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy with selected features: 0.7135</code></pre>
+</div>
+</div>
+<p>Compare with perfect on Madelon</p>
+<div id="cell-40" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>perfect <span class="op">=</span> [ <span class="va">True</span>,  <span class="va">True</span>,  <span class="va">True</span>,  <span class="va">True</span>, <span class="va">True</span>,  <span class="va">True</span>,  <span class="va">True</span>,  <span class="va">True</span>, <span class="va">False</span>,</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>       <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>       <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>       <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>       <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>, <span class="va">False</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-41" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train an XGBoost model with the selected features from RFE</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>model_selected <span class="op">=</span> XGBClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>X_selected <span class="op">=</span> X_train.loc[:, perfect]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>model_selected.fit(X_selected, y_train)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions on the test set with both models</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>y_pred_selected <span class="op">=</span> model_selected.predict(X_test.loc[:, perfect])</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>accuracy_selected <span class="op">=</span> accuracy_score(y_test, y_pred_selected)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy with selected features: </span><span class="sc">{</span>accuracy_selected<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy with selected features: 0.7140</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-elimination-with-fire" class="level3">
+<h3 class="anchored" data-anchor-id="feature-elimination-with-fire">Feature Elimination with FIRE</h3>
+<p>At DataRobot, we had a mighty AutoML engine that showed you how feature importance aggregated across different models (this is feature importance from four diverse models). <img src="https://docs.datarobot.com/en/docs/images/fire-2.png" class="img-fluid" alt="https://docs.datarobot.com/en/docs/images/fire-2.png"></p>
+<p>You can use this variance as part of feature selection. It takes a lot more compute, but in our experiments, can perform even better feature selection. Read more about feature importance rank ensembling (FIRE) here - https://docs.datarobot.com/en/docs/api/accelerators/adv-approaches/fire.html and a code snippet is here - https://github.com/datarobot-community/examples-for-data-scientists/blob/master/Feature%20Lists%20Manipulation/Python/Advanced%20Feature%20Selection.ipynb</p>
+</section>
+<section id="featureviz" class="level3">
+<h3 class="anchored" data-anchor-id="featureviz">FeatureViz</h3>
+<p>Featureviz looks like a cool feature selection package, but I wasn’t able to get it to work. It’s worth checking out. add links</p>
+</section>
+</section>
+<section id="other-great-feature-selection-resources" class="level1">
+<h1>Other great feature selection resources:</h1>
+<p>A classic dataset where many feature selection techniques have been applied is the <a href="https://www.kaggle.com/competitions/santander-customer-satisfaction">Kaggle Santader Customer Satisfaction</a> competition.</p>
+<p><a href="https://www.kaggle.com/code/solegalli/feature-selection-with-feature-engine/notebook">Feature Selection with Feature Engine</a></p>
+<p><a href="https://www.kaggle.com/code/adarshsng/extensive-advance-feature-selection-tutorial">Advance Feature Selection Tutorial</a></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
