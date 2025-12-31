@@ -4085,6 +4085,604 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
   <media:content url="https://rajivshah.com/blog/Feature_Selection_files/figure-html/cell-19-output-1.png" medium="image" type="image/png"/>
 </item>
 <item>
+  <title>Practical Lessons in Building Generative AI: RAG and Text to SQL</title>
+  <link>https://rajivshah.com/blog/practical-rag-text-to-sql.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<section id="video" class="level2">
+<h2 class="anchored" data-anchor-id="video">Video</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/OyY4uxUShys" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Watch the <a href="https://youtu.be/OyY4uxUShys">full video</a> | <a href="https://youtu.be/OyY4uxUShys">Slides</a></p>
+<hr>
+</section>
+<section id="annotated-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="annotated-presentation">Annotated Presentation</h2>
+<p>Below is an annotated version of the presentation, with timestamped links to the relevant parts of the video for each slide.</p>
+<p>Here is the annotated presentation based on the video transcript and slide summaries.</p>
+<section id="title-slide-a-practical-perspective-on-generative-ai" class="level3">
+<h3 class="anchored" data-anchor-id="title-slide-a-practical-perspective-on-generative-ai">1. Title Slide: A Practical Perspective on Generative AI</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_1.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 1</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1s">Timestamp: 00:01</a>)</p>
+<p>This presentation begins with an introduction by Rajiv Shah from Snowflake. The talk focuses on distinguishing “what’s easy to do with LLMs, what’s hard to do with LLMs, and where that boundary is for generative AI.” The content is framed as a practical guide for enterprises navigating the hype versus the reality of implementing these technologies.</p>
+<p>The speaker sets the stage for a narrative-driven presentation that will move away from abstract theory and into concrete examples. The goal is to walk through the basics of <strong>Large Language Models (LLMs)</strong> and <strong>Retrieval Augmented Generation (RAG)</strong> before applying them to real-world scenarios involving legal research and enterprise data analysis.</p>
+</section>
+<section id="presentation-goals" class="level3">
+<h3 class="anchored" data-anchor-id="presentation-goals">2. Presentation Goals</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_2.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 2</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=31s">Timestamp: 00:31</a>)</p>
+<p>The agenda for the talk is outlined here. The speaker intends to cover the foundational mechanisms of how to use LLMs effectively, specifically focusing on RAG. To make the concepts relatable, the presentation uses two storytelling devices: a fictional law firm (“Dewey, Cheatham, and Howe”) and a hypothetical company (“Frosty”).</p>
+<p>These two stories serve to illustrate how people are currently using Generative AI, the specific limitations they encounter, and the engineering required to build a robust application. The speaker emphasizes that the talk will explore “what does it take to actually develop a generative AI application” beyond just simple prompting.</p>
+</section>
+<section id="the-avianca-case" class="level3">
+<h3 class="anchored" data-anchor-id="the-avianca-case">3. The Avianca Case</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_3.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 3</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=60s">Timestamp: 01:00</a>)</p>
+<p>The speaker introduces the concept of <strong>hallucinations</strong> through a famous real-world example involving the airline Avianca. A lawyer, attempting to speed up his work on a brief regarding a personal injury case, used ChatGPT for legal research. The AI “found some cases that were unpublished,” which the lawyer cited in court.</p>
+<p>However, ChatGPT had “made up those cases.” The lawyer was admonished by the bar for submitting fictitious legal precedents. This slide serves as a warning: while LLMs are powerful tools, they cannot be blindly trusted for factual research because they are prone to fabricating information when they don’t know the answer.</p>
+</section>
+<section id="generative-ai-in-action" class="level3">
+<h3 class="anchored" data-anchor-id="generative-ai-in-action">4. Generative AI in Action</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_4.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 4</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=134s">Timestamp: 02:14</a>)</p>
+<p>To demonstrate the variability of LLMs, the speaker presents a side-by-side comparison of two models (Google Gemma and a “Woflesh” model) answering the same prompt: “How many vehicles will Rivian manufacture in Normal, Illinois?” The models provide different answers.</p>
+<p>This illustrates a key characteristic of Generative AI: “Two different manufacturers, two different methods for training these models are probably going to lead to two different results.” It highlights that out-of-the-box models rely on their specific training data, which may be outdated or weighted differently, leading to inconsistent factual accuracy.</p>
+</section>
+<section id="next-token-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="next-token-prediction">5. Next Token Prediction</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_5.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 5</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=182s">Timestamp: 03:02</a>)</p>
+<p>This technical diagram explains <em>why</em> models hallucinate. The speaker clarifies that LLMs function by trying to <strong>predict the next word or token</strong> based on statistical likelihood. They are not databases of facts; they are engines designed to construct coherent sentences.</p>
+<p>“They’re not worried about truth and false; they’re really trying to tell what the most cohesive, coherent story is.” Because the model is optimizing for the most probable next word to complete a pattern, it will confidently generate plausible-sounding but factually incorrect information if that sequence of words is statistically likely.</p>
+</section>
+<section id="llm-mistakes" class="level3">
+<h3 class="anchored" data-anchor-id="llm-mistakes">6. LLM Mistakes</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_6.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 6</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=210s">Timestamp: 03:30</a>)</p>
+<p>Here, the speaker provides examples of the “Next Token Prediction” logic failing to provide truth. If asked for the “Capital of Mars,” the model doesn’t know Mars has no capital; it simply tries to “complete that story” by inventing a name. Similarly, when asked to perform math, the model isn’t calculating; it is predicting the next characters in a math-like sequence.</p>
+<p>The slide shows the model failing at basic arithmetic because “it looks like it’s read too many release notes, not actually enough math.” This reinforces that LLMs are linguistic tools, not calculators or knowledge bases, and they lack an internal concept of “fictional” versus “factual.”</p>
+</section>
+<section id="risks-for-enterprises" class="level3">
+<h3 class="anchored" data-anchor-id="risks-for-enterprises">7. Risks for Enterprises</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_7.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 7</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=243s">Timestamp: 04:03</a>)</p>
+<p>This slide highlights the liability risks for companies, citing the <strong>Air Canada chatbot case</strong>. In this instance, a chatbot invented a refund policy that did not exist. When the customer sued, the airline argued the chatbot was responsible, but the tribunal ruled the company was liable for its agent’s statements.</p>
+<p>The speaker notes, “We’re going to treat this chatbot just like one of your employees… you’re responsible for what this model says.” This legal precedent explains why enterprises are hesitant to deploy Gen AI and why “Gen AI committees” are forming to manage governance and risk before public deployment.</p>
+</section>
+<section id="retrieval-augmented-generation-rag" class="level3">
+<h3 class="anchored" data-anchor-id="retrieval-augmented-generation-rag">8. Retrieval-Augmented Generation (RAG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_8.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 8</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=291s">Timestamp: 04:51</a>)</p>
+<p>To solve the hallucination problem, the presentation introduces <strong>Retrieval-Augmented Generation (RAG)</strong>. The speaker describes this as a solution from academia designed to “ground” the model. Instead of relying solely on the model’s internal training data, RAG surrounds the model with external context.</p>
+<p>The core idea is simple: “We’re going to ground it with information so it uses that information in answering the question.” This technique attempts to bridge the gap between the model’s linguistic capabilities and the need for factual accuracy in enterprise applications.</p>
+</section>
+<section id="how-rag-works" class="level3">
+<h3 class="anchored" data-anchor-id="how-rag-works">9. How RAG Works</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_9.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 9</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=320s">Timestamp: 05:20</a>)</p>
+<p>This diagram breaks down the RAG architecture. When a user asks a question, the system does not send it directly to the LLM. First, it goes out to “search and look for is there relevant information that’s related to this question.”</p>
+<p>Once relevant documents are collected from a knowledge base, they are bundled with the original question and sent to the LLM. The LLM then generates an answer based <em>only</em> on that provided context. This ensures the “final answer is grounded” by factual documents rather than the model’s statistical predictions alone.</p>
+</section>
+<section id="grounding-with-10-k-forms" class="level3">
+<h3 class="anchored" data-anchor-id="grounding-with-10-k-forms">10. Grounding with 10-K Forms</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_10.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 10</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=351s">Timestamp: 05:51</a>)</p>
+<p>The speaker sets up a practical RAG demonstration using <strong>10-K forms</strong> (annual reports filed by public companies). These documents are chosen because “you can trust that they’re factual.”</p>
+<p>This slide prepares the audience to see how the previous question about Rivian’s manufacturing capacity—which generated inconsistent answers earlier—can be answered accurately when the model is forced to look at Rivian’s official financial filings.</p>
+</section>
+<section id="rivian-manufacturing-answer" class="level3">
+<h3 class="anchored" data-anchor-id="rivian-manufacturing-answer">11. Rivian Manufacturing Answer</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_11.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 11</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=367s">Timestamp: 06:07</a>)</p>
+<p>The slide shows the output of a RAG application. The question “How many vehicles do you manufacture in Normal?” is asked again. This time, the application provides a specific, fact-based answer derived from the uploaded documents.</p>
+<p>This demonstrates the immediate utility of RAG: it turns the LLM from a creative writing engine into a synthesis engine that can read specific enterprise documents and extract the correct answer, mitigating the hallucination issues seen in Slide 4.</p>
+</section>
+<section id="context-and-citations" class="level3">
+<h3 class="anchored" data-anchor-id="context-and-citations">12. Context and Citations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_12.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 12</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=381s">Timestamp: 06:21</a>)</p>
+<p>A critical feature of RAG is displayed here: <strong>Citations</strong>. The application shows exactly which document the answer came from. The speaker notes, “I can see exactly what’s the document that this answer came from… a nice source.”</p>
+<p>This transparency is why RAG is the “number one most popular generative AI application.” It allows users to verify the AI’s work, building trust in the system—something impossible with a standard “black box” LLM response.</p>
+</section>
+<section id="chatbot-for-legal-research" class="level3">
+<h3 class="anchored" data-anchor-id="chatbot-for-legal-research">13. Chatbot for Legal Research</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_13.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 13</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=420s">Timestamp: 07:00</a>)</p>
+<p>The narrative shifts to the fictional law firm “Dewey, Cheatham, and Howe.” The firm wants to use AI to reduce the heavy workload of legal research. The initial thought process is to use raw LLMs because they are knowledgeable.</p>
+<p>The speaker introduces a colleague who assumes, “I know it could pass the bar exam… why don’t I just wire it up directly?” This sets up the common misconception that because a model has general knowledge (passing a test), it is suitable for specialized professional work without further engineering.</p>
+</section>
+<section id="gpt-models-on-the-bar-exam" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-models-on-the-bar-exam">14. GPT Models on the Bar Exam</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_14.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 14</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=442s">Timestamp: 07:22</a>)</p>
+<p>This chart reinforces the previous assumption, showing the progression of GPT models on the <strong>Multistate Bar Exam (MBE)</strong>. GPT-4 significantly outperforms its predecessors, achieving a passing score.</p>
+<p>While this suggests the model “knows something about the law,” the speaker hints that this is merely a multiple-choice test. Success here does not necessarily translate to the nuance required for actual legal practice, foreshadowing the errors to come in the story.</p>
+</section>
+<section id="hallucinating-statutes" class="level3">
+<h3 class="anchored" data-anchor-id="hallucinating-statutes">15. Hallucinating Statutes</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_15.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 15</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=470s">Timestamp: 07:50</a>)</p>
+<p>The first failure of the “raw LLM” approach is revealed. A lawyer asks for statutes regarding “online dating services in Connecticut.” The model confidently provides “Connecticut General Statute § 42-290.”</p>
+<p>However, the lawyer discovers “there is no statute; this was entirely hallucinated.” Despite passing the bar exam, the model fabricated a law that sounded plausible but did not exist. This forces the firm to pivot toward a RAG approach to ground the AI in real legal literature.</p>
+</section>
+<section id="lexis-ai" class="level3">
+<h3 class="anchored" data-anchor-id="lexis-ai">16. Lexis+ AI</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_16.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 16</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=510s">Timestamp: 08:30</a>)</p>
+<p>The firm decides to use professional tools. They turn to <strong>Lexis+ AI</strong>, a commercial product that promises “Hallucination-Free Linked Legal Citations.” This tool uses the RAG approach discussed earlier, retrieving from a database of real case law.</p>
+<p>The expectation is that by using a trusted vendor with a RAG architecture, the hallucination problem will be solved, and lawyers will receive accurate, citable information.</p>
+</section>
+<section id="conceptual-hallucinations" class="level3">
+<h3 class="anchored" data-anchor-id="conceptual-hallucinations">17. Conceptual Hallucinations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_17.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 17</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=530s">Timestamp: 08:50</a>)</p>
+<p>Even with RAG and real citations, a new problem emerges: <strong>Conceptual confusion</strong>. The AI provides a real case but confuses the “Equity Cleanup Doctrine” with the “Doctrine of Clean Hands.” The speaker explains that while the words are similar, the legal concepts are distinct (one is about consolidating claims, the other about a plaintiff’s conduct, illustrated by a joke about P. Diddy).</p>
+<p>The model found a document containing the words but failed to understand the <em>meaning</em>. This shows that RAG ensures the <em>document</em> exists, but not necessarily that the <em>reasoning</em> or application of that document is correct.</p>
+</section>
+<section id="the-fictional-judge" class="level3">
+<h3 class="anchored" data-anchor-id="the-fictional-judge">18. The Fictional Judge</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_18.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 18</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=590s">Timestamp: 09:50</a>)</p>
+<p>The model’s failure deepens with an example of an “inside joke.” A lawyer asks for opinions by “Judge Luther A. Wilgarten.” Wilgarten is a fictional judge created as a prank in law reviews.</p>
+<p>The AI, treating the law reviews as factual text, retrieves “cases” by this fake judge. It fails to distinguish between a real judicial opinion and a satirical article within its knowledge base. This illustrates the “garbage in, garbage out” risk even within RAG systems if the model cannot discern the nature of the source material.</p>
+</section>
+<section id="hallucination-rates-in-legal-ai" class="level3">
+<h3 class="anchored" data-anchor-id="hallucination-rates-in-legal-ai">19. Hallucination Rates in Legal AI</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_19.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 19</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=644s">Timestamp: 10:44</a>)</p>
+<p>The speaker references a Stanford paper analyzing hallucination rates across major legal AI tools (Lexis, Westlaw, GPT-4). The chart shows that these tools still hallucinate or provide incomplete answers <strong>17% to 33% of the time</strong>.</p>
+<p>This data point serves as a reality check: “These models hallucinate using real questions.” Despite marketing claims of being “hallucination-free,” the complexity of the domain means that errors are still frequent, posing significant risks for professional use.</p>
+</section>
+<section id="limits-of-rag" class="level3">
+<h3 class="anchored" data-anchor-id="limits-of-rag">20. Limits of RAG</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_20.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 20</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=663s">Timestamp: 11:03</a>)</p>
+<p>This slide summarizes the limitations discovered in the legal example. RAG works well when documents are “True, Authoritative, and Applicable.” However, in complex domains like law, these attributes are often contested.</p>
+<p>“Sometimes all these things are very contested and it gets really hard to separate it.” If the underlying documents contain conflicting information, satire, or outdated facts, the RAG system (which assumes retrieved text is “truth”) will propagate those errors to the user.</p>
+</section>
+<section id="why-legal-is-hard" class="level3">
+<h3 class="anchored" data-anchor-id="why-legal-is-hard">21. Why Legal is Hard</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_21.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 21</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=688s">Timestamp: 11:28</a>)</p>
+<p>The speaker elaborates on the complexity of legal research. It involves navigating different <strong>specialties</strong> (Tort vs.&nbsp;Maritime), <strong>jurisdictions</strong> (Federal vs.&nbsp;State), and <strong>authorities</strong> (Supreme Court vs.&nbsp;Law Reviews). Furthermore, the element of <strong>time</strong> is crucial—knowing if a case has been overturned.</p>
+<p>“You really have to have a lot of knowledge to be able to weave everything in and out.” An LLM often lacks the meta-knowledge to weigh these factors, treating a lower court opinion from 1950 with the same weight as a Supreme Court ruling from 2024.</p>
+</section>
+<section id="conclusion-on-legal-chatbots" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion-on-legal-chatbots">22. Conclusion on Legal Chatbots</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_22.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 22</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=780s">Timestamp: 13:00</a>)</p>
+<p>The conclusion for the legal use case is that human expertise remains essential. While AI can “get you a stack of documents,” you still need “facts people to actually tease out the insights.”</p>
+<p>The current state of technology is an aid, not a replacement. The speaker transitions away from the legal example to a new story about building a data application, suggesting that while law is hard, structured data might offer different challenges and solutions.</p>
+</section>
+<section id="building-generative-ai-text-to-sql" class="level3">
+<h3 class="anchored" data-anchor-id="building-generative-ai-text-to-sql">23. Building Generative AI (Text-to-SQL)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_23.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 23</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=800s">Timestamp: 13:20</a>)</p>
+<p>The presentation shifts to the story of “Frosty,” a company building a <strong>Text-to-SQL</strong> application. The goal is to turn natural language questions (e.g., “How many orders do I have in each state?”) into SQL code that can query a database.</p>
+<p>This is a “very common application” for Gen AI, allowing non-technical users to interact with data. This section will focus on the engineering steps required to build this system, moving beyond the simple RAG implementation discussed previously.</p>
+</section>
+<section id="evaluating-sql-queries" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-sql-queries">24. Evaluating SQL Queries</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_24.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 24</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=854s">Timestamp: 14:14</a>)</p>
+<p>The first challenge in building this app is <strong>evaluation</strong>. How do you know if the AI’s generated SQL is good? The slide shows a “Gold Standard” query (the correct answer) and a “Candidate SQL” (the AI’s attempt).</p>
+<p>In this example, the AI added an extra column (“latitude”) that wasn’t requested. While the query might still work, it isn’t an exact match. The speaker notes, “We really need to have a way to give partial credit,” because simple string matching would mark this helpful addition as a failure.</p>
+</section>
+<section id="model-based-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="model-based-evaluation">25. Model Based Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_25.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 25</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=945s">Timestamp: 15:45</a>)</p>
+<p>To solve the grading problem at scale, the speaker introduces <strong>Model-Based Evaluation</strong>. This involves using an LLM (like GPT-4) to act as the “judge” for the output of another model.</p>
+<p>Instead of humans manually grading thousands of SQL queries, “we’re going to use a large language model to do this.” This allows for nuanced grading (partial credit) that strict code comparison cannot provide.</p>
+</section>
+<section id="skepticism-of-model-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="skepticism-of-model-evaluation">26. Skepticism of Model Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_26.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 26</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=959s">Timestamp: 15:59</a>)</p>
+<p>The speaker acknowledges the common reaction to this technique: “Is that going to work? I mean that’s like the fox guarding the outhouse.” There is a fear of “model collapse” or circular logic when AI evaluates AI.</p>
+<p>Despite this intuition, the speaker assures the audience that this is a standard and effective practice in modern AI development, and proceeds to explain how to implement it correctly.</p>
+</section>
+<section id="the-evaluation-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="the-evaluation-prompt">27. The Evaluation Prompt</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_27.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 27</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=974s">Timestamp: 16:14</a>)</p>
+<p>This slide reveals the <strong>system prompt</strong> used for the model-based judge. It instructs the LLM to act as a “data quality analyst” and provides a specific grading rubric (0 to 3 scale).</p>
+<p>By explicitly defining what constitutes a “Perfect Match,” “Good Match,” or “No Match,” the engineer can control how the AI judges the output. This turns a subjective assessment into a structured, automated process.</p>
+</section>
+<section id="the-tx-vs-texas-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-tx-vs-texas-problem">28. The “TX” vs “TEXAS” Problem</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_28.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 28</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1010s">Timestamp: 16:50</a>)</p>
+<p>A specific example of why strict matching fails. The user asked for data in “Texas.” The database uses the abbreviation ‘TX’, but the AI generated a query looking for ‘TEXAS’.</p>
+<p>“It’s a natural mistake here to confuse TX and Texas… but if we go with the strict criteria of that exact match, we don’t get an exact match.” A standard code test would fail this, even though the intent is correct and easily fixable.</p>
+</section>
+<section id="execution-accuracy-failure" class="level3">
+<h3 class="anchored" data-anchor-id="execution-accuracy-failure">29. Execution Accuracy Failure</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_29.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 29</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1036s">Timestamp: 17:16</a>)</p>
+<p>This slide confirms that under “Execution Accuracy” (strict matching), the query is a failure (“No Match”). This metric is too harsh for development because it obscures progress; a model that gets the logic right but misses an abbreviation is much better than one that writes gibberish.</p>
+</section>
+<section id="execution-score-success" class="level3">
+<h3 class="anchored" data-anchor-id="execution-score-success">30. Execution Score Success</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_30.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 30</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1050s">Timestamp: 17:30</a>)</p>
+<p>Using the <strong>Model-Based Evaluation</strong>, the same ‘TX’ vs ‘TEXAS’ error is graded differently. The “Execution Score” is a “Perfect Match” because the judge recognizes the semantic intent was captured.</p>
+<p>“It captures the user’s intent… the user could easily fix this.” This allows developers to optimize the model for logic and reasoning first, handling minor syntax issues separately.</p>
+</section>
+<section id="correlation-with-other-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-with-other-metrics">31. Correlation with Other Metrics</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_31.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 31</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1070s">Timestamp: 17:50</a>)</p>
+<p>The speaker presents data showing a <strong>strong correlation</strong> between the model-based scores and other evaluation methods. When the model judge gives a 5/5, other metrics generally agree.</p>
+<p>This validation step is crucial. The engineer in the story checked her results and found “80% were the exact same when she scored them.” This high level of agreement gives confidence in automating the evaluation pipeline.</p>
+</section>
+<section id="research-on-model-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="research-on-model-evaluation">32. Research on Model Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_32.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 32</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1099s">Timestamp: 18:19</a>)</p>
+<p>Supporting the anecdote, this slide references broader research indicating that LLMs correlate with human judges about <strong>80% of the time</strong> regarding correctness and readability.</p>
+<p>“I got tired of adding research sites here… universally we see that often in many contexts that these large language models correlate about 80% of the time to humans.” This establishes model-based evaluation as an industry standard.</p>
+</section>
+<section id="initial-benchmark-results" class="level3">
+<h3 class="anchored" data-anchor-id="initial-benchmark-results">33. Initial Benchmark Results</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_33.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 33</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1130s">Timestamp: 18:50</a>)</p>
+<p>After setting up the evaluation pipeline and creating an <strong>internal enterprise benchmark</strong> (not a public dataset), the initial results are poor: only <strong>33% accuracy</strong>.</p>
+<p>The speaker emphasizes the importance of using internal data for benchmarks: “You can’t trust those public data sets… they’re far too easy.” The low score sets the stage for the iterative engineering process required to improve the application.</p>
+</section>
+<section id="using-multiple-models" class="level3">
+<h3 class="anchored" data-anchor-id="using-multiple-models">34. Using Multiple Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_34.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 34</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1155s">Timestamp: 19:15</a>)</p>
+<p>The first improvement strategy is <strong>Ensembling</strong>. The engineer noticed different models had different strengths, so she combined them.</p>
+<p>“In traditional machine learning, we often Ensemble models… she decided to try the same thing here.” By using multiple Text-to-SQL models and combining their outputs, performance improved.</p>
+</section>
+<section id="error-correction-self-reflection" class="level3">
+<h3 class="anchored" data-anchor-id="error-correction-self-reflection">35. Error Correction (Self-Reflection)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_35.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 35</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1180s">Timestamp: 19:40</a>)</p>
+<p>The next optimization is <strong>Error Correction</strong> via self-reflection. When the model generates an error, the system asks the model to “reflect upon it” or think “step-by-step.”</p>
+<p>“That actually makes the model spend more time thinking about it… and actually they can use all of that to get a better answer.” This technique, often called <strong>Chain of Thought</strong>, leverages the model’s ability to debug its own output when prompted correctly.</p>
+</section>
+<section id="screening-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="screening-inputs">36. Screening Inputs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_36.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 36</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1230s">Timestamp: 20:30</a>)</p>
+<p>Improving the input data is just as important as improving the model. The engineer adds a <strong>Screening</strong> layer to filter out questions that are ambiguous or irrelevant (non-SQL questions).</p>
+<p>“She noticed that a lot of what the users were typing in just didn’t make sense.” By catching bad queries early and asking the user for clarification, the system avoids processing garbage data, thereby increasing overall success rates.</p>
+</section>
+<section id="feature-extraction" class="level3">
+<h3 class="anchored" data-anchor-id="feature-extraction">37. Feature Extraction</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_37.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 37</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1300s">Timestamp: 21:40</a>)</p>
+<p>Recognizing that different questions require different handling, the engineer implements <strong>Feature Extraction</strong>. A time-series question needs different context than a ranking question.</p>
+<p>“If I’m cooking macaroni and cheese I need different ingredients than if I’m making tacos.” The system now identifies the <em>type</em> of question and extracts the specific features (metadata, table schemas) relevant to that type before generating SQL.</p>
+</section>
+<section id="the-semantic-layer" class="level3">
+<h3 class="anchored" data-anchor-id="the-semantic-layer">38. The Semantic Layer</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_38.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 38</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1370s">Timestamp: 22:50</a>)</p>
+<p>To bridge the gap between messy enterprise databases and user language, a <strong>Semantic Layer</strong> is added. This involves human experts defining the data structure in business terms.</p>
+<p>“We’re going to use the expertise… to give us details of the data structure in a way that deals with all this confusing structure.” This layer translates business logic (e.g., what defines a “churned customer”) into a schema the AI can understand, significantly boosting accuracy.</p>
+</section>
+<section id="generative-ai-decision-app" class="level3">
+<h3 class="anchored" data-anchor-id="generative-ai-decision-app">39. Generative AI Decision App</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_39.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 39</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1450s">Timestamp: 24:10</a>)</p>
+<p>This flowchart represents the final, production-grade system. It is no longer just a prompt sent to a model. It includes classification, feature extraction, multiple SQL generation agents, error correction, and a semantic layer.</p>
+<p>The lesson is that “Generative AI is not about a data scientist sitting out an Island by themselves… instead it’s building a system like this.” It requires a cross-functional team of analysts, engineers, and domain experts to build a reliable application.</p>
+</section>
+<section id="the-future-of-ai" class="level3">
+<h3 class="anchored" data-anchor-id="the-future-of-ai">40. The Future of AI</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_40.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 40</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1500s">Timestamp: 25:00</a>)</p>
+<p>The speaker pivots to the future, acknowledging the rapid pace of innovation from companies like <strong>OpenAI</strong> and <strong>Google DeepMind</strong>. He addresses the audience’s potential skepticism: “The future is you’re just going to be able to just take all your data cram it into one thing it’s just going to solve it all for you.”</p>
+<p>This sets up the final section on <strong>Reasoning and Planning</strong>, moving beyond simple retrieval and text generation.</p>
+</section>
+<section id="can-llms-reason-and-plan-block-world" class="level3">
+<h3 class="anchored" data-anchor-id="can-llms-reason-and-plan-block-world">41. Can LLMs Reason and Plan? (Block World)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_41.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 41</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1538s">Timestamp: 25:38</a>)</p>
+<p>To test reasoning, the speaker introduces the <strong>Block World</strong> benchmark. The task is to stack colored blocks in a specific order. This requires multi-step planning.</p>
+<p>“You have to logically think and plan for maybe five, six, ten, even 20 steps to be able to solve it.” This tests the model’s ability to handle dependencies and sub-tasks, rather than just predicting the next word.</p>
+</section>
+<section id="gpt-4-planning-performance" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-4-planning-performance">42. GPT-4 Planning Performance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_42.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 42</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1600s">Timestamp: 26:40</a>)</p>
+<p>The results for GPT-4 are shown. While it achieves 34% on the standard Block World, its performance collapses to <strong>3%</strong> in “Mystery World.” Mystery World is the same problem, but the block names are randomized (e.g., obfuscated).</p>
+<p>“What you call them doesn’t matter [to a human]… but for a large language model, what you does call them matters a lot.” The collapse in performance proves the model was relying on memorized patterns (approximate reasoning) rather than true logical planning.</p>
+</section>
+<section id="o1-models-and-progress" class="level3">
+<h3 class="anchored" data-anchor-id="o1-models-and-progress">43. o1 Models and Progress</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_43.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 43</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1670s">Timestamp: 27:50</a>)</p>
+<p>The speaker updates the data with the very latest <strong>OpenAI o1 model</strong> results. This model uses “Chain of Thought on steroids” (reinforcement learning). It shows a massive improvement, jumping to nearly 100% on Block World and significantly higher on Mystery World (around 37-53%).</p>
+<p>While this is “solid progress,” the speaker notes it “still has a ways to go.” The models are getting better at <strong>approximate reasoning</strong>, but they are not infallible logic engines yet.</p>
+</section>
+<section id="be-skeptical-of-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="be-skeptical-of-benchmarks">44. Be Skeptical of Benchmarks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_44.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 44</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1776s">Timestamp: 29:36</a>)</p>
+<p>A warning accompanies the new capabilities: <strong>Be skeptical</strong>. As models get better at approximating reasoning, their mistakes will become harder to spot. They will sound incredibly convincing even when they are logically flawed.</p>
+<p>“You’re going to have to have an expert to be able to tell when this models are going off the rails… because the Baseline for these models is so good.” Just as legal experts were needed for RAG, domain experts are needed to verify AI reasoning.</p>
+</section>
+<section id="common-gen-ai-use-cases-summary" class="level3">
+<h3 class="anchored" data-anchor-id="common-gen-ai-use-cases-summary">45. Common Gen AI Use Cases Summary</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_45.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 45</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1813s">Timestamp: 30:13</a>)</p>
+<p>The speaker summarizes the key technical concepts covered: <strong>Hallucinations</strong>, <strong>RAG</strong>, <strong>Reasoning</strong>, <strong>Evaluation</strong>, <strong>Model as a Judge</strong>, and <strong>Data Enrichment</strong>.</p>
+<p>These pillars form the basis of current Gen AI development. The presentation has moved from the simple idea of “asking a chatbot” to the complex reality of building systems that manage retrieval, evaluation, and reasoning.</p>
+</section>
+<section id="project-reality" class="level3">
+<h3 class="anchored" data-anchor-id="project-reality">46. Project Reality</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_46.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 46</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1835s">Timestamp: 30:35</a>)</p>
+<p>The final takeaway emphasizes the organizational aspect. “Generative AI is like any other project and doesn’t go as planned.” It is not magic; it is engineering.</p>
+<p>Success requires a diverse team (“system of people”) including evaluators, analysts, and technical builders. It is an iterative process that involves handling messy data and managing expectations.</p>
+</section>
+<section id="closing-title" class="level3">
+<h3 class="anchored" data-anchor-id="closing-title">47. Closing Title</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_47.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 47</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/OyY4uxUShys&amp;t=1853s">Timestamp: 30:53</a>)</p>
+<p>The presentation concludes. The speaker thanks the audience, hoping the stories of the law firm and the data company provided a realistic “Practical Perspective” on the current state of Generative AI.</p>
+<hr>
+<p><em>This annotated presentation was generated from the talk using AI-assisted tools. Each slide includes timestamps and detailed explanations.</em></p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>RAG</category>
+  <category>Text-to-SQL</category>
+  <category>AI</category>
+  <category>Generative AI</category>
+  <category>Annotated Talk</category>
+  <guid>https://rajivshah.com/blog/practical-rag-text-to-sql.html</guid>
+  <pubDate>Sun, 15 Sep 2024 05:00:00 GMT</pubDate>
+  <media:content url="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_1.png" medium="image" type="image/png"/>
+</item>
+<item>
   <title>Snowflake ML Intro Notebook - ML Forecasting</title>
   <link>https://rajivshah.com/blog/Snowpark_Forecasting_Bus.html</link>
   <description><![CDATA[ 
@@ -6571,96 +7169,6 @@ if self.steps_beyond_done &gt; 12:
   <guid>https://rajivshah.com/blog/H2O_prod.html</guid>
   <pubDate>Mon, 22 Aug 2016 05:00:00 GMT</pubDate>
   <media:content url="https://www.imda.gov.sg/-/media/imda/images/content/for-industry/technology-and-innovation/innovative-tech-companies/accreditation/h2o.png" medium="image" type="image/png"/>
-</item>
-<item>
-  <title>Using xgbfi for revealing feature interactions</title>
-  <link>https://rajivshah.com/blog/xgbfi.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-
-<section id="introduction" class="level3">
-<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>Tree based methods excel in using feature or variable interactions. As a tree is built, it picks up on the <a href="https://datamining.bus.utk.edu/Documents/Decision-Trees-for-Predictive-Modeling-(Neville).pdf">interaction of features</a>. For example, buying ice cream may not be affected by having extra money unless the weather is hot. It is the interaction of both of these features that can affect whether ice cream will be consumed.</p>
-<p>The traditional manner for examining interactions is relying on measures of <a href="https://www.quora.com/How-do-I-find-variable-importance-in-random-forest/answer/Rajiv-Shah-6">variable importance</a>. However, these measures don’t provide insights into second or third order interactions. Identifying these interactions are important in building better models, especially when finding features to use within linear models.</p>
-<p>In this post, I show how to find higher order interactions using <a href="https://github.com/Far0n/xgbfi">XGBoost Feature Interactions &amp; Importance</a>. This tool has been available for a while, but outside of <a href="https://www.kaggle.com/c/bnp-paribas-cardif-claims-management/forums/t/18754/feature-engineering/107518">kagglers</a>, it has received relatively little attention.</p>
-<p>As a starting point, I used the Ice Cream dataset to illustrate using xgbfi. This walkthrough is in R, but python instructions are also available at the repo. I am going to break the code into three sections, the initial build of the model, exporting the files necessary for xgbfi, and running xgbi.</p>
-<section id="building-the-model" class="level4">
-<h4 class="anchored" data-anchor-id="building-the-model">Building the model</h4>
-<p>Lets start by loading the data:</p>
-<pre><code>library(xgboost)
-library(Ecdat)
-data(Icecream)
-train.data &lt;- data.matrix(Icecream[,-1])</code></pre>
-<p>The next step is running xgboost:</p>
-<pre><code>bst &lt;- xgboost(data = train.data, label = Icecream$cons, max.depth = 3, eta = 1, nthread = 2, nround = 2, objective = "reg:linear")</code></pre>
-<p>To better understand how the model is working, lets go ahead and look at the trees:</p>
-<pre><code>xgb.plot.tree(feature_names = names((Icecream[,-1])), model = bst)</code></pre>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/xgplot.png" class="img-fluid figure-img"></p>
-<figcaption>xg tree plot</figcaption>
-</figure>
-</div>
-<p>The results here line up with our intution. Hot days seems to be the biggest variable by just eyeing the plot. This lines up with the results of a variable importance calculation:</p>
-<pre><code>&gt; xgb.importance(colnames(train.data, do.NULL = TRUE, prefix = "col"), model = bst)
-   Feature       Gain      Cover Frequency
-1:    temp 0.75047187 0.66896552 0.4444444
-2:  income 0.18846270 0.27586207 0.4444444
-3:   price 0.06106542 0.05517241 0.1111111</code></pre>
-<p>All of this should be very familiar to anyone who has used decision trees for modeling. <strong>But what are the second order interactions? Third order interactions? Can you rank them?</strong></p>
-</section>
-<section id="exporting-the-tree" class="level4">
-<h4 class="anchored" data-anchor-id="exporting-the-tree">Exporting the tree</h4>
-<p>The next step involves saving the tree and moving it outside of R so xgbfi can parse the tree. The code below will help to create two files that are needed:<code>xgb.dump</code> and <code>fmap.text</code>.</p>
-<pre><code>featureList &lt;- names(Icecream[,-1])
-featureVector &lt;- c() 
-for (i in 1:length(featureList)) { 
-  featureVector[i] &lt;- paste(i-1, featureList[i], "q", sep="\t") 
-}
-write.table(featureVector, "fmap.txt", row.names=FALSE, quote = FALSE, col.names = FALSE)
-xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)</code></pre>
-</section>
-<section id="running-xgbfi" class="level4">
-<h4 class="anchored" data-anchor-id="running-xgbfi">Running xgbfi</h4>
-<p>The first step is to clone the <a href="https://github.com/Far0n/xgbfi">xgbfi repository</a> onto your computer. Then copy the files <code>xgb.dump</code> and <code>fmap.text</code> to the bin directory.</p>
-<p>Go to your terminal or command line and run: <code>XgbFeatureInteractions.exe</code> application. On a mac, <a href="http://www.mono-project.com/download/">download mono</a> and then run the command: <code>mono XgbFeatureInteractions.exe</code>. There is also a <code>XgbFeatureInteractions.exe.config</code> file that contains configuration settings in the bin directory.</p>
-<p>After the application runs, it will write out an excel spreadsheet titled: <code>XgbFeatureInteractions.xlsx</code>. This spreadsheet has the good stuff! Open up the spreadsheet and you should see:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/firstinteraction.png" class="img-fluid figure-img"></p>
-<figcaption>interaction depth 0</figcaption>
-</figure>
-</div>
-<p>This tab of the spreadsheet shows the first order interactions. These results are similar to what variable importance showed. The good stuff is when you click on the tab for Interaction Depth 1 or Interaction Depth 2.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/secondinteraction.png" class="img-fluid figure-img"></p>
-<figcaption>interaction depth 1</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/thirdinteraction.png" class="img-fluid figure-img"></p>
-<figcaption>interaction depth 2</figcaption>
-</figure>
-</div>
-<p>It is now possible to rank the higher order interactions. With the simple dataset, you can see that the results out of xgbfi match what is happening in the tree. The real value of this tool is for much larger datasets, where its difficult to examine the trees for the interactions.</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>Xgboost</category>
-  <category>MLOps</category>
-  <category>Explainability</category>
-  <guid>https://rajivshah.com/blog/xgbfi.html</guid>
-  <pubDate>Mon, 01 Aug 2016 05:00:00 GMT</pubDate>
-  <media:content url="https://rajivshah.com/blog/images/firstinteraction.png" medium="image" type="image/png"/>
 </item>
 </channel>
 </rss>
