@@ -505,7 +505,7 @@ y_train &lt;- (h5read("y_train.h5", "name-of-dataset"))</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/rajivshah\.com");
+        var filterRegex = new RegExp("https:\/\/rajivshah\.com\/blog");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
