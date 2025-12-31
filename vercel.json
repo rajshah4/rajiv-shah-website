@@ -18,5 +18,18 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/blog/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "projects.rajivshah.com"
+        }
+      ],
+      "destination": "https://rajivshah.com/blog/:path*",
+      "permanent": true
+    }
   ]
 }
