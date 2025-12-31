@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-04-15">
+
+<title>Model Interpretability and Explainability for Machine Learning Models – Rajiv Shah - rajistics blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-475ad4fe1e4ce2c827a237f0e4cf2c17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Rajiv Shah - rajistics blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com"> 
+<span class="menu-text"><u>About Me</u></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/"> <i class="bi bi-instagram" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics"> <i class="bi bi-tiktok" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Model Interpretability and Explainability for Machine Learning Models</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Interpretability</div>
+                <div class="quarto-category">Explainability</div>
+                <div class="quarto-category">Machine Learning</div>
+                <div class="quarto-category">XAI</div>
+                <div class="quarto-category">Annotated Talk</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 15, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#video" id="toc-video" class="nav-link active" data-scroll-target="#video">Video</a></li>
+  <li><a href="#annotated-presentation" id="toc-annotated-presentation" class="nav-link" data-scroll-target="#annotated-presentation">Annotated Presentation</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="model-interpretability-explainability.ipynb" download="model-interpretability-explainability.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="video" class="level2">
+<h2 class="anchored" data-anchor-id="video">Video</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/ZRckw_fE56Q" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Watch the <a href="https://youtu.be/ZRckw_fE56Q">full video</a></p>
+<hr>
+</section>
+<section id="annotated-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="annotated-presentation">Annotated Presentation</h2>
+<p>Below is an annotated version of the presentation, with timestamped links to the relevant parts of the video for each slide.</p>
+<p>Here is the slide-by-slide annotated presentation based on the technical talk “A Quest for Interpretability.”</p>
+<section id="a-quest-for-interpretability" class="level3">
+<h3 class="anchored" data-anchor-id="a-quest-for-interpretability">1. A Quest for Interpretability</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_1.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 1</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=0s">Timestamp: 00:00</a>)</p>
+<p>The presentation opens with the title slide, introducing the core mission of the talk: demystifying machine learning models. The speaker sets the stage for both data science novices and experts, promising to provide methods to “ask any particular machine learning model you see and be able to explain it.”</p>
+<p>The goal is to move beyond simply generating predictions to understanding the “why” behind them. The speaker emphasizes that whether you are new to the field or comfortable with interpretability, the session will dive deeper into techniques that provide transparency to complex algorithms.</p>
+</section>
+<section id="predictive-model-around-aggression" class="level3">
+<h3 class="anchored" data-anchor-id="predictive-model-around-aggression">2. Predictive Model Around Aggression</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_2.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 2</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=41s">Timestamp: 00:41</a>)</p>
+<p>To make the concepts more engaging, the speaker introduces a “Dragon theme” as a visual metaphor. The hypothetical problem presented is building a <strong>Predictive Model Around Aggression</strong>. The objective is practical and dire: “we want to use machine learning to help us figure out which dragons are likely to eat us.”</p>
+<p>This metaphor serves as a stand-in for real-world risk assessment models. Instead of dry financial or medical data initially, the audience is asked to consider the stakes of a model that must accurately predict danger (getting eaten) based on various dragon attributes.</p>
+</section>
+<section id="trust-the-big-picture" class="level3">
+<h3 class="anchored" data-anchor-id="trust-the-big-picture">3. Trust: The Big Picture</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_3.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 3</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=88s">Timestamp: 01:28</a>)</p>
+<p>The speaker broadens the scope to explain that <strong>interpretability</strong> is just one component of a much larger ecosystem called “Trust.” This slide illustrates that trusting a model involves asking questions about bias, correctness, ethical purposes (like facial recognition debates), and model health over time.</p>
+<p>While acknowledging these critical factors—such as “is your data biased” or “is your model being used for an ethical purpose”—the speaker clarifies that this specific presentation will focus on the interpretability slice of the pie: “can we explain what’s going on… inside that model.”</p>
+</section>
+<section id="interpretable-predictive-model-around-aggression" class="level3">
+<h3 class="anchored" data-anchor-id="interpretable-predictive-model-around-aggression">4. Interpretable Predictive Model Around Aggression</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_4.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 4</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=148s">Timestamp: 02:28</a>)</p>
+<p>Returning to the dragon metaphor, this slide reiterates the specific technical goal: building an <strong>Interpretable Predictive Model Around Aggression</strong>. The speaker distinguishes this from simply dumping data into a “black box” like TensorFlow and deploying it based solely on performance metrics.</p>
+<p>The focus here is on the deliberate choice to build a model that is not just predictive, but understandable. This sets up the central tension of the talk: the trade-off between model complexity (accuracy) and the ability to explain how the model works.</p>
+</section>
+<section id="why-interpretability" class="level3">
+<h3 class="anchored" data-anchor-id="why-interpretability">5. Why Interpretability?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_5.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 5</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=158s">Timestamp: 02:38</a>)</p>
+<p>This slide outlines the three key audiences for interpretability. First, for <strong>Yourself</strong>: debugging is essential because “it’s very easy for things to go wrong.” Second, for <strong>Stakeholders</strong>: managers and bosses will demand to know how a model works, regardless of how high the AUC (Area Under the Curve) is.</p>
+<p>Third, the speaker highlights <strong>Regulators</strong> in high-risk industries like insurance, finance, and healthcare. In these sectors, there is a “higher standard set” where you must prove you understand the model’s behavior to mitigate risks to the financial system or public health.</p>
+</section>
+<section id="an-understandable-white-box-model-clear-2" class="level3">
+<h3 class="anchored" data-anchor-id="an-understandable-white-box-model-clear-2">6. An Understandable White Box Model (CLEAR-2)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_6.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 6</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=261s">Timestamp: 04:21</a>)</p>
+<p>The presentation begins with the “simplest, easiest, most interpretable model”: a linear regression for housing prices. This <strong>White Box Model</strong> uses only two features: the number of bathrooms and square footage.</p>
+<p>The transparency is total; you can see the coefficients directly (e.g., multiplying bathrooms by a value). The audience is asked to confirm that this is intuitive, and the consensus is that yes, this is an easily explainable model where the inputs have a clear, logical relationship to the output.</p>
+</section>
+<section id="white-box-model-clear-8" class="level3">
+<h3 class="anchored" data-anchor-id="white-box-model-clear-8">7. White Box Model (CLEAR-8)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_7.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 7</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=341s">Timestamp: 05:41</a>)</p>
+<p>Complexity is introduced by adding more features to improve accuracy. However, this slide reveals a paradox of linear models: <strong>Multicollinearity</strong>. The speaker points out that while the model might be “transparent” (you can see the math), the logic breaks down.</p>
+<p>Specifically, the model shows that “as the total rooms gets higher, the value of my house goes down.” This counter-intuitive finding occurs because features are not independent. While technically a “white box,” the interpretability suffers because the coefficients no longer align with human intuition due to correlations between variables.</p>
+</section>
+<section id="understandable-white-box-model-tree---auc-0.74" class="level3">
+<h3 class="anchored" data-anchor-id="understandable-white-box-model-tree---auc-0.74">8. Understandable White Box Model? (Tree - AUC 0.74)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_8.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 8</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=556s">Timestamp: 09:16</a>)</p>
+<p>Moving to <strong>Decision Trees</strong>, the speaker presents a simple tree based on the Titanic dataset (predicting survival). With only two features (gender and age), the logic is stark and easy to follow: “if you’re a male and your age is greater than 10 years old… chance of survival is very low.”</p>
+<p>This model has an AUC of 0.74. It is highly interpretable, acting as a flowchart that anyone can trace. However, the speaker hints at the limitation: simplicity often comes at the cost of accuracy.</p>
+</section>
+<section id="understandable-white-box-model-tree---auc-0.78" class="level3">
+<h3 class="anchored" data-anchor-id="understandable-white-box-model-tree---auc-0.78">9. Understandable White Box Model? (Tree - AUC 0.78)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_9.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 9</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=679s">Timestamp: 11:19</a>)</p>
+<p>To improve the model, more features are added, raising the AUC to 0.78. The tree grows branches, becoming visually more cluttered. The speaker notes that “by adding more features or variables… the performance of our model increases.”</p>
+<p>This slide represents the tipping point where the visual representation of the model starts to become less of a helpful flowchart and more of a complex web, though it is still technically possible to trace a single path.</p>
+</section>
+<section id="understandable-white-box-model-tree---auc-0.79" class="level3">
+<h3 class="anchored" data-anchor-id="understandable-white-box-model-tree---auc-0.79">10. Understandable White Box Model? (Tree - AUC 0.79)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_10.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 10</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=698s">Timestamp: 11:38</a>)</p>
+<p>The optimization continues, pushing the AUC to 0.79. The tree on the slide is now dense and difficult to read. The question mark in the title “Understandable White Box Model?” becomes more relevant.</p>
+<p>The speaker emphasizes that data scientists “don’t have to kind of stop there.” The drive for higher accuracy encourages adding more depth and complexity to the tree, sacrificing the immediate “glance-value” interpretability that smaller trees possess.</p>
+</section>
+<section id="better-performance-but-too-much-to-comprehend-auc-0.81" class="level3">
+<h3 class="anchored" data-anchor-id="better-performance-but-too-much-to-comprehend-auc-0.81">11. Better Performance but too much to Comprehend (AUC 0.81)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_11.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 11</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=704s">Timestamp: 11:44</a>)</p>
+<p>This slide shows a massive, unreadable decision tree with an AUC of 0.81. The speaker notes, “it gets a little tricky… lot harder to understand what’s going on.” This illustrates the “Black Box” problem even within models considered interpretable.</p>
+<p>Furthermore, the speaker points out that data scientists rarely stop at one tree; they use <strong>Random Forests</strong> (collections of trees). Interpreting a forest by looking at the trees is impossible, necessitating new tools for explanation.</p>
+</section>
+<section id="so-many-algorithms-to-try" class="level3">
+<h3 class="anchored" data-anchor-id="so-many-algorithms-to-try">12. So Many Algorithms to Try</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_12.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 12</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=787s">Timestamp: 13:07</a>)</p>
+<p>This heatmap, derived from a study by Randy Olssen, visualizes the performance of different algorithms across 165 datasets. It illustrates the <strong>No Free Lunch Theorem</strong>: there is not one single algorithm that always works best.</p>
+<p>Because of this, data scientists must try various complex algorithms (Gradient Boosting, Neural Networks, Ensembles) to find the best solution. We cannot simply restrict ourselves to linear regression just for the sake of interpretability if it fails to solve the problem.</p>
+</section>
+<section id="algorithms-matter" class="level3">
+<h3 class="anchored" data-anchor-id="algorithms-matter">13. Algorithms Matter</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_13.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 13</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=829s">Timestamp: 13:49</a>)</p>
+<p>The speaker reinforces that model choice is critical. Using a simple model that yields inaccurate predictions is dangerous: “if we can’t figure out if this model is going to work or not we’re in trouble.”</p>
+<p>The slide emphasizes that accuracy is paramount (“we are toast” if we are wrong). Therefore, we need methods that allow us to use complex, accurate algorithms without flying blind regarding how they work.</p>
+</section>
+<section id="simple-models-accurate" class="level3">
+<h3 class="anchored" data-anchor-id="simple-models-accurate">14. Simple Models != Accurate</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_14.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 14</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=851s">Timestamp: 14:11</a>)</p>
+<p>This slide counters the argument that we should only use simple models. The speaker asserts, “most simple models are just not very accurate.” Real-world problems are complex, and if they could be solved with a few simple rules, machine learning wouldn’t be necessary.</p>
+<p>Resources are provided on the slide for further reading, including defenses of black box models. The takeaway is that complexity is often a requirement for accuracy, so we must find ways to explain complex models rather than avoiding them.</p>
+</section>
+<section id="tools-that-can-explain-any-black-box-model" class="level3">
+<h3 class="anchored" data-anchor-id="tools-that-can-explain-any-black-box-model">15. Tools That Can Explain Any Black Box Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_15.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 15</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=899s">Timestamp: 14:59</a>)</p>
+<p>This is the pivot point of the presentation. The speaker introduces the solution: “There are tools here that can explain any blackbox model.” This promises a methodology that is <strong>Model Agnostic</strong>—meaning it works regardless of whether you are using a Random Forest, a Neural Network, or an SVM.</p>
+</section>
+<section id="model-agnostic-explanation-tools" class="level3">
+<h3 class="anchored" data-anchor-id="model-agnostic-explanation-tools">16. Model Agnostic Explanation Tools</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_16.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 16</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=907s">Timestamp: 15:07</a>)</p>
+<p>The speaker outlines the three specific pillars of interpretability that the rest of the talk will cover: 1. <strong>Feature Importance:</strong> Understanding what variables are most impactful. 2. <strong>Partial Dependence:</strong> Understanding the directionality of features (e.g., does age increase or decrease risk?). 3. <strong>Prediction Explanations:</strong> Explaining why a specific prediction was made for a specific individual (using techniques like SHAP).</p>
+</section>
+<section id="feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="feature-importance">17. Feature Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_17.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 17</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=971s">Timestamp: 16:11</a>)</p>
+<p>The first pillar is <strong>Feature Importance</strong>. Returning to the dragon example, the speaker discusses the data collection process: asking domain experts (or watching Game of Thrones) to determine factors like age, weight, or number of children.</p>
+<p>The goal is to determine which of these collected variables actually drives the model. This is crucial for debugging, feature selection, and explaining the model to stakeholders.</p>
+</section>
+<section id="dragon-reading-milk-vs.-age" class="level3">
+<h3 class="anchored" data-anchor-id="dragon-reading-milk-vs.-age">18. Dragon Reading: Milk vs.&nbsp;Age</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_18.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 18</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1061s">Timestamp: 17:41</a>)</p>
+<p>To illustrate the pitfalls of feature importance, the speaker introduces a new scenario: “how dragons learn to read.” We intuitively know that <strong>Age</strong> affects reading ability (older children read better).</p>
+<p>The speaker then asks about <strong>Milk Consumption</strong>. While one might guess milk helps (calcium), the reality is that milk consumption is negatively correlated with age (babies drink milk, teenagers don’t). Therefore, milk consumption appears related to reading ability, but it is a <strong>spurious correlation</strong>. It has “nothing at all to do with the ability to read,” yet the data might suggest otherwise.</p>
+</section>
+<section id="split-based-variable-importance" class="level3">
+<h3 class="anchored" data-anchor-id="split-based-variable-importance">19. Split Based Variable Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_19.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 19</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1239s">Timestamp: 20:39</a>)</p>
+<p>This slide shows what happens when you use the default “Split Based” importance metric in algorithms like LightGBM. The chart shows <strong>milk_consumption</strong> as the <em>most</em> important feature, ranking higher than age.</p>
+<p>This happens because the model uses milk consumption as a proxy for age during the tree-splitting process. The speaker warns that relying on default metrics can lead to incorrect conclusions where spurious correlations mask the true drivers of the model.</p>
+</section>
+<section id="permutation-based-variable-importance" class="level3">
+<h3 class="anchored" data-anchor-id="permutation-based-variable-importance">20. Permutation Based Variable Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_20.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 20</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1271s">Timestamp: 21:11</a>)</p>
+<p>By switching to a <strong>Permutation Based</strong> approach, the chart flips. Now, <strong>Age</strong> is correctly identified as the dominant feature, and milk consumption drops to near zero importance.</p>
+<p>The speaker emphasizes that this technique “cuts right through” the noise. It correctly identifies that while milk varies with age, it does not actually influence the reading score when age is accounted for.</p>
+</section>
+<section id="spurious-correlations-nicolas-cage" class="level3">
+<h3 class="anchored" data-anchor-id="spurious-correlations-nicolas-cage">21. Spurious Correlations (Nicolas Cage)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_21.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 21</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1298s">Timestamp: 21:38</a>)</p>
+<p>This slide references the famous spurious correlation between Nicolas Cage films and swimming pool drownings. The speaker uses this to highlight the danger of “Enterprise Data Lakes.”</p>
+<p>When data scientists grab massive tables of data without domain knowledge, they risk finding these coincidental patterns. Machine learning models are excellent at finding patterns, even ones that are nonsensical, making robust feature importance techniques vital.</p>
+</section>
+<section id="feature-impact-ranking" class="level3">
+<h3 class="anchored" data-anchor-id="feature-impact-ranking">22. Feature Impact Ranking</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_22.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 22</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1029s">Timestamp: 17:09</a>)</p>
+<p>The presentation shows a ranked list of features for the dragon model. The speaker reiterates that getting this ranking right has “real consequences.”</p>
+<p>If you tell a business stakeholder that a specific variable is driving the risk, they will make decisions based on that. Understanding the true hierarchy of influence is essential for trust and actionable insight.</p>
+</section>
+<section id="if-your-feature-impact-is-wrong" class="level3">
+<h3 class="anchored" data-anchor-id="if-your-feature-impact-is-wrong">23. If Your Feature Impact is Wrong…</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_23.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 23</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1037s">Timestamp: 17:17</a>)</p>
+<p>A humorous but serious warning: “If your feature impact is wrong, you are toast.”</p>
+<p>This underscores the professional risk. If a data scientist attributes a prediction to the wrong cause (like milk instead of age), they lose credibility and potentially cause the business to pull the wrong levers to try and optimize the outcome.</p>
+</section>
+<section id="feature-importance-ablation-methodology" class="level3">
+<h3 class="anchored" data-anchor-id="feature-importance-ablation-methodology">24. Feature Importance: Ablation Methodology</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_24.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 24</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1335s">Timestamp: 22:15</a>)</p>
+<p>The speaker explains the logic behind feature importance using an <strong>Ablation Methodology</strong>. He presents three models: 1. Model AB (Both features): R-squared 0.9 2. Model A (Feature A only): R-squared 0.7 3. Model B (Feature B only): R-squared 0.8</p>
+<p>He asks the audience to intuit which feature is more important based on these scores.</p>
+</section>
+<section id="ablation-methodology-definition" class="level3">
+<h3 class="anchored" data-anchor-id="ablation-methodology-definition">25. Ablation Methodology Definition</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_25.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 25</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1377s">Timestamp: 22:57</a>)</p>
+<p>The audience correctly identifies that Feature B is more important because it carries more signal (higher R-squared) on its own.</p>
+<p>The speaker defines <strong>Ablation</strong> as comparing the model performance with and without specific features. It is a scientific control method: “try something with it and without it,” similar to testing if coffee makes a person happy by withholding it for a day.</p>
+</section>
+<section id="leave-it-out-feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="leave-it-out-feature-importance">26. ‘Leave it Out’ Feature Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_26.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 26</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1429s">Timestamp: 23:49</a>)</p>
+<p>This slide formalizes the “Leave One Out” approach. By calculating the drop in performance when a feature is removed, we quantify its value. * Remove B: Performance drops by 0.2 (0.9 -&gt; 0.7). * Remove A: Performance drops by 0.1 (0.9 -&gt; 0.8).</p>
+<p>Since removing B causes a larger drop in accuracy, B is the more important feature. However, the speaker notes a problem: with 100 features, you would have to build 100 different models, which is computationally expensive.</p>
+</section>
+<section id="permutation-based-feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="permutation-based-feature-importance">27. Permutation Based Feature Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_27.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 27</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1613s">Timestamp: 26:53</a>)</p>
+<p>To solve the computational cost of retraining models, the speaker introduces <strong>Permutation Importance</strong> (attributed to Breiman/Random Forests). Instead of removing a column and retraining, you simply <strong>shuffle</strong> the values of that column (permute them) within the existing test data.</p>
+<p>By shuffling the data, you break the relationship between that feature and the target, effectively “removing” the signal while keeping the model structure intact. If the model’s error increases significantly after shuffling a feature, that feature was important.</p>
+</section>
+<section id="r-package-randomforest" class="level3">
+<h3 class="anchored" data-anchor-id="r-package-randomforest">28. R Package: randomForest</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_28.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 28</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1651s">Timestamp: 27:31</a>)</p>
+<p>The speaker highlights that this is a standard technique available in common tools. In the R language, the <code>randomForest</code> package has supported permutation-based importance for a long time.</p>
+<p>This slide serves as a resource pointer for R users, confirming that these advanced interpretability checks are accessible within their standard toolkits.</p>
+</section>
+<section id="python-scikit-learn" class="level3">
+<h3 class="anchored" data-anchor-id="python-scikit-learn">29. Python: scikit-learn</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_29.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 29</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1656s">Timestamp: 27:36</a>)</p>
+<p>Similarly, for Python users, <code>scikit-learn</code> has added support for permutation importance. This accessibility reinforces the speaker’s point that there is no excuse for not using these techniques to validate model behavior.</p>
+</section>
+<section id="multicollinearity" class="level3">
+<h3 class="anchored" data-anchor-id="multicollinearity">30. Multicollinearity</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_30.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 30</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1690s">Timestamp: 28:10</a>)</p>
+<p>The speaker addresses a complex issue: <strong>Multicollinearity</strong>. The Venn diagrams illustrate that features often share information (variance).</p>
+<p>When features are highly correlated, they “share the signal.” This makes it difficult for the model (and the interpreter) to assign credit. Does the credit go to Feature A or Feature B if they both describe the same underlying phenomenon?</p>
+</section>
+<section id="different-models-10-different-importances" class="level3">
+<h3 class="anchored" data-anchor-id="different-models-10-different-importances">31. 10 Different Models, 10 Different Importances</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_31.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 31</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1705s">Timestamp: 28:25</a>)</p>
+<p>Due to multicollinearity, running the same algorithm on the same data multiple times (with different random seeds or data partitions) can result in different feature rankings.</p>
+<p>This instability is frustrating. In one run, “Milk” might be important; in another, “Age” takes the lead. This happens because the model arbitrarily chooses one of the correlated features to split on, and this choice changes based on randomness in the training process.</p>
+</section>
+<section id="multicollinearity-affects-interpreting-models" class="level3">
+<h3 class="anchored" data-anchor-id="multicollinearity-affects-interpreting-models">32. Multicollinearity Affects Interpreting Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_32.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 32</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1748s">Timestamp: 29:08</a>)</p>
+<p>This chart visualizes the “trading off” effect. You can see features swapping positions in importance rankings across different model runs.</p>
+<p>The speaker notes that you cannot simply remove correlated features without potentially hurting accuracy, as they might contain slight unique signals. This trade-off between accuracy and stable interpretability is a core challenge in data science.</p>
+</section>
+<section id="pro-tip-aggregate-feature-importance-same-model" class="level3">
+<h3 class="anchored" data-anchor-id="pro-tip-aggregate-feature-importance-same-model">33. Pro Tip: Aggregate Feature Importance (Same Model)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_33.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 33</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1809s">Timestamp: 30:09</a>)</p>
+<p>To handle instability, the speaker suggests a “Pro Tip”: <strong>Aggregate Feature Importance</strong>. Run the feature importance calculation multiple times on the same model and plot the variability (the box plots in the slide).</p>
+<p>This gives a “richer understanding.” Instead of a single number, you see a range. If the range is huge, you know the feature’s importance is unstable due to correlation or noise.</p>
+</section>
+<section id="aggregate-feature-importance-different-models" class="level3">
+<h3 class="anchored" data-anchor-id="aggregate-feature-importance-different-models">34. Aggregate Feature Importance (Different Models)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_34.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 34</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1815s">Timestamp: 30:15</a>)</p>
+<p>Expanding on the previous tip, you can also aggregate importance across <em>different</em> models (e.g., comparing importance in a Random Forest vs.&nbsp;a Gradient Boosted Machine).</p>
+<p>If a feature is consistently important across different algorithms and multiple runs, you can be much more confident that it is a true driver of the target variable.</p>
+</section>
+<section id="pro-tips-add-random-features" class="level3">
+<h3 class="anchored" data-anchor-id="pro-tips-add-random-features">35. Pro Tips: Add Random Features</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_35.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 35</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=1820s">Timestamp: 30:20</a>)</p>
+<p>Another technique mentioned is adding a <strong>Random Feature</strong> (noise) to the dataset. If a real feature ranks lower in importance than the random noise variable, it is likely not a significant predictor.</p>
+<p>This serves as a baseline or “sanity check” to distinguish true signal from statistical noise in the feature ranking list.</p>
+</section>
+<section id="permutation-based-importance-conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="permutation-based-importance-conclusion">36. Permutation Based Importance Conclusion</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_36.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 36</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2014s">Timestamp: 33:34</a>)</p>
+<p>The section concludes by asserting that <strong>Permutation based importance</strong> is the “best practice.” It offers a “good balance of computation and performance for any model.”</p>
+<p>References to academic papers (like Strobl) are provided for those who want to dive into the edge cases, but for general application, this is the recommended approach for determining <em>what</em> matters in a model.</p>
+</section>
+<section id="partial-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="partial-dependence">37. Partial Dependence</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_37.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 37</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2062s">Timestamp: 34:22</a>)</p>
+<p>The second tool introduced is <strong>Partial Dependence</strong>. While feature importance tells us <em>which</em> variables matter, Partial Dependence tells us <em>how</em> they matter.</p>
+<p>The slide shows example plots for Age and Weight. The goal is to understand the functional relationship: as age increases, does the predicted aggression go up, down, or follow a complex curve?</p>
+</section>
+<section id="effect-of-age-on-our-target" class="level3">
+<h3 class="anchored" data-anchor-id="effect-of-age-on-our-target">38. Effect of Age on Our Target</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_38.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 38</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2081s">Timestamp: 34:41</a>)</p>
+<p>The speaker reiterates that in complex “black box” models, we don’t have coefficients (positive or negative signs) like in linear regression. We cannot simply say “age is positive.”</p>
+<p>Therefore, we need a visualization that maps the input value to the prediction output to understand the behavior of the model across the range of the feature.</p>
+</section>
+<section id="calculating-partial-dependence-step-1" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-partial-dependence-step-1">39. Calculating Partial Dependence (Step 1)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_39.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 39</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2113s">Timestamp: 35:13</a>)</p>
+<p>To explain how Partial Dependence is calculated, the speaker walks through the process. Step 1: Take a single observation (one Dragon).</p>
+<p>Step 2: Keep all features constant <em>except</em> the one we are interested in (Age). Manually force the age to different values (e.g., 5, 10, 15 years old) and ask the model for a prediction at each point. This generates a hypothetical curve for that specific dragon.</p>
+</section>
+<section id="calculating-partial-dependence-step-2" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-partial-dependence-step-2">40. Calculating Partial Dependence (Step 2)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_40.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 40</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2153s">Timestamp: 35:53</a>)</p>
+<p>The process is repeated for a second dragon. Because the other features (weight, color, etc.) are different for this dragon, the curve might look slightly different (higher or lower baseline), but it follows the model’s logic for age.</p>
+</section>
+<section id="calculating-partial-dependence-step-3" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-partial-dependence-step-3">41. Calculating Partial Dependence (Step 3)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_41.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 41</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2166s">Timestamp: 36:06</a>)</p>
+<p>This is repeated for many observations in the dataset. The slide shows multiple data points being generated. This creates a “what-if” scenario for every dragon in the dataset across the spectrum of ages.</p>
+</section>
+<section id="individual-conditional-expectation-ice-curves" class="level3">
+<h3 class="anchored" data-anchor-id="individual-conditional-expectation-ice-curves">42. Individual Conditional Expectation (ICE) Curves</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_42.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 42</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2175s">Timestamp: 36:15</a>)</p>
+<p>When you draw lines connecting these predictions for each individual instance, you get <strong>ICE Curves</strong> (Individual Conditional Expectation).</p>
+<p>This visualizes the relationship between the feature and the prediction for every single data point. It shows the variability: for some dragons, age might have a steep effect; for others, it might be flatter.</p>
+</section>
+<section id="partial-dependence-plots-pdps" class="level3">
+<h3 class="anchored" data-anchor-id="partial-dependence-plots-pdps">43. Partial Dependence Plots (PDPs)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_43.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 43</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2187s">Timestamp: 36:27</a>)</p>
+<p>To get the <strong>Partial Dependence Plot (PDP)</strong>, you simply <strong>average</strong> all the ICE curves.</p>
+<p>This single line represents the <em>average</em> effect of the feature on the model’s prediction, holding everything else constant. It distills the complex interactions into a single, interpretable trend line.</p>
+</section>
+<section id="resulting-partial-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="resulting-partial-dependence">44. Resulting Partial Dependence</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_44.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 44</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2227s">Timestamp: 37:07</a>)</p>
+<p>The final plot shows the isolated effect of Age. The speaker notes this gives “really good insight.” We can now see if the risk rises linearly with age, or if (as often happens in nonlinear models) it plateaus or dips at certain points.</p>
+</section>
+<section id="ice-plots" class="level3">
+<h3 class="anchored" data-anchor-id="ice-plots">45. ICE Plots</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_45.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 45</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2448s">Timestamp: 40:48</a>)</p>
+<p>This slide formally defines ICE Plots. While the PDP shows the average, ICE plots are useful for seeing heterogeneity. For example, if the model treats males and females differently, the ICE curves might show two distinct clusters of lines that the average PDP would obscure.</p>
+</section>
+<section id="partial-dependence-to-show-price-elasticity" class="level3">
+<h3 class="anchored" data-anchor-id="partial-dependence-to-show-price-elasticity">46. Partial Dependence to Show Price Elasticity</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_46.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 46</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2240s">Timestamp: 37:20</a>)</p>
+<p>The speaker moves to a real-world example: <strong>Orange Juice Sales</strong>. The goal is to understand <strong>Price Elasticity</strong>—if we raise the price, do sales go down?</p>
+<p>Economics 101 says yes, but the model includes complex factors like store location, coupons, and competitor prices (10 other brands), making it a high-dimensional problem.</p>
+</section>
+<section id="change-in-price-affects-sales" class="level3">
+<h3 class="anchored" data-anchor-id="change-in-price-affects-sales">47. Change in Price Affects Sales?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_47.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 47</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2325s">Timestamp: 38:45</a>)</p>
+<p>This chart shows the raw data (orange line) of Price vs.&nbsp;Sales. It is “all over the place.” There is no clear linear relationship visible because the data is noisy and confounded by other variables (e.g., maybe high prices occurred during a holiday when sales were high anyway).</p>
+<p>Looking just at the raw data fails to isolate the specific impact of the price change on consumer behavior.</p>
+</section>
+<section id="ahh-price-does-affect-sales" class="level3">
+<h3 class="anchored" data-anchor-id="ahh-price-does-affect-sales">48. Ahh, Price Does Affect Sales!</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_48.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 48</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2356s">Timestamp: 39:16</a>)</p>
+<p>By applying <strong>Partial Dependence</strong>, the signal emerges from the noise. The blue line clearly shows that as price increases, sales generally decrease.</p>
+<p>Crucially, the plot reveals a non-linear drop at exactly <strong>$3.50</strong>. The speaker interprets this as a psychological threshold where customers decide “maybe I’ll buy something else.” This insight—a specific price point where demand collapses—is only visible through this interpretability technique.</p>
+</section>
+<section id="distributions-and-partial-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="distributions-and-partial-dependence">49. Distributions and Partial Dependence</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_49.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 49</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2430s">Timestamp: 40:30</a>)</p>
+<p>A warning is issued regarding <strong>Distributions</strong>. Partial Dependence assumes you can vary a feature independently of others. However, if features are correlated, you might create impossible combinations (like a 5-year-old dragon that weighs 5 tons).</p>
+<p>Making predictions on these “impossible” data points means extrapolating outside the training distribution, which can lead to unreliable explanations.</p>
+</section>
+<section id="partial-dependence-conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="partial-dependence-conclusion">50. Partial Dependence Conclusion</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_50.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 50</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2425s">Timestamp: 40:25</a>)</p>
+<p>The speaker concludes that Partial Dependence is a “best practice” for understanding feature behavior. References to Goldstein and Friedman (classic papers) are provided.</p>
+<p>This tool answers the “directionality” question, proving that the model aligns with domain knowledge (e.g., higher prices = lower sales).</p>
+</section>
+<section id="predictions" class="level3">
+<h3 class="anchored" data-anchor-id="predictions">51. Predictions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_51.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 51</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2512s">Timestamp: 41:52</a>)</p>
+<p>The final section focuses on <strong>Predictions</strong>. The speaker shows three dragons with their associated risk scores (9.1, 2.4, etc.).</p>
+<p>While the model successfully identifies the red dragon as high risk, the next logical question from a user is “Why?”</p>
+</section>
+<section id="predictions-explanations" class="level3">
+<h3 class="anchored" data-anchor-id="predictions-explanations">52. Predictions &amp; Explanations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_52.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 52</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2545s">Timestamp: 42:25</a>)</p>
+<p>This slide introduces <strong>Prediction Explanations</strong>. Alongside the score of 9.1, the model provides a list of contributing factors: “Number of past kills” increased the score, while “Gender” might have decreased it.</p>
+<p>This moves from global interpretability (how the model works generally) to <strong>local interpretability</strong> (why this specific instance was scored this way).</p>
+</section>
+<section id="floor-map-with-readmission-probability" class="level3">
+<h3 class="anchored" data-anchor-id="floor-map-with-readmission-probability">53. Floor Map with Readmission Probability</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_53.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 53</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2581s">Timestamp: 43:01</a>)</p>
+<p>A real-world application is shown: a hospital dashboard predicting patient readmission. The interface doesn’t just show a risk score (63.7%); it lists the reasons (e.g., “Abdominal pain,” “Medical specialty unspecified”).</p>
+<p>The speaker highlights that these explanations build <strong>Trust</strong> with end-users (nurses/doctors) and provide <strong>Context</strong> that helps them decide <em>how</em> to intervene, rather than just knowing <em>that</em> they should intervene.</p>
+</section>
+<section id="local-interpretable-model-agnostic-explanations-lime" class="level3">
+<h3 class="anchored" data-anchor-id="local-interpretable-model-agnostic-explanations-lime">54. Local Interpretable Model-Agnostic Explanations (LIME)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_54.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 54</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2701s">Timestamp: 45:01</a>)</p>
+<p>The speaker mentions <strong>LIME</strong>, one of the “traditional” or early techniques for this type of explanation. LIME works by fitting a simple local model around a single prediction to approximate the complex model’s behavior.</p>
+</section>
+<section id="lime-flaw-explanations-should-be-identical" class="level3">
+<h3 class="anchored" data-anchor-id="lime-flaw-explanations-should-be-identical">55. LIME Flaw: Explanations Should Be Identical</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_55.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 55</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2712s">Timestamp: 45:12</a>)</p>
+<p>The tone shifts to a critique of LIME. The slide asserts a fundamental requirement: <strong>“EXPLANATIONS SHOULD BE IDENTICAL”</strong> for the same data and same model.</p>
+<p>If you ask the model twice why it predicted a score for the same dragon, the answer should be the same both times.</p>
+</section>
+<section id="lime-two-different-explanations" class="level3">
+<h3 class="anchored" data-anchor-id="lime-two-different-explanations">56. LIME: Two Different Explanations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_56.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 56</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2715s">Timestamp: 45:15</a>)</p>
+<p>This slide provides code evidence of LIME’s instability. Running LIME twice on the “SAME DATA, SAME MODEL” produces “TWO DIFFERENT EXPLANATIONS.”</p>
+<p>This occurs because LIME relies on random sampling to build its local approximation. This randomness makes it unreliable for serious applications where consistency is required for trust.</p>
+</section>
+<section id="explanations-should-have-fidelity" class="level3">
+<h3 class="anchored" data-anchor-id="explanations-should-have-fidelity">57. Explanations Should Have Fidelity</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_57.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 57</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2720s">Timestamp: 45:20</a>)</p>
+<p>The speaker argues that explanations must have <strong>Fidelity</strong> to the data. If two data points are very similar, their explanations should be similar. LIME often fails this test, producing vastly different explanations for minor changes in input.</p>
+</section>
+<section id="lime-isnt-responsive-to-data" class="level3">
+<h3 class="anchored" data-anchor-id="lime-isnt-responsive-to-data">58. LIME Isn’t Responsive to Data</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_58.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 58</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2722s">Timestamp: 45:22</a>)</p>
+<p>Further criticism of LIME. The slide suggests that LIME explanations sometimes lack “local fidelity,” meaning the explanation doesn’t accurately reflect the model’s behavior in that specific region of the data.</p>
+</section>
+<section id="anyone-relying-on-lime-is-toast" class="level3">
+<h3 class="anchored" data-anchor-id="anyone-relying-on-lime-is-toast">59. Anyone Relying on LIME is Toast</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_59.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 59</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2725s">Timestamp: 45:25</a>)</p>
+<p>A blunt conclusion: “Anyone relying on LIME is toast.” The speaker strongly advises against using LIME due to these flaws, suggesting that while it was a pioneering method, it is no longer the standard for reliable interpretability.</p>
+</section>
+<section id="what-can-we-learn-from-this" class="level3">
+<h3 class="anchored" data-anchor-id="what-can-we-learn-from-this">60. What Can We Learn From This?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_60.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 60</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2730s">Timestamp: 45:30</a>)</p>
+<p>This slide summarizes the requirements for a good explanation method derived from LIME’s failures: consistency, accuracy, and fidelity. It sets the stage for introducing the superior method: Shapley values.</p>
+</section>
+<section id="your-model-or-a-surrogate-model" class="level3">
+<h3 class="anchored" data-anchor-id="your-model-or-a-surrogate-model">61. Your Model or a Surrogate Model?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_61.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 61</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2730s">Timestamp: 45:30</a>)</p>
+<p>The speaker questions whether we are explaining the <em>actual</em> model or a <em>surrogate</em> (approximation). LIME explains a surrogate. Ideally, we want to explain the actual model directly.</p>
+</section>
+<section id="what-is-local" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-local">62. What is Local?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_62.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 62</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2730s">Timestamp: 45:30</a>)</p>
+<p>Another critique of LIME involves the definition of “local.” The “kernel width” is a hyperparameter that changes the explanation. If the explanation depends on how you tune the explainer, rather than just the data, it is problematic.</p>
+</section>
+<section id="explanations-should-be-model-agnostic" class="level3">
+<h3 class="anchored" data-anchor-id="explanations-should-be-model-agnostic">63. Explanations Should Be Model Agnostic</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_63.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 63</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2706s">Timestamp: 45:06</a>)</p>
+<p>The speaker reiterates the requirement that the method must work for any model type (Trees, Neural Nets, SVMs). This is a strength of LIME, but also a requirement for its replacement.</p>
+</section>
+<section id="explanations-should-be-fast" class="level3">
+<h3 class="anchored" data-anchor-id="explanations-should-be-fast">64. Explanations Should Be Fast</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_64.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 64</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2733s">Timestamp: 45:33</a>)</p>
+<p>Speed is critical. The slide compares LIME’s speed across datasets. If an explanation takes too long to generate, it cannot be used in real-time applications (like the hospital dashboard).</p>
+</section>
+<section id="shapley-values-for-explanations" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-for-explanations">65. Shapley Values for Explanations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_65.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 65</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2736s">Timestamp: 45:36</a>)</p>
+<p>The speaker introduces <strong>Shapley Values</strong> as the modern standard. Originating from Game Theory (and Nobel Prize-winning economics), this method provides a mathematically sound way to attribute the “marginal effect” of features to a prediction.</p>
+</section>
+<section id="shapley-values-metaphor-pushing-a-car" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-metaphor-pushing-a-car">66. Shapley Values Metaphor: Pushing a Car</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_66.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 66</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2760s">Timestamp: 46:00</a>)</p>
+<p>To explain the concept, the speaker uses a metaphor: <strong>Pushing a car stuck in the snow</strong>. It’s a cooperative game. Several people (features) are pushing to achieve an outcome (moving the car/making a prediction).</p>
+<p>The goal is to determine how much each person contributed. Did the teenager actually push, or just stand there?</p>
+</section>
+<section id="intuition-of-shapley-values" class="level3">
+<h3 class="anchored" data-anchor-id="intuition-of-shapley-values">67. Intuition of Shapley Values</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_67.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 67</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2845s">Timestamp: 47:25</a>)</p>
+<p>The speaker expands the metaphor. If “The Rock” joins the pushing, he might only need to add a small amount of force (10 units) to get the car moving because the others are already pushing.</p>
+<p>However, if The Rock was pushing alone, he would contribute much more. Shapley values calculate the average contribution across all possible “coalitions” (combinations of people pushing).</p>
+</section>
+<section id="calculating-average-contribution" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-average-contribution">68. Calculating Average Contribution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_68.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 68</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2810s">Timestamp: 46:50</a>)</p>
+<p>The slide visually represents different scenarios (orders of arrival). The contribution of a person depends on who is already there. Shapley values “unpack” this by averaging the marginal contribution of a feature across all possible permutations of features.</p>
+</section>
+<section id="calculating-shapley-values-subsets" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-shapley-values-subsets">69. Calculating Shapley Values: Subsets</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_69.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 69</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2923s">Timestamp: 48:43</a>)</p>
+<p>Mathematically, this means looking at all possible subsets of features. The slide lists the combinations (A alone, B alone, A+B, etc.) and the model output (“Force”) for each.</p>
+</section>
+<section id="calculating-shapley-values-marginal-contributions" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-shapley-values-marginal-contributions">70. Calculating Shapley Values: Marginal Contributions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_70.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 70</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2931s">Timestamp: 48:51</a>)</p>
+<p>By comparing the output of a subset <em>with</em> a feature to the subset <em>without</em> it, we find the <strong>marginal contribution</strong> for that specific scenario.</p>
+</section>
+<section id="calculating-shapley-values-the-average" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-shapley-values-the-average">71. Calculating Shapley Values: The Average</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_71.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 71</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2934s">Timestamp: 48:54</a>)</p>
+<p>The final Shapley value is the <strong>average</strong> of these marginal contributions. This provides a fair distribution of credit among the features that sums up to the total prediction.</p>
+</section>
+<section id="shapley-values-formula" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-formula">72. Shapley Values Formula</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_72.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 72</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2920s">Timestamp: 48:40</a>)</p>
+<p>The slide presents the formal mathematical formula. It is defined as the “average marginal contribution of a feature with respect to all subsets of other features.” While complex, it guarantees unique properties like consistency that LIME lacks.</p>
+</section>
+<section id="shapley-values-for-feature-attribution" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-for-feature-attribution">73. Shapley Values for Feature Attribution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_73.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 73</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=2945s">Timestamp: 49:05</a>)</p>
+<p>Applying this to Machine Learning: The “Game” is the prediction task. The “Players” are the features. The “Payout” is the prediction score.</p>
+<p>The slide shows a Boston Housing prediction. The Shapley values tell us that for this specific house, the “LSTAT” feature pushed the price down, while “RM” (rooms) pushed it up, relative to the average house price.</p>
+</section>
+<section id="so-many-methods-for-shapley-values" class="level3">
+<h3 class="anchored" data-anchor-id="so-many-methods-for-shapley-values">74. So Many Methods for Shapley Values</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_74.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 74</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3035s">Timestamp: 50:35</a>)</p>
+<p>The speaker notes that calculating exact Shapley values is computationally expensive (2^N combinations). Therefore, many approximation methods exist. The slide lists implementations in R (<code>iml</code>, <code>fastshap</code>) and Python (<code>shap</code>).</p>
+</section>
+<section id="calculating-shapley-values---linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-shapley-values---linear-model">75. Calculating Shapley Values - Linear Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_75.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 75</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3010s">Timestamp: 50:10</a>)</p>
+<p>For a simple <strong>Linear Model</strong>, Shapley values are easy to calculate. Because features in a linear model are additive and independent (conceptually), the coefficient * value roughly equals the contribution.</p>
+</section>
+<section id="linear-model-example" class="level3">
+<h3 class="anchored" data-anchor-id="linear-model-example">76. Linear Model Example</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_76.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 76</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3012s">Timestamp: 50:12</a>)</p>
+<p>The slide shows that if you change the Age, the prediction changes by a specific amount. In linear models, the difference between the prediction and the baseline is simply the sum of these changes.</p>
+</section>
+<section id="simple-to-get-shapley-values-for-linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="simple-to-get-shapley-values-for-linear-model">77. Simple to Get Shapley Values for Linear Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_77.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 77</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3015s">Timestamp: 50:15</a>)</p>
+<p>This reinforces that for linear models, we don’t need complex approximations. The structure of the model allows for exact calculation easily.</p>
+</section>
+<section id="shapley-values-for-trees-tree-shap" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-for-trees-tree-shap">78. Shapley Values for Trees: Tree Shap</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_78.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 78</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3045s">Timestamp: 50:45</a>)</p>
+<p>For tree-based models (Random Forest, XGBoost, LightGBM), there is a specific, fast algorithm called <strong>Tree SHAP</strong> (developed by Scott Lundberg). It computes exact Shapley values in polynomial time by leveraging the tree structure, making it feasible for large models.</p>
+</section>
+<section id="tree-shap-calculation" class="level3">
+<h3 class="anchored" data-anchor-id="tree-shap-calculation">79. Tree Shap Calculation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_79.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 79</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3045s">Timestamp: 50:45</a>)</p>
+<p>This slide visualizes how Tree SHAP works by tracing paths down the decision tree to calculate expectations. This efficiency is why SHAP has become the industry standard for boosting models.</p>
+</section>
+<section id="approximating-shapley-values" class="level3">
+<h3 class="anchored" data-anchor-id="approximating-shapley-values">80. Approximating Shapley Values</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_80.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 80</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3055s">Timestamp: 50:55</a>)</p>
+<p>For other “Black Box” models (like Neural Networks or SVMs) where exact calculation is intractable due to the combinatorial explosion (100 features = impossible to compute all subsets), we must use approximations.</p>
+</section>
+<section id="approximating-shapley-values-strumbelj" class="level3">
+<h3 class="anchored" data-anchor-id="approximating-shapley-values-strumbelj">81. Approximating Shapley Values: Strumbelj</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_81.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 81</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3064s">Timestamp: 51:04</a>)</p>
+<p>One method is <strong>Strumbelj’s algorithm</strong>, a sampling-based approach. It uses Monte Carlo sampling to estimate the difference between predictions with and without a feature, approximating the average marginal contribution.</p>
+</section>
+<section id="strumbelj-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="strumbelj-visualization">82. Strumbelj Visualization</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_82.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 82</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3064s">Timestamp: 51:04</a>)</p>
+<p>The slide visualizes the sampling process: creating synthetic instances by mixing the feature of interest with random values from the dataset to estimate its effect.</p>
+</section>
+<section id="approximating-shapley-values-shap-kernel" class="level3">
+<h3 class="anchored" data-anchor-id="approximating-shapley-values-shap-kernel">83. Approximating Shapley Values: Shap Kernel</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_83.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 83</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3064s">Timestamp: 51:04</a>)</p>
+<p><strong>Kernel SHAP</strong> is introduced as a model-agnostic method. It connects LIME and Shapley values. It uses a weighted linear regression (like LIME) but uses specific “Shapley weights” to ensure the result is a valid Shapley value approximation.</p>
+</section>
+<section id="shap-kernel-generating-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="shap-kernel-generating-data-1">84. Shap Kernel: Generating Data (1)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_84.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 84</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p><em>Note: The speaker skips detailed explanations of these calculation slides due to time constraints, but the slides detail the technical steps.</em></p>
+<p>This slide shows the setup for Kernel SHAP, defining a “background dataset” to serve as the reference value for “missing” features.</p>
+</section>
+<section id="shap-kernel-generating-data-2" class="level3">
+<h3 class="anchored" data-anchor-id="shap-kernel-generating-data-2">85. Shap Kernel: Generating Data (2)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_85.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 85</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p>The method involves treating features as “missing” by replacing them with background values to simulate their absence from a coalition.</p>
+</section>
+<section id="shap-kernel-generating-data-3" class="level3">
+<h3 class="anchored" data-anchor-id="shap-kernel-generating-data-3">86. Shap Kernel: Generating Data (3)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_86.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 86</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p>Permutations of feature coalitions are generated to create a synthetic dataset for the local regression.</p>
+</section>
+<section id="shap-kernel-generating-data-4" class="level3">
+<h3 class="anchored" data-anchor-id="shap-kernel-generating-data-4">87. Shap Kernel: Generating Data (4)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_87.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 87</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p>A linear model is fit to this synthetic data. The coefficients of this linear model, when weighted correctly, correspond to the Shapley values.</p>
+</section>
+<section id="shap-kernel-generating-data-5" class="level3">
+<h3 class="anchored" data-anchor-id="shap-kernel-generating-data-5">88. Shap Kernel: Generating Data (5)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_88.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 88</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p>The result is the attribution value for the specific prediction.</p>
+</section>
+<section id="mimic-shap" class="level3">
+<h3 class="anchored" data-anchor-id="mimic-shap">89. Mimic Shap</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_89.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 89</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p><strong>Mimic SHAP</strong> is another approximation where a global surrogate model (like a Gradient Boosted Tree) is trained to mimic the black box, and then Tree SHAP is used on the surrogate.</p>
+</section>
+<section id="gradient-shap" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-shap">90. Gradient Shap</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_90.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 90</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p><strong>Gradient SHAP</strong> is designed for Deep Learning models (differentiable models). It combines Integrated Gradients with Shapley values for efficient computation in neural networks.</p>
+</section>
+<section id="gkmexplain" class="level3">
+<h3 class="anchored" data-anchor-id="gkmexplain">91. GkmExplain</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_91.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 91</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p>A specialized method for non-linear Support Vector Machines (SVMs).</p>
+</section>
+<section id="dasp" class="level3">
+<h3 class="anchored" data-anchor-id="dasp">92. DASP</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_92.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 92</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3075s">Timestamp: 51:15</a>)</p>
+<p><strong>DASP</strong> is a polynomial-time algorithm for approximating Shapley values specifically in Deep Neural Networks.</p>
+</section>
+<section id="aggregating-shapley-values-feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="aggregating-shapley-values-feature-importance">93. Aggregating Shapley Values: Feature Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_93.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 93</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3092s">Timestamp: 51:32</a>)</p>
+<p>The speaker returns to practical applications. Once you have local SHAP values for every prediction, you can aggregate them.</p>
+<p>By summing the <strong>absolute</strong> SHAP values across all data points, you get a global <strong>Feature Importance</strong> plot. This tells you which features are most important overall, derived directly from the local explanations.</p>
+</section>
+<section id="aggregating-shapley-values-feature-interactions" class="level3">
+<h3 class="anchored" data-anchor-id="aggregating-shapley-values-feature-interactions">94. Aggregating Shapley Values: Feature Interactions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_94.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 94</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3106s">Timestamp: 51:46</a>)</p>
+<p>SHAP can also quantify <strong>Interactions</strong>. The slide shows the interaction between Age and Sex. It reveals that for males, a certain age range increases risk (prediction), whereas for females, it might be different.</p>
+<p>This allows data scientists to see exactly how features modify each other’s effects, solving the problem of hidden interactions in complex models.</p>
+</section>
+<section id="aggregating-shapley-values-feature-selection" class="level3">
+<h3 class="anchored" data-anchor-id="aggregating-shapley-values-feature-selection">95. Aggregating Shapley Values: Feature Selection</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_95.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 95</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3144s">Timestamp: 52:24</a>)</p>
+<p>SHAP values can be used for <strong>Feature Selection</strong>. By ranking features by their mean absolute SHAP value, you can identify the top contributors and remove noise variables, potentially simplifying the model without losing accuracy.</p>
+</section>
+<section id="aggregating-shapley-values-supervised-clustering" class="level3">
+<h3 class="anchored" data-anchor-id="aggregating-shapley-values-supervised-clustering">96. Aggregating Shapley Values: Supervised Clustering</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_96.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 96</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3165s">Timestamp: 52:45</a>)</p>
+<p>A “cool advanced technique” is <strong>Explanation Clustering</strong> (Supervised Clustering). Instead of clustering the raw data, you cluster the <em>explanations</em> (the SHAP values).</p>
+<p>This groups data points not by their raw values, but by <em>why</em> the model made a prediction for them. This can reveal distinct subpopulations or “reasons” for high risk (e.g., a group of high-risk dragons due to age vs.&nbsp;a group due to weight).</p>
+</section>
+<section id="model-agnostic-explanation-tools-summary" class="level3">
+<h3 class="anchored" data-anchor-id="model-agnostic-explanation-tools-summary">97. Model Agnostic Explanation Tools Summary</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_97.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 97</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3206s">Timestamp: 53:26</a>)</p>
+<p>The presentation wraps up by reviewing the three key tools covered: 1. <strong>Feature Importance</strong> (Permutation based) 2. <strong>Partial Dependence</strong> (for directionality) 3. <strong>Prediction Explanations</strong> (Shapley Values)</p>
+<p>The speaker encourages the audience to use these tools to build trust and understanding in their machine learning workflows.</p>
+</section>
+<section id="question-time" class="level3">
+<h3 class="anchored" data-anchor-id="question-time">98. Question Time</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_98.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 98</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/ZRckw_fE56Q&amp;t=3214s">Timestamp: 53:34</a>)</p>
+<p>The final slide opens the floor for questions and provides contact information. The speaker mentions that the slides and notebooks (including the age/milk and LIME examples) are available on his GitHub for those who want to explore the code.</p>
+<hr>
+<p><em>This annotated presentation was generated from the talk using AI-assisted tools. Each slide includes timestamps and detailed explanations.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/rajivshah\.com\/blog");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ @rajistics - Rajiv Shah
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com">
+<p><u>About Me</u></p>
+</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="./index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/">
+      <i class="bi bi-instagram" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics">
+      <i class="bi bi-tiktok" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w">
+      <i class="bi bi-youtube" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

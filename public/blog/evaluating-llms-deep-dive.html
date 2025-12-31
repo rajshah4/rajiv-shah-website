@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-11-15">
+
+<title>Evaluation for Large Language Models (LLMs) and Generative AI - A Deep Dive – Rajiv Shah - rajistics blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-475ad4fe1e4ce2c827a237f0e4cf2c17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Rajiv Shah - rajistics blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com"> 
+<span class="menu-text"><u>About Me</u></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/"> <i class="bi bi-instagram" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics"> <i class="bi bi-tiktok" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Evaluation for Large Language Models (LLMs) and Generative AI - A Deep Dive</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">LLM</div>
+                <div class="quarto-category">Evaluation</div>
+                <div class="quarto-category">Generative AI</div>
+                <div class="quarto-category">Testing</div>
+                <div class="quarto-category">Annotated Talk</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 15, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#video" id="toc-video" class="nav-link active" data-scroll-target="#video">Video</a></li>
+  <li><a href="#annotated-presentation" id="toc-annotated-presentation" class="nav-link" data-scroll-target="#annotated-presentation">Annotated Presentation</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="evaluating-llms-deep-dive.ipynb" download="evaluating-llms-deep-dive.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="video" class="level2">
+<h2 class="anchored" data-anchor-id="video">Video</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/iQl03pQlYWY" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Watch the <a href="https://youtu.be/iQl03pQlYWY">full video</a></p>
+<hr>
+</section>
+<section id="annotated-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="annotated-presentation">Annotated Presentation</h2>
+<p>Below is an annotated version of the presentation, with timestamped links to the relevant parts of the video for each slide.</p>
+<p>Here is the annotated presentation for “Evaluating LLMs” by Rajiv Shah.</p>
+<section id="title-slide-evaluating-llms" class="level3">
+<h3 class="anchored" data-anchor-id="title-slide-evaluating-llms">1. Title Slide: Evaluating LLMs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_1.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 1</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=0s">Timestamp: 00:00</a>)</p>
+<p>The presentation begins with the title slide, introducing the speaker, Rajiv Shah, and the topic of <strong>Evaluating Large Language Models (LLMs)</strong>. The slide includes a link to a GitHub repository (<code>LLM-Evaluation</code>), which serves as a companion resource containing notebooks and code examples referenced throughout the talk.</p>
+<p>Rajiv sets the stage by explaining his motivation: he sees many enterprises treating Generative AI as “science experiments” that fail to reach production. He argues that a major reason for this failure is a lack of proper evaluation strategies.</p>
+<p>The goal of this talk is to move beyond experimentation and discuss how to rigorously evaluate models to get them into production and keep them there, covering technical, business, and operational perspectives.</p>
+</section>
+<section id="no-impact" class="level3">
+<h3 class="anchored" data-anchor-id="no-impact">2. No Impact!</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_2.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 2</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=5s">Timestamp: 00:05</a>)</p>
+<p>This slide humorously illustrates the current state of many LLM projects. It depicts a chaotic lab scene and a cartoon character in a strange vehicle, captioned “No impact!” This visualizes the frustration of data scientists building cool things that never deliver real-world value.</p>
+<p>Rajiv uses this to highlight the “science experiment” nature of current GenAI work. Without proper evaluation, teams cannot prove the reliability or value of their models, preventing deployment.</p>
+<p>The slide emphasizes the necessity of shifting from “playing around” with models to applying rigorous engineering discipline, starting with evaluation.</p>
+</section>
+<section id="three-pillars-of-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="three-pillars-of-evaluation">3. Three Pillars of Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_3.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 3</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=41s">Timestamp: 00:41</a>)</p>
+<p>This slide breaks down Generative AI evaluation into three critical dimensions: <strong>Technical (F1)</strong>, <strong>Business ($$)</strong>, and <strong>Operational (TCO)</strong>. While the talk focuses heavily on technical metrics, Rajiv stresses that the other two are equally vital for production success.</p>
+<p>The <strong>Business</strong> dimension asks about the return on investment and the cost of errors, while the <strong>Operational</strong> dimension considers the Total Cost of Ownership (TCO), latency, and maintenance.</p>
+<p>Understanding all three pillars is what distinguishes a successful production deployment from a mere prototype.</p>
+</section>
+<section id="generative-ai-evaluation-methods" class="level3">
+<h3 class="anchored" data-anchor-id="generative-ai-evaluation-methods">4. Generative AI Evaluation Methods</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_4.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 4</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=63s">Timestamp: 01:03</a>)</p>
+<p>This chart is the central framework of the presentation. It categorizes technical evaluation methods based on <strong>Cost</strong> (y-axis) and <strong>Flexibility</strong> (x-axis). The methods range from rigid, low-cost approaches like <strong>Exact Matching</strong> to flexible, high-cost approaches like <strong>Red Teaming</strong>.</p>
+<p>The slide lists specific methodologies: Exact matching, Similarity (BLEU/ROUGE), Functional correctness (Unit tests), Benchmarks (MMLU), Human evaluation, Model-based approaches (LLM-as-a-Judge), and Red teaming.</p>
+<p>Rajiv notes that these categories overlap and are not mutually exclusive. This visual guide helps practitioners choose the right tool for their specific stage of development and resource constraints.</p>
+</section>
+<section id="application-to-rag" class="level3">
+<h3 class="anchored" data-anchor-id="application-to-rag">5. Application to RAG</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_5.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 5</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=76s">Timestamp: 01:16</a>)</p>
+<p>This slide previews the case study at the end of the talk: <strong>Retrieval Augmented Generation (RAG)</strong>. It shows a diagram splitting the RAG process into two distinct components: <strong>Retrieval</strong> (finding the data) and <strong>Augmented Generation</strong> (synthesizing the answer).</p>
+<p>Rajiv introduces this here to promise a practical application of the concepts. He explains that after covering the evaluation methods, he will demonstrate how to apply them specifically to a RAG system.</p>
+<p>This foreshadows the importance of <strong>component-wise evaluation</strong>—evaluating the retriever and the generator separately rather than just the system as a whole.</p>
+</section>
+<section id="evaluating-llms-title-repeat" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-llms-title-repeat">6. Evaluating LLMs (Title Repeat)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_6.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 6</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=91s">Timestamp: 01:31</a>)</p>
+<p>This slide serves as a transition point, reiterating the talk’s title and contact information. It signals the end of the introduction and the beginning of the deep dive into the current state of LLMs.</p>
+<p>Rajiv notes that this will be a long, detailed talk, encouraging viewers to use the video timeline to skip around. He sets expectations for the pace and depth of the technical content to follow.</p>
+</section>
+<section id="many-ways-to-use-llms" class="level3">
+<h3 class="anchored" data-anchor-id="many-ways-to-use-llms">7. Many Ways to Use LLMs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_7.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 7</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=105s">Timestamp: 01:45</a>)</p>
+<p>This slide illustrates the versatility of LLMs, showing examples of <strong>Question Answering</strong> and <strong>Code Generation</strong>. It highlights that LLMs are not limited to a single task like classification; they can summarize, chat, write code, and reason.</p>
+<p>Rajiv explains that this versatility makes evaluation difficult. Unlike traditional ML where a simple confusion matrix might suffice, LLMs produce varied, open-ended outputs that require more complex assessment strategies.</p>
+<p>The slide sets up the problem statement: because LLMs can do so much, we need a diverse set of evaluation tools to measure their performance across different modalities.</p>
+</section>
+<section id="open-source-llm-leaderboard" class="level3">
+<h3 class="anchored" data-anchor-id="open-source-llm-leaderboard">8. Open Source LLM Leaderboard</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_8.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 8</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=138s">Timestamp: 02:18</a>)</p>
+<p>This slide shows a screenshot of the <strong>Hugging Face Open LLM Leaderboard</strong>. It notes that over 2,000 LLMs have been evaluated, visualizing the sheer volume of models available to practitioners.</p>
+<p>Rajiv describes the experience of looking for a model as “overwhelming.” With new models releasing weekly, relying solely on public leaderboards to pick a model is daunting and potentially misleading.</p>
+<p>This introduces the concept of “Leaderboard Fatigue” and questions whether these general-purpose rankings are useful for specific enterprise use cases.</p>
+</section>
+<section id="helm-framework" class="level3">
+<h3 class="anchored" data-anchor-id="helm-framework">9. HELM Framework</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_9.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 9</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=172s">Timestamp: 02:52</a>)</p>
+<p>This slide introduces <strong>HELM (Holistic Evaluation of Language Models)</strong> from Stanford. It displays the framework’s structure, which evaluates models across various scenarios (datasets) and metrics (accuracy, bias, toxicity).</p>
+<p>Rajiv presents HELM as the academic approach to the evaluation problem. It attempts to be comprehensive by measuring everything across many dimensions, offering a more rigorous alternative to simple leaderboards.</p>
+<p>However, he points out that even this comprehensive approach has its downsides, primarily the sheer volume of data it produces.</p>
+</section>
+<section id="overwhelming-information" class="level3">
+<h3 class="anchored" data-anchor-id="overwhelming-information">10. Overwhelming Information</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_10.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 10</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=205s">Timestamp: 03:25</a>)</p>
+<p>This slide displays a screenshot of the HELM research paper, emphasizing its length (163 pages). The caption “Overwhelming!” reflects the difficulty a data scientist faces when trying to digest this amount of information.</p>
+<p>Rajiv humorously compares the paper’s size to a “Harry Potter book,” illustrating that while the academic rigor is high, the practical barrier to entry is also significant.</p>
+<p>The key takeaway is that while comprehensive benchmarks exist, they are often too dense for quick, practical decision-making in an enterprise setting.</p>
+</section>
+<section id="feeling-overwhelmed" class="level3">
+<h3 class="anchored" data-anchor-id="feeling-overwhelmed">11. Feeling Overwhelmed</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_11.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 11</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=226s">Timestamp: 03:46</a>)</p>
+<p>This visual slide features a person looking frustrated and burying their face in their hands. It represents the emotional state of a data scientist trying to navigate the complex, rapidly changing landscape of LLM evaluation.</p>
+<p>Rajiv uses this to empathize with the audience. Between the thousands of models on Hugging Face and the hundreds of pages of academic papers, it is easy to feel lost.</p>
+<p>This sets the stage for the need for simpler, more fundamental principles to guide evaluation.</p>
+</section>
+<section id="reliability-of-helm" class="level3">
+<h3 class="anchored" data-anchor-id="reliability-of-helm">12. Reliability of HELM</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_12.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 12</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=237s">Timestamp: 03:57</a>)</p>
+<p>This slide questions the reliability of benchmarks like HELM. It presents data showing that minor changes in dataset selection can lead to different scoring and winners <strong>22% of the time</strong>. A correlation matrix visualizes the relationships between different metrics.</p>
+<p>Rajiv points out that benchmarks are fragile. If you change the specific datasets used to represent a “scenario,” the ranking of the models changes.</p>
+<p>This implies that “winners” on leaderboards are often dependent on the specific composition of the benchmark rather than inherent superiority across all tasks.</p>
+</section>
+<section id="davinci-002-vs-davinci-003" class="level3">
+<h3 class="anchored" data-anchor-id="davinci-002-vs-davinci-003">13. Davinci-002 vs Davinci-003</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_13.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 13</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=255s">Timestamp: 04:15</a>)</p>
+<p>This slide highlights a specific anomaly in HELM results where an older model (<code>text-davinci-002</code>) appears to outperform a newer, better model (<code>text-davinci-003</code>) in accuracy.</p>
+<p>Rajiv expresses skepticism, noting that OpenAI is unlikely to release a newer model that is objectively worse. This discrepancy suggests that the benchmark might not be capturing the improvements in the newer model, such as better instruction following or safety.</p>
+<p>The slide serves as a warning: <strong>Do not blindly trust benchmark rankings</strong>, as they may not reflect the actual capabilities or “quality” of a model for your specific needs.</p>
+</section>
+<section id="leaderboard-reliability" class="level3">
+<h3 class="anchored" data-anchor-id="leaderboard-reliability">14. Leaderboard Reliability</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_14.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 14</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=293s">Timestamp: 04:53</a>)</p>
+<p>This slide examines the <strong>Open LLM Leaderboard</strong> again, pointing out that rankings are heavily influenced by specific datasets like <strong>TruthfulQA</strong>. It asks, “Is this impactful?”</p>
+<p>Rajiv argues that if a model’s high ranking is driven primarily by its performance on a dataset like TruthfulQA, it might not be relevant to a user whose use case (e.g., summarizing financial documents) has nothing to do with that specific benchmark.</p>
+<p>This reinforces the idea that general-purpose leaderboards may not align with specific business goals.</p>
+</section>
+<section id="model-evals-vs-system-evals" class="level3">
+<h3 class="anchored" data-anchor-id="model-evals-vs-system-evals">15. Model Evals vs System Evals</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_15.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 15</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=333s">Timestamp: 05:33</a>)</p>
+<p>This slide distinguishes between <strong>Model Evals</strong> (selecting the best model from <em>n</em> options) and <strong>System Evals</strong> (optimizing a single model for a specific task).</p>
+<p>Rajiv explains that most public benchmarks focus on the former—comparing thousands of models. However, in enterprise settings, the goal is usually the latter: you pick a model (like GPT-4 or Llama 2) and need to evaluate how to optimize it for your specific application.</p>
+<p>The talk focuses on bridging this gap, helping practitioners evaluate their specific implementation rather than just comparing base models.</p>
+</section>
+<section id="lost-in-the-maze" class="level3">
+<h3 class="anchored" data-anchor-id="lost-in-the-maze">16. Lost in the Maze</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_16.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 16</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=393s">Timestamp: 06:33</a>)</p>
+<p>This slide features an image of a hedge maze with the word “Lost,” symbolizing the confusion in the current evaluation landscape.</p>
+<p>Rajiv uses this to pivot back to <strong>fundamentals</strong>. When lost in complex new technology, the best approach is to return to first principles of data science evaluation.</p>
+<p>He prepares the audience to look at a classic machine learning problem to ground the upcoming LLM concepts.</p>
+</section>
+<section id="evaluating-customer-churn" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-customer-churn">17. Evaluating Customer Churn</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_17.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 17</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=409s">Timestamp: 06:49</a>)</p>
+<p>This slide introduces a classic “Data Science 101” problem: <strong>Customer Churn</strong>. It depicts an exit door and a pie chart, setting up a scenario where a data scientist must evaluate a model designed to predict which customers will leave.</p>
+<p>Rajiv uses this familiar example to contrast different levels of evaluation maturity, which he will then map onto GenAI.</p>
+</section>
+<section id="junior-data-scientist-approach" class="level3">
+<h3 class="anchored" data-anchor-id="junior-data-scientist-approach">18. Junior Data Scientist Approach</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_18.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 18</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=427s">Timestamp: 07:07</a>)</p>
+<p>This slide shows standard classification metrics: <strong>ROC curve</strong>, <strong>Confusion Matrix</strong>, <strong>F1 Score</strong>, and <strong>True Positive Rate</strong>. Rajiv labels this as the “Junior Data Scientist” approach.</p>
+<p>While these metrics are technically correct, they are abstract. A junior data scientist presents these to a boss and says, “Look, I improved the AUC,” which often fails to communicate business value.</p>
+<p>This represents the <strong>Technical</strong> pillar of evaluation—necessary, but insufficient for business stakeholders.</p>
+</section>
+<section id="senior-data-scientist-approach" class="level3">
+<h3 class="anchored" data-anchor-id="senior-data-scientist-approach">19. Senior Data Scientist Approach</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_19.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 19</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=460s">Timestamp: 07:40</a>)</p>
+<p>This slide introduces <strong>Profit Curves</strong>. It translates the confusion matrix into dollar values (cost of false positives vs.&nbsp;value of true positives). Rajiv calls this the “Senior Data Scientist” approach.</p>
+<p>Here, the evaluation focuses on <strong>Business Value</strong>: “How much profit will this model generate compared to the baseline?” This aligns the technical model with business goals ($$).</p>
+<p>The lesson is that LLM evaluation must eventually map to business outcomes, not just technical benchmarks.</p>
+</section>
+<section id="data-science-leader-approach" class="level3">
+<h3 class="anchored" data-anchor-id="data-science-leader-approach">20. Data Science Leader Approach</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_20.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 20</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=507s">Timestamp: 08:27</a>)</p>
+<p>This slide discusses the <strong>Total Cost of Ownership (TCO)</strong> and <strong>Monitoring</strong>. It reflects the “Data Science Leader” perspective, which looks at the system holistically.</p>
+<p>A leader asks: “Is it worth spending 5 more weeks to get 3% more accuracy?” and “How will we monitor this when customer behavior changes?”</p>
+<p>This corresponds to the <strong>Operational</strong> pillar. It emphasizes that evaluation includes considering the cost of building, maintaining, and running the model over time.</p>
+</section>
+<section id="evaluate-generative-ai-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="evaluate-generative-ai-tasks">21. Evaluate Generative AI Tasks?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_21.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 21</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=563s">Timestamp: 09:23</a>)</p>
+<p>This slide transitions back to Generative AI, showing examples of code generation and summarization. It asks how to apply the principles just discussed (Technical, Business, Operational) to these new, complex tasks.</p>
+<p>Rajiv acknowledges that while the outputs (text, code) are different from simple classification labels, the fundamental need to evaluate across three dimensions remains.</p>
+</section>
+<section id="three-pillars-genai-context" class="level3">
+<h3 class="anchored" data-anchor-id="three-pillars-genai-context">22. Three Pillars (GenAI Context)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_22.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 22</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=576s">Timestamp: 09:36</a>)</p>
+<p>This slide repeats the <strong>Technical, Business, Operational</strong> framework, asserting “Still the same principles!”</p>
+<p>Rajiv reinforces that despite the hype and novelty of LLMs, we must not abandon standard engineering practices. We still need to measure technical accuracy (F1 equivalent), business impact ($$), and operational costs (TCO).</p>
+</section>
+<section id="evaluation-in-the-ml-lifecycle" class="level3">
+<h3 class="anchored" data-anchor-id="evaluation-in-the-ml-lifecycle">23. Evaluation in the ML Lifecycle</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_23.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 23</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=585s">Timestamp: 09:45</a>)</p>
+<p>This slide displays a “multi-headed llama” graphic representing the ML lifecycle: <strong>Development</strong>, <strong>Training</strong>, and <strong>Deployment</strong>.</p>
+<p>Rajiv explains that evaluation is not a one-time step. It happens: 1. <strong>Before:</strong> To decide if a project is viable. 2. <strong>During:</strong> To train and tune the model. 3. <strong>After:</strong> To monitor the model in production (Monitoring is the “sibling” of Evaluation).</p>
+</section>
+<section id="faster-better-cheaper" class="level3">
+<h3 class="anchored" data-anchor-id="faster-better-cheaper">24. Faster, Better, Cheaper</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_24.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 24</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=633s">Timestamp: 10:33</a>)</p>
+<p>This slide features a tweet by Eugene Yan, stating that automated evaluations lead to <strong>“faster, better, cheaper”</strong> LLMs. It mentions that good eval pipelines allow for safer deployments and faster experiments.</p>
+<p>Rajiv cites the example of Hugging Face’s <strong>Zephyr</strong> model. The team built it in just a few days because they had spent months building a robust evaluation pipeline.</p>
+<p>The key insight is that investing in evaluation infrastructure upfront accelerates actual model development and iteration.</p>
+</section>
+<section id="traditional-nlp-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="traditional-nlp-tasks">25. Traditional NLP Tasks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_25.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 25</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=711s">Timestamp: 11:51</a>)</p>
+<p>This slide advises that if you are using GenAI for a traditional NLP task (like sentiment analysis), you should <strong>“start with traditional metrics/datasets.”</strong></p>
+<p>However, Rajiv warns about <strong>Data Leakage</strong>. Because LLMs are trained on the internet, they may have already seen the test sets of standard benchmarks.</p>
+<p>The takeaway: Use standard metrics if applicable, but be skeptical of results that seem too good, as the model might be memorizing the test data.</p>
+</section>
+<section id="breaking-existing-evaluations" class="level3">
+<h3 class="anchored" data-anchor-id="breaking-existing-evaluations">26. Breaking Existing Evaluations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_26.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 26</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=758s">Timestamp: 12:38</a>)</p>
+<p>This slide explains that LLMs can <strong>“break existing evaluations.”</strong> It cites research where LLMs scored poorly on automated metrics but were rated highly by humans.</p>
+<p>Rajiv explains that LLMs have such a fluid and rich understanding of language that they often produce correct answers that old, rigid metrics fail to recognize.</p>
+<p>This highlights the limitation of using pre-LLM automated metrics for modern models; the models have outpaced the measurement tools.</p>
+</section>
+<section id="beating-human-baselines" class="level3">
+<h3 class="anchored" data-anchor-id="beating-human-baselines">27. Beating Human Baselines</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_27.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 27</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=809s">Timestamp: 13:29</a>)</p>
+<p>This slide presents data showing LLMs (GPT-3/4) beating <strong>human baselines</strong> in tasks like summarization. The charts show LLMs scoring higher in faithfulness, coherence, and relevance.</p>
+<p>Rajiv mentions recent research where GPT-4 wrote medical reports that doctors preferred over those written by other humans.</p>
+<p>This poses a challenge: How do you evaluate a model when it is better than the human annotators you would typically use as a gold standard?</p>
+</section>
+<section id="methods-chart-recap" class="level3">
+<h3 class="anchored" data-anchor-id="methods-chart-recap">28. Methods Chart (Recap)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_28.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 28</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=843s">Timestamp: 14:03</a>)</p>
+<p>This slide brings back the <strong>Generative AI Evaluation Methods</strong> chart (Cost vs.&nbsp;Flexibility). An arrow points to “Raj guess,” indicating that the placement of these methods is an estimation.</p>
+<p>Rajiv uses this to reorient the audience before diving into the specific methods one by one, starting from the bottom left (least flexible/cheapest).</p>
+</section>
+<section id="progression-of-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="progression-of-evaluation">29. Progression of Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_29.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 29</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=867s">Timestamp: 14:27</a>)</p>
+<p>This slide shows a directional arrow moving “up” the chart, from <strong>Exact Matching</strong> toward <strong>Red Teaming</strong>.</p>
+<p>Rajiv explains the flow of the presentation: we will start with rigid, simple metrics and move toward more complex, flexible, and human-centric evaluation methods.</p>
+</section>
+<section id="exact-matching-approach" class="level3">
+<h3 class="anchored" data-anchor-id="exact-matching-approach">30. Exact Matching Approach</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_30.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 30</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=922s">Timestamp: 15:22</a>)</p>
+<p>This slide highlights the <strong>“Exact matching approach”</strong> box on the chart.</p>
+<p>This is the starting point: the simplest form of evaluation where the model’s output must be identical to a reference answer.</p>
+</section>
+<section id="how-hard-could-it-be" class="level3">
+<h3 class="anchored" data-anchor-id="how-hard-could-it-be">31. How Hard Could It Be?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_31.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 31</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=962s">Timestamp: 16:02</a>)</p>
+<p>This slide asks, <strong>“How hard could evaluation be?”</strong> It shows simple outputs (Yes/No, A/B/C/D) and suggests that checking if string A equals string B should be trivial.</p>
+<p>Rajiv uses this to set up a contrast. While it <em>looks</em> simple like a basic Python script, the reality of LLMs makes even this basic task complicated due to formatting and non-determinism.</p>
+</section>
+<section id="consistent-prediction-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="consistent-prediction-workflow">32. Consistent Prediction Workflow</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_32.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 32</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=980s">Timestamp: 16:20</a>)</p>
+<p>This slide outlines a workflow: <strong>Inputs</strong> (Tokenization, Prompts) -&gt; <strong>Model</strong> (Hyperparameters) -&gt; <strong>Outputs</strong> (Evaluation).</p>
+<p>Rajiv emphasizes that to get exact matching to work, you need extreme consistency across this entire pipeline. He warns that you must plan for multiple iterations because things will go wrong at every step.</p>
+</section>
+<section id="story-time-mmlu-leaderboards" class="level3">
+<h3 class="anchored" data-anchor-id="story-time-mmlu-leaderboards">33. Story Time: MMLU Leaderboards</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_33.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 33</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1000s">Timestamp: 16:40</a>)</p>
+<p>This slide shows a tweet announcing a new LLM topping the leaderboard, but points out a discrepancy: <strong>“Why did we have two different MMLU scores?”</strong></p>
+<p>Rajiv tells the story of how a model claimed a high score on Twitter, but the actual paper showed a lower score. This discrepancy triggered an investigation into why the same model on the same benchmark produced different results.</p>
+</section>
+<section id="what-is-mmlu" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-mmlu">34. What is MMLU?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_34.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 34</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1057s">Timestamp: 17:37</a>)</p>
+<p>This slide defines <strong>MMLU (Massive Multitask Language Understanding)</strong>. It is a benchmark covering 57 tasks (Math, History, CS), designed to measure the “knowledge” of a model.</p>
+<p>Rajiv shows examples of questions (Microeconomics, Physics) to illustrate that these are multiple-choice questions used to gauge general intelligence.</p>
+</section>
+<section id="why-mmlu-evaluation-differed" class="level3">
+<h3 class="anchored" data-anchor-id="why-mmlu-evaluation-differed">35. Why MMLU Evaluation Differed</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_35.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 35</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1096s">Timestamp: 18:16</a>)</p>
+<p>This slide reveals the culprit behind the score discrepancy: <strong>Prompt Formatting</strong>. It shows three different prompt styles (HELM, Eleuther, Original) used by different evaluation harnesses.</p>
+<p>Rajiv challenges the audience to spot the differences. They are subtle: an extra space, a different bracket style around the letter <code>(A)</code> vs <code>A.</code>, or the inclusion of a subject line.</p>
+</section>
+<section id="style-changes-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="style-changes-accuracy">36. Style Changes Accuracy</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_36.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 36</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1153s">Timestamp: 19:13</a>)</p>
+<p>This slide states that these simple style changes resulted in a <strong>~5% change in accuracy</strong>.</p>
+<p>Rajiv underscores the significance: a 5% swing is massive on a leaderboard. This proves that LLMs are incredibly sensitive to prompt syntax. It also serves as a warning to be skeptical of reported benchmark scores, as they can be “massaged” simply by tweaking the prompt format.</p>
+</section>
+<section id="story-falcon-model-bias" class="level3">
+<h3 class="anchored" data-anchor-id="story-falcon-model-bias">37. Story: Falcon Model Bias</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_37.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 37</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1235s">Timestamp: 20:35</a>)</p>
+<p>This slide introduces the <strong>Falcon</strong> model story. Users noticed that when asked for a “technologically advanced city,” Falcon would almost always suggest <strong>Abu Dhabi</strong>.</p>
+<p>Rajiv sets up the mystery: Was the model biased because it was trained in the Middle East? Why was it so fixated on this specific city?</p>
+</section>
+<section id="biased-model-human-rights" class="level3">
+<h3 class="anchored" data-anchor-id="biased-model-human-rights">38. Biased Model (Human Rights)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_38.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 38</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1319s">Timestamp: 21:59</a>)</p>
+<p>This slide shows that the Falcon model also refused to discuss <strong>human rights abuses</strong> in Abu Dhabi.</p>
+<p>This fueled speculation that the model had been censored or biased during training to avoid sensitive topics regarding its region of origin.</p>
+</section>
+<section id="demo-placeholder" class="level3">
+<h3 class="anchored" data-anchor-id="demo-placeholder">39. Demo Placeholder</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_39.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 39</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1276s">Timestamp: 21:16</a>)</p>
+<p>This slide simply says “Let’s try to demo this.” In the video, Rajiv switches to a live recording of him interacting with the model to demonstrate the bias firsthand.</p>
+</section>
+<section id="check-the-system-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="check-the-system-prompt">40. Check the System Prompt</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_40.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 40</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1346s">Timestamp: 22:26</a>)</p>
+<p>This slide reveals the answer to the Falcon mystery: <strong>The System Prompt</strong>.</p>
+<p>It turns out the model had a hidden system instruction explicitly stating it was built in Abu Dhabi. When researchers changed this prompt (e.g., to “Mexico”), the model’s behavior changed, and it stopped forcing Abu Dhabi into answers.</p>
+<p>The lesson: <strong>System prompts heavily influence evaluation results</strong>. Small changes in hidden instructions can radically alter model behavior.</p>
+</section>
+<section id="prompt-engineering" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-engineering">41. Prompt Engineering</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_41.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 41</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1406s">Timestamp: 23:26</a>)</p>
+<p>This slide discusses <strong>Prompt Engineering</strong> techniques like <strong>Chain-of-Thought (COT)</strong>. It shows how asking a model to “think step by step” improves reasoning on math problems.</p>
+<p>Rajiv emphasizes that identifying the <em>best</em> prompt is a crucial part of the evaluation workflow. You aren’t just evaluating the model; you are evaluating the model <em>plus</em> the prompt.</p>
+</section>
+<section id="hands-on-prompting" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-prompting">42. Hands on: Prompting</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_42.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 42</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1445s">Timestamp: 24:05</a>)</p>
+<p>This slide introduces a hands-on exercise. It encourages users to use OpenAI’s playground to experiment with different prompts, specifically COT and system prompt variations.</p>
+</section>
+<section id="hands-on-glados" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-glados">43. Hands on: GLaDOS</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_43.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 43</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1454s">Timestamp: 24:14</a>)</p>
+<p>This slide shows a fun example where the system prompt turns ChatGPT into <strong>GLaDOS</strong> (from the game Portal).</p>
+<p>Rajiv uses this to demonstrate the power of the system prompt to change the persona and tone of the model completely.</p>
+</section>
+<section id="workflow-inputs-recap" class="level3">
+<h3 class="anchored" data-anchor-id="workflow-inputs-recap">44. Workflow: Inputs Recap</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_44.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 44</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1466s">Timestamp: 24:26</a>)</p>
+<p>This slide updates the <strong>Consistent Prediction Workflow</strong>. Under “Inputs,” it now explicitly lists <strong>System Prompt</strong>, Tokenization, Prompt Styles, and Prompt Engineering.</p>
+<p>This summarizes the section: to get consistent evaluation, you must control all these input variables.</p>
+</section>
+<section id="variability-of-llm-models" class="level3">
+<h3 class="anchored" data-anchor-id="variability-of-llm-models">45. Variability of LLM Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_45.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 45</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1479s">Timestamp: 24:39</a>)</p>
+<p>This slide shifts focus to the <strong>Model</strong> component. It notes that model size affects scores (Llama-2 example) and introduces the concept of <strong>Non-deterministic inference</strong>.</p>
+<p>Rajiv points out that GPU calculations introduce slight randomness, meaning you might not get bit-wise reproducibility even with the same settings.</p>
+</section>
+<section id="gpt-4-vs-gpt-3.5" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-4-vs-gpt-3.5">46. GPT-4 vs GPT-3.5</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_46.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 46</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1486s">Timestamp: 24:46</a>)</p>
+<p>This slide compares <strong>GPT-4 vs GPT-3.5</strong>. It shows that even models from the same “family” give very different answers to political opinion questions.</p>
+<p>Rajiv uses this to show that you cannot swap models (e.g., using a cheaper model for dev and a larger one for prod) without re-evaluating, as their behaviors diverge significantly.</p>
+</section>
+<section id="non-deterministic-inference" class="level3">
+<h3 class="anchored" data-anchor-id="non-deterministic-inference">47. Non-deterministic Inference</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_47.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 47</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1528s">Timestamp: 25:28</a>)</p>
+<p>This slide dives deeper into <strong>Non-deterministic inference</strong>. It explains that floating-point calculations on GPUs can have tiny variances that ripple out to affect token selection.</p>
+<p>For data scientists coming from deterministic systems (like logistic regression), this lack of 100% reproducibility can be a shock and complicates “exact match” testing.</p>
+</section>
+<section id="reliability-of-commercial-apis" class="level3">
+<h3 class="anchored" data-anchor-id="reliability-of-commercial-apis">48. Reliability of Commercial APIs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_48.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 48</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1563s">Timestamp: 26:03</a>)</p>
+<p>This slide addresses <strong>Model Drift</strong> in commercial APIs. It shows graphs of GPT-3.5 and GPT-4 performance changing over time on tasks like identifying prime numbers.</p>
+<p>Rajiv warns that if you don’t own the model (i.e., you use an API), the vendor might update it behind the scenes, breaking your evaluation baselines.</p>
+</section>
+<section id="hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="hyperparameters">49. Hyperparameters</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_49.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 49</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1587s">Timestamp: 26:27</a>)</p>
+<p>This slide shows the UI for <strong>Hyperparameters</strong> (Temperature, Max Length, Top P).</p>
+<p>Rajiv reminds the audience that these settings drastically influence predictions. Evaluation must be done with the exact same hyperparameters intended for production.</p>
+</section>
+<section id="output-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="output-evaluation">50. Output Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_50.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 50</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1600s">Timestamp: 26:40</a>)</p>
+<p>This slide highlights the <strong>“Output evaluation”</strong> step in the workflow.</p>
+<p>Now that we’ve covered inputs and models, Rajiv moves to the challenge of parsing and judging the text the model actually produces.</p>
+</section>
+<section id="generating-multiple-choice-output" class="level3">
+<h3 class="anchored" data-anchor-id="generating-multiple-choice-output">51. Generating Multiple Choice Output</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_51.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 51</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1606s">Timestamp: 26:46</a>)</p>
+<p>This slide discusses the difficulty of evaluating <strong>Multiple Choice</strong> answers. * <strong>First Letter Approach:</strong> Just look for “A” or “B”. Fails if the model says “The answer is A”. * <strong>Entire Answer:</strong> Look for the full text. Fails if the model phrases it slightly differently.</p>
+<p>Rajiv illustrates that even “simple” multiple-choice evaluation requires complex parsing logic because LLMs love to “chat” and add extra text.</p>
+</section>
+<section id="evaluating-mmlu-different-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-mmlu-different-outputs">52. Evaluating MMLU: Different Outputs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_52.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 52</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1648s">Timestamp: 27:28</a>)</p>
+<p>This slide compares how <strong>HELM</strong>, <strong>AI Harness</strong>, and the <strong>Original</strong> MMLU implementation parsed outputs.</p>
+<p>It reveals that the discrepancy in MMLU scores wasn’t just about prompts; it was also about <em>how</em> the evaluation code extracted the answer from the model’s response.</p>
+</section>
+<section id="consistency-is-hard" class="level3">
+<h3 class="anchored" data-anchor-id="consistency-is-hard">53. Consistency is Hard!</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_53.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 53</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1660s">Timestamp: 27:40</a>)</p>
+<p>This slide summarizes the MMLU saga: <strong>“Consistency is hard!”</strong> It shows the table of scores again.</p>
+<p>The takeaway is that “Exact Match” is a misnomer. It requires rigorous standardization of inputs, models, and output parsing to be reliable.</p>
+</section>
+<section id="hands-on-evaluating-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-evaluating-outputs">54. Hands on: Evaluating Outputs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_54.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 54</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1679s">Timestamp: 27:59</a>)</p>
+<p>This slide introduces a hands-on exercise evaluating sentiment analysis. It shows a spreadsheet where different models output sentiment in different formats (some verbose, some concise).</p>
+<p>Rajiv uses this to show the messy reality of parsing LLM outputs.</p>
+</section>
+<section id="solutions-standardizing-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="solutions-standardizing-outputs">55. Solutions: Standardizing Outputs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_55.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 55</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1714s">Timestamp: 28:34</a>)</p>
+<p>This slide presents solutions for the output problem: 1. <strong>OpenAI Function Calling:</strong> Forces the model to output structured JSON. 2. <strong>Guardrails AI:</strong> A library for validating outputs against a schema.</p>
+<p>Rajiv suggests that using these tools to tame the model into structured output makes “Exact Match” evaluation much more feasible.</p>
+</section>
+<section id="workflow-types-of-prompts" class="level3">
+<h3 class="anchored" data-anchor-id="workflow-types-of-prompts">56. Workflow: Types of Prompts</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_56.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 56</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1739s">Timestamp: 28:59</a>)</p>
+<p>This slide adds <strong>“Types of Prompts”</strong> to the Input section of the workflow diagram.</p>
+<p>Rajiv reiterates the need to plan for <strong>multiple iterations</strong>. You will likely need to tweak your prompts and parsing logic many times to get a stable evaluation pipeline.</p>
+</section>
+<section id="resources-prompting" class="level3">
+<h3 class="anchored" data-anchor-id="resources-prompting">57. Resources: Prompting</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_57.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 57</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1750s">Timestamp: 29:10</a>)</p>
+<p>This slide lists resources for learning prompting, including the OpenAI Cookbook and the DAIR.AI Prompt Engineering Guide.</p>
+</section>
+<section id="similarity-approach" class="level3">
+<h3 class="anchored" data-anchor-id="similarity-approach">58. Similarity Approach</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_58.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 58</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1753s">Timestamp: 29:13</a>)</p>
+<p>This slide moves up the chart to the <strong>Similarity approach</strong>.</p>
+<p>Rajiv introduces this as the next level of flexibility. If exact matching is too rigid, we check if the output is “similar enough” to the reference.</p>
+</section>
+<section id="story-translation" class="level3">
+<h3 class="anchored" data-anchor-id="story-translation">59. Story: Translation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_59.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 59</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1769s">Timestamp: 29:29</a>)</p>
+<p>This slide presents a translation challenge. It shows three human references for a Chinese-to-English translation and two computer candidates.</p>
+<p>Rajiv asks the audience to guess which candidate is better. This exercise builds intuition for how similarity metrics work: we look for overlapping words and phrases between the candidate and the references.</p>
+</section>
+<section id="bleu-metric" class="level3">
+<h3 class="anchored" data-anchor-id="bleu-metric">60. BLEU Metric</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_60.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 60</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1847s">Timestamp: 30:47</a>)</p>
+<p>This slide introduces <strong>BLEU (Bilingual Evaluation Understudy)</strong>. It explains that BLEU calculates scores based on n-gram overlap (1-gram to 4-gram) between the generated text and reference text.</p>
+<p>This is the mathematical formalization of the intuition from the previous slide. It’s a standard metric for translation.</p>
+</section>
+<section id="many-similarity-methods" class="level3">
+<h3 class="anchored" data-anchor-id="many-similarity-methods">61. Many Similarity Methods</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_61.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 61</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1875s">Timestamp: 31:15</a>)</p>
+<p>This slide lists various similarity metrics: <strong>Exact match, Edit distance, ROUGE, WER, METEOR, Cosine similarity</strong>.</p>
+<p>Rajiv notes the pros and cons: They are fast and easy to calculate, but they <strong>don’t consider meaning</strong> (semantics) and are biased toward shorter text. They measure lexical overlap, not understanding.</p>
+</section>
+<section id="taxonomy-of-similarity-methods" class="level3">
+<h3 class="anchored" data-anchor-id="taxonomy-of-similarity-methods">62. Taxonomy of Similarity Methods</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_62.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 62</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1926s">Timestamp: 32:06</a>)</p>
+<p>This slide shows a complex flow chart categorizing similarity methods into <strong>Untrained</strong> (lexical, character-based) and <strong>Trained</strong> (embedding-based).</p>
+<p>It illustrates the depth of research in this field, showing that there are dozens of ways to calculate “similarity.”</p>
+</section>
+<section id="similarity-methods-for-code" class="level3">
+<h3 class="anchored" data-anchor-id="similarity-methods-for-code">63. Similarity Methods for Code</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_63.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 63</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1935s">Timestamp: 32:15</a>)</p>
+<p>This slide asks if similarity works for <strong>Code</strong>. It shows a Python function <code>incr_list</code>.</p>
+<p>Rajiv argues that similarity <strong>“Doesn’t work for code.”</strong> In code, variable names can change, and logic can be refactored, resulting in zero string similarity even if the code functions identically. Conversely, a single missing character (syntax error) can break code that is 99% similar textually.</p>
+</section>
+<section id="functional-correctness" class="level3">
+<h3 class="anchored" data-anchor-id="functional-correctness">64. Functional Correctness</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_64.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 64</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1957s">Timestamp: 32:37</a>)</p>
+<p>This slide highlights <strong>Functional Correctness</strong> on the chart.</p>
+<p>This is the solution to the code evaluation problem. Instead of checking if the text looks right, we execute it to see if it <em>works</em>.</p>
+</section>
+<section id="problem-evaluating-code" class="level3">
+<h3 class="anchored" data-anchor-id="problem-evaluating-code">65. Problem: Evaluating Code</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_65.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 65</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1974s">Timestamp: 32:54</a>)</p>
+<p>This slide reinforces the failure of BLEU for code. It shows that a correct solution might have a low BLEU score because it uses different variable names than the reference.</p>
+</section>
+<section id="evaluating-code-with-unit-tests" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-code-with-unit-tests">66. Evaluating Code with Unit Tests</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_66.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 66</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=1997s">Timestamp: 33:17</a>)</p>
+<p>This slide introduces the <strong>Unit Test</strong> approach. We take the generated code, run it against a set of test cases (inputs and expected outputs), and check for a pass/fail result.</p>
+<p>Rajiv advocates for this approach because it is unambiguous. The code either runs and produces the right result, or it doesn’t.</p>
+</section>
+<section id="humaneval-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="humaneval-benchmark">67. HumanEval Benchmark</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_67.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 67</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2056s">Timestamp: 34:16</a>)</p>
+<p>This slide presents <strong>HumanEval</strong>, a famous benchmark for code LLMs that uses functional correctness (pass@1). It lists models like GPT-4 and WizardCoder and their scores.</p>
+<p>This validates that functional correctness is the industry standard for evaluating coding capabilities.</p>
+</section>
+<section id="hands-on-building-functional-tests-email" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-building-functional-tests-email">68. Hands on: Building Functional Tests (Email)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_68.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 68</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2068s">Timestamp: 34:28</a>)</p>
+<p>This slide asks how to apply functional correctness to <strong>Text</strong> (e.g., drafting emails).</p>
+<p>Rajiv suggests defining “functional” properties for text: Is it concise? Does it include a call to action? Is the tone polite? These are testable assertions we can make about text output.</p>
+</section>
+<section id="hands-on-python-test-for-text" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-python-test-for-text">69. Hands on: Python Test for Text</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_69.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 69</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2119s">Timestamp: 35:19</a>)</p>
+<p>This slide shows a Python snippet that tests if an email uses “informal language.”</p>
+<p>It demonstrates that we can write code to evaluate text properties, effectively treating text generation as a “functional” problem with pass/fail criteria.</p>
+</section>
+<section id="evaluation-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="evaluation-benchmarks">70. Evaluation Benchmarks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_70.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 70</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2154s">Timestamp: 35:54</a>)</p>
+<p>This slide highlights <strong>Evaluation Benchmarks</strong> on the chart.</p>
+<p>Rajiv moves to this category, explaining that benchmarks are essentially collections of the previous methods (exact match, functional tests) aggregated into large suites.</p>
+</section>
+<section id="story-glue-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="story-glue-benchmark">71. Story: GLUE Benchmark</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_71.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 71</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2165s">Timestamp: 36:05</a>)</p>
+<p>This slide tells the history of <strong>GLUE (2018)</strong>. Before GLUE, models were specialized for single tasks. GLUE introduced the idea of a <strong>General Language Understanding Evaluation</strong>, pushing the field toward models that could handle many different tasks well.</p>
+<p>Rajiv credits GLUE with driving the progress that led to modern LLMs by giving researchers a unified target.</p>
+</section>
+<section id="so-many-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="so-many-benchmarks">72. So Many Benchmarks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_72.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 72</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2267s">Timestamp: 37:47</a>)</p>
+<p>This slide introduces successors to GLUE: <strong>HellaSwag</strong> (commonsense) and <strong>Big Bench</strong> (reasoning).</p>
+<p>Rajiv notes that Big Bench Hard compares models to average and max human performance, providing a measuring stick for how close AI is getting to human-level reasoning.</p>
+</section>
+<section id="even-more-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="even-more-benchmarks">73. Even More Benchmarks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_73.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 73</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2320s">Timestamp: 38:40</a>)</p>
+<p>This slide scrolls through a massive list of over 80 benchmarks.</p>
+<p>Rajiv uses this to illustrate the explosion of evaluation datasets. There is a benchmark for almost everything, but this abundance can be paralyzed.</p>
+</section>
+<section id="multi-task-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="multi-task-benchmarks">74. Multi-task Benchmarks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_74.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 74</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2342s">Timestamp: 39:02</a>)</p>
+<p>This slide explains that <strong>Multi-task benchmarks</strong> aggregate many specific tasks (stories, code, legal) into a single score.</p>
+<p>This allows for a robust, high-level view of a model’s general capability, though it risks hiding specific weaknesses.</p>
+</section>
+<section id="gaming-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="gaming-benchmarks">75. Gaming Benchmarks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_75.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 75</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2376s">Timestamp: 39:36</a>)</p>
+<p>This slide discusses <strong>Gaming</strong> and <strong>Data Contamination</strong>. It mentions <strong>AlpacaEval</strong> and how models might cheat by training on the test data.</p>
+<p>Rajiv warns that high benchmark scores might just mean the model has memorized the answers, making the benchmark useless for measuring true generalization.</p>
+</section>
+<section id="hands-on-langtest" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-langtest">76. Hands on: Langtest</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_76.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 76</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2421s">Timestamp: 40:21</a>)</p>
+<p>This slide introduces <strong>Langtest</strong> by John Snow Labs. It is a library with 50+ test types for accuracy, bias, and robustness.</p>
+<p>Rajiv recommends it as a tool for running standard benchmarks on your own models.</p>
+</section>
+<section id="hands-on-eleuther-harness" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-eleuther-harness">77. Hands on: Eleuther Harness</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_77.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 77</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2440s">Timestamp: 40:40</a>)</p>
+<p>This slide introduces the <strong>Eleuther AI Evaluation Harness</strong>. Rajiv calls this the “OG” (original gangster) framework. It supports over 200 tasks.</p>
+<p>He provides a code snippet showing how easy it is to run a benchmark like MMLU on a Hugging Face model using this harness.</p>
+</section>
+<section id="openai-evals" class="level3">
+<h3 class="anchored" data-anchor-id="openai-evals">78. OpenAI Evals</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_78.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 78</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2480s">Timestamp: 41:20</a>)</p>
+<p>This slide mentions <strong>OpenAI Evals</strong>, another framework for evaluating LLMs.</p>
+<p>Rajiv notes it is useful but emphasizes that standardized templates work best when content variation is low.</p>
+</section>
+<section id="benchmarking-test-suites-summary" class="level3">
+<h3 class="anchored" data-anchor-id="benchmarking-test-suites-summary">79. Benchmarking Test Suites Summary</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_79.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 79</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2489s">Timestamp: 41:29</a>)</p>
+<p>This slide summarizes the Pros and Cons of benchmarks. * <strong>Pros:</strong> Wide coverage, cheap, automated. * <strong>Cons:</strong> Limited to easily measured tasks (often multiple choice), risk of leakage.</p>
+<p>Rajiv reminds us that benchmarks are proxies for quality, not definitive proof of utility for a specific business case.</p>
+</section>
+<section id="so-many-leaderboards" class="level3">
+<h3 class="anchored" data-anchor-id="so-many-leaderboards">80. So Many Leaderboards</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_80.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 80</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2527s">Timestamp: 42:07</a>)</p>
+<p>This slide visualizes the ecosystem of leaderboards: Open LLM, Mosaic Eval Gauntlet, HELM.</p>
+</section>
+<section id="pro-tip-build-your-own-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="pro-tip-build-your-own-benchmark">81. Pro Tip: Build Your Own Benchmark</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_81.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 81</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2538s">Timestamp: 42:18</a>)</p>
+<p>This is a key takeaway: <strong>“Build your own benchmark / leaderboards.”</strong></p>
+<p>Rajiv argues that for an enterprise, public leaderboards are insufficient. You should curate a set of tasks that reflect <em>your</em> specific domain (e.g., legal, IT ops) and evaluate models against that.</p>
+</section>
+<section id="custom-leaderboard-example" class="level3">
+<h3 class="anchored" data-anchor-id="custom-leaderboard-example">82. Custom Leaderboard Example</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_82.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 82</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2611s">Timestamp: 43:31</a>)</p>
+<p>This slide shows an example of a custom internal leaderboard (“AtmosBank”). It tracks how different models perform on the specific datasets that matter to that organization.</p>
+<p>This allows a company to quickly vet new models (like a new Llama release) against their specific needs.</p>
+</section>
+<section id="benchmark-dataset-owl" class="level3">
+<h3 class="anchored" data-anchor-id="benchmark-dataset-owl">83. Benchmark Dataset: OWL</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_83.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 83</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2622s">Timestamp: 43:42</a>)</p>
+<p>This slide details <strong>OWL</strong>, a benchmark for IT Operations. It highlights the effort required to build it: manual review of hundreds of questions.</p>
+<p>Rajiv uses this to be realistic: building a custom benchmark has a <strong>cost</strong>. You need to invest human time to create the “Gold Standard” questions and answers.</p>
+</section>
+<section id="averaging-can-mask-issues" class="level3">
+<h3 class="anchored" data-anchor-id="averaging-can-mask-issues">84. Averaging Can Mask Issues</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_84.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 84</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2679s">Timestamp: 44:39</a>)</p>
+<p>This slide warns that <strong>“Averaging can mask issues.”</strong> If Model 2 is amazing at your specific task but terrible at 9 others, an average score will hide its value.</p>
+<p>Rajiv advises looking at individual task scores rather than just the aggregate number on a leaderboard.</p>
+</section>
+<section id="human-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="human-evaluation">85. Human Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_85.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 85</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2713s">Timestamp: 45:13</a>)</p>
+<p>This slide highlights <strong>Human Evaluation</strong> on the chart.</p>
+<p>Rajiv moves to the high-cost, high-flexibility zone. Humans are the ultimate judges of quality, capturing nuance that automated metrics miss.</p>
+</section>
+<section id="human-evaluation---best-practices" class="level3">
+<h3 class="anchored" data-anchor-id="human-evaluation---best-practices">86. Human Evaluation - Best Practices</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_86.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 86</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2738s">Timestamp: 45:38</a>)</p>
+<p>This slide lists best practices: <strong>Inter-annotator agreement</strong>, clear guidelines, and training.</p>
+<p>Rajiv notes that we know how to do this from traditional data labeling. If humans can’t agree on the quality of an output (e.g., only 80% agreement), you can’t expect the model to do better.</p>
+</section>
+<section id="human-evaluation---limitations" class="level3">
+<h3 class="anchored" data-anchor-id="human-evaluation---limitations">87. Human Evaluation - Limitations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_87.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 87</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2785s">Timestamp: 46:25</a>)</p>
+<p>This slide discusses limitations. Humans are bad at checking <strong>factuality</strong> (it takes effort to Google facts) and are easily swayed by <strong>assertiveness</strong>.</p>
+<p>If an LLM sounds confident, humans tend to rate it highly even if it is wrong.</p>
+</section>
+<section id="sycophancy-bias" class="level3">
+<h3 class="anchored" data-anchor-id="sycophancy-bias">88. Sycophancy Bias</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_88.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 88</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2803s">Timestamp: 46:43</a>)</p>
+<p>This slide defines <strong>Sycophancy</strong>: LLMs tend to generate responses that please the user rather than telling the truth.</p>
+<p>Rajiv shows an example where a model reinforces a user’s misconception because it wants to be “helpful.” Humans often rate these pleasing answers higher, reinforcing the bias.</p>
+</section>
+<section id="human-evaluation-summary" class="level3">
+<h3 class="anchored" data-anchor-id="human-evaluation-summary">89. Human Evaluation Summary</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_89.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 89</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2823s">Timestamp: 47:03</a>)</p>
+<p>This slide summarizes Human Eval. * <strong>Strengths:</strong> Gold standard, handles variety. * <strong>Weaknesses:</strong> Expensive, slow, high variance, subject to bias.</p>
+</section>
+<section id="hands-on-argilla" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-argilla">90. Hands on: Argilla</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_90.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 90</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2877s">Timestamp: 47:57</a>)</p>
+<p>This slide showcases <strong>Argilla</strong>, an open-source tool for data annotation.</p>
+<p>Rajiv encourages teams to set up tools like this to make it easy for domain experts (doctors, lawyers) to provide feedback on model outputs.</p>
+</section>
+<section id="annotation-tools" class="level3">
+<h3 class="anchored" data-anchor-id="annotation-tools">91. Annotation Tools</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_91.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 91</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2900s">Timestamp: 48:20</a>)</p>
+<p>This slide lists other tools: <strong>LabelStudio</strong> and <strong>Prodigy</strong>. The message is: don’t reinvent the wheel, use existing tooling to gather human feedback.</p>
+</section>
+<section id="longeval" class="level3">
+<h3 class="anchored" data-anchor-id="longeval">92. LongEval</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_92.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 92</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2919s">Timestamp: 48:39</a>)</p>
+<p>This slide references <strong>LongEval</strong>, a study on evaluating long summaries. It emphasizes that guidelines for humans need to be specific (coarse vs fine-grained) to get reliable results.</p>
+</section>
+<section id="human-comparisonarena" class="level3">
+<h3 class="anchored" data-anchor-id="human-comparisonarena">93. Human Comparison/Arena</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_93.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 93</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2944s">Timestamp: 49:04</a>)</p>
+<p>This slide highlights <strong>Human Comparison/Arena</strong> on the chart.</p>
+<p>This is a specific subset of human evaluation focused on <em>preferences</em> rather than absolute scoring.</p>
+</section>
+<section id="story-dating-preferences" class="level3">
+<h3 class="anchored" data-anchor-id="story-dating-preferences">94. Story: Dating (Preferences)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_94.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 94</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=2966s">Timestamp: 49:26</a>)</p>
+<p>This slide uses a dating analogy. Old dating sites used long forms (detailed evaluation), but modern apps use swiping (binary preference).</p>
+<p>Rajiv argues that it is much easier and faster for humans to say “I prefer A over B” (swiping) than to fill out a detailed scorecard. This is the logic behind Arena evaluations.</p>
+</section>
+<section id="head-to-head-preferences" class="level3">
+<h3 class="anchored" data-anchor-id="head-to-head-preferences">95. Head to Head Preferences</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_95.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 95</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3016s">Timestamp: 50:16</a>)</p>
+<p>This slide shows a “Head to Head” interface. The user sees two model outputs and clicks the one they like better.</p>
+<p>This method is widely used (e.g., in RLHF) because it scales well and reduces cognitive load on annotators.</p>
+</section>
+<section id="head-to-head-leaderboards" class="level3">
+<h3 class="anchored" data-anchor-id="head-to-head-leaderboards">96. Head to Head Leaderboards</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_96.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 96</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3050s">Timestamp: 50:50</a>)</p>
+<p>This slide introduces the <strong>LM-SYS Arena</strong>. It uses an <strong>Elo rating system</strong> (like in Chess) based on thousands of anonymous battles between models.</p>
+<p>Rajiv notes this is a very effective way to rank models based on general human preference.</p>
+</section>
+<section id="arena-solutions" class="level3">
+<h3 class="anchored" data-anchor-id="arena-solutions">97. Arena Solutions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_97.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 97</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3104s">Timestamp: 51:44</a>)</p>
+<p>This slide provides links to the code for the LM-SYS arena. Rajiv suggests that enterprises can set up their own internal arenas to gamify evaluation for their employees.</p>
+</section>
+<section id="model-based-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="model-based-approaches">98. Model Based Approaches</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_98.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 98</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3115s">Timestamp: 51:55</a>)</p>
+<p>This slide highlights <strong>Model based Approaches</strong> on the chart.</p>
+<p>This is the most rapidly evolving area: using <strong>LLMs to evaluate other LLMs</strong> (LLM-as-a-Judge).</p>
+</section>
+<section id="evaluating-factuality" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-factuality">99. Evaluating Factuality</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_99.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 99</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3144s">Timestamp: 52:24</a>)</p>
+<p>This slide discusses the limitation of reference-based factuality (comparing to a known ground truth). It notes that this is “Pretty limited utility” because we often don’t have ground truth for every new query.</p>
+</section>
+<section id="model-based-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="model-based-evaluation">100. Model Based Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_100.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 100</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3174s">Timestamp: 52:54</a>)</p>
+<p>This slide illustrates the core concept: Instead of a human checking if the story is grammatical, we ask GPT-3 (or GPT-4) to do it.</p>
+<p>Rajiv explains that models are now good enough to act as proxy evaluators.</p>
+</section>
+<section id="assertions" class="level3">
+<h3 class="anchored" data-anchor-id="assertions">101. Assertions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_101.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 101</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3192s">Timestamp: 53:12</a>)</p>
+<p>This slide lists simple model-based checks called <strong>Assertions</strong>: Language Match, Sentiment, Toxicity, Length.</p>
+<p>These act like unit tests but use the LLM to classify the output (e.g., “Is this text toxic? Yes/No”).</p>
+</section>
+<section id="g-eval" class="level3">
+<h3 class="anchored" data-anchor-id="g-eval">102. G-Eval</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_102.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 102</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3307s">Timestamp: 55:07</a>)</p>
+<p>This slide introduces <strong>G-Eval</strong>, a framework that uses Chain-of-Thought (CoT) to generate a score. It provides the model with evaluation criteria and steps, asking it to reason before assigning a grade.</p>
+</section>
+<section id="selfcheckgpt" class="level3">
+<h3 class="anchored" data-anchor-id="selfcheckgpt">103. SelfCheckGPT</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_103.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 103</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3326s">Timestamp: 55:26</a>)</p>
+<p>This slide describes <strong>SelfCheckGPT</strong>. This method detects hallucinations by sampling the model multiple times. If the model tells the same story consistently, it’s likely true. If the details change every time, it’s likely hallucinating.</p>
+</section>
+<section id="which-model-for-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="which-model-for-evaluation">104. Which Model for Evaluation?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_104.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 104</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3350s">Timestamp: 55:50</a>)</p>
+<p>This slide asks which model to use as the judge. * <strong>GPT-4:</strong> Strongest evaluator, best for reasoning. * <strong>GPT-3.5:</strong> Cheaper, good for simple tasks. * <strong>JudgeLM:</strong> Fine-tuned specifically for evaluation.</p>
+</section>
+<section id="human-alignment" class="level3">
+<h3 class="anchored" data-anchor-id="human-alignment">105. Human Alignment</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_105.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 105</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3404s">Timestamp: 56:44</a>)</p>
+<p>This slide presents data showing high <strong>Human Alignment</strong>. GPT-4 judges agree with human judges 80-95% of the time.</p>
+<p>This validates the approach: LLM judges are a scalable, cheap proxy for human evaluation.</p>
+</section>
+<section id="model-evaluation-biases" class="level3">
+<h3 class="anchored" data-anchor-id="model-evaluation-biases">106. Model Evaluation Biases</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_106.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 106</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3452s">Timestamp: 57:32</a>)</p>
+<p>This slide warns about biases in LLM judges: * <strong>Position Bias:</strong> Preferring the first answer. * <strong>Verbosity Bias:</strong> Preferring longer answers. * <strong>Self-Enhancement:</strong> Preferring its own outputs.</p>
+<p>Rajiv suggests mitigations like swapping order and using different models for judging.</p>
+</section>
+<section id="summary-model-based-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="summary-model-based-evaluation">107. Summary: Model Based Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_107.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 107</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3511s">Timestamp: 58:31</a>)</p>
+<p>This slide categorizes model-based methods: <strong>Assertions</strong> (simple), <strong>Concept based</strong> (G-Eval), <strong>Sampling based</strong> (SelfCheck), and <strong>Preference based</strong> (RLHF).</p>
+</section>
+<section id="pros-and-cons" class="level3">
+<h3 class="anchored" data-anchor-id="pros-and-cons">108. Pros and Cons</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_108.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 108</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3557s">Timestamp: 59:17</a>)</p>
+<p>This slide summarizes the trade-offs. * <strong>Pros:</strong> Cheaper/faster than humans, good alignment. * <strong>Cons:</strong> Sensitive to prompts, known biases.</p>
+</section>
+<section id="ragas" class="level3">
+<h3 class="anchored" data-anchor-id="ragas">109. Ragas</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_109.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 109</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3589s">Timestamp: 59:49</a>)</p>
+<p>This slide introduces <strong>Ragas</strong>, a framework specifically for evaluating RAG pipelines. It calculates a score based on <strong>Faithfulness</strong> and <strong>Relevancy</strong>.</p>
+</section>
+<section id="deepeval" class="level3">
+<h3 class="anchored" data-anchor-id="deepeval">110. DeepEval</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_110.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 110</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3610s">Timestamp: 1:00:10</a>)</p>
+<p>This slide mentions <strong>DeepEval</strong>, another tool that treats evaluation like unit tests for LLMs, checking for bias, toxicity, etc.</p>
+</section>
+<section id="hands-on-using-ragas" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-using-ragas">111. Hands on: Using Ragas</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_111.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 111</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3619s">Timestamp: 1:00:19</a>)</p>
+<p>This slide shows code for using Ragas. It demonstrates how to pass a dataset to the <code>evaluate</code> function and get metrics like <code>context_precision</code> and <code>answer_relevancy</code>.</p>
+</section>
+<section id="hands-on-prompts-salmonn" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-prompts-salmonn">112. Hands on: Prompts (SALMONN)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_112.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 112</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3660s">Timestamp: 1:01:00</a>)</p>
+<p>This slide shows prompts from the <strong>SALMONN</strong> paper. Rajiv includes these to show real-world examples of how researchers craft prompts to evaluate specific qualities like coherence.</p>
+</section>
+<section id="quality-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="quality-prompt">113. Quality Prompt</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_113.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 113</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3684s">Timestamp: 1:01:24</a>)</p>
+<p>This slide shows a prompt for evaluating <strong>Data Quality</strong>. It asks the model to rate the helpfulness and relevance of text on a scale.</p>
+</section>
+<section id="rag-relevancy-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="rag-relevancy-prompt">114. RAG Relevancy Prompt</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_114.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 114</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3695s">Timestamp: 1:01:35</a>)</p>
+<p>This slide details a <strong>“RAG RELEVANCY PROMPT TEMPLATE.”</strong> It instructs the model to compare a question and a reference text to determine if the reference contains the answer.</p>
+</section>
+<section id="impartial-judge-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="impartial-judge-prompt">115. Impartial Judge Prompt</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_115.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 115</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3709s">Timestamp: 1:01:49</a>)</p>
+<p>This slide shows a prompt for an <strong>“Impartial Judge.”</strong> It asks the model to be an assistant that evaluates the quality of a response, ensuring it is helpful, accurate, and detailed.</p>
+</section>
+<section id="resources-model-based-eval" class="level3">
+<h3 class="anchored" data-anchor-id="resources-model-based-eval">116. Resources: Model Based Eval</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_116.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 116</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3728s">Timestamp: 1:02:08</a>)</p>
+<p>This slide lists libraries: <strong>Ragas, Microsoft llm-eval, TrueLens, Guardrails</strong>.</p>
+<p>Rajiv notes that while libraries are great, many people end up writing their own hand-crafted prompts to fit their specific needs.</p>
+</section>
+<section id="red-teaming" class="level3">
+<h3 class="anchored" data-anchor-id="red-teaming">117. Red Teaming</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_117.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 117</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3743s">Timestamp: 1:02:23</a>)</p>
+<p>This slide highlights <strong>Red Teaming</strong> on the chart.</p>
+<p>This is the final, most flexible, and rigorous technical evaluation method.</p>
+</section>
+<section id="story-microsoft-tay" class="level3">
+<h3 class="anchored" data-anchor-id="story-microsoft-tay">118. Story: Microsoft Tay</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_118.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 118</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3757s">Timestamp: 1:02:37</a>)</p>
+<p>This slide tells the cautionary tale of <strong>Microsoft Tay (2016)</strong>. The chatbot learned from Twitter users and became racist/genocidal in less than 24 hours.</p>
+<p>Rajiv cites this as the “Origin of Red Teaming in AI”—the realization that we must proactively attack our models to find vulnerabilities before the public does.</p>
+</section>
+<section id="why-red-teaming" class="level3">
+<h3 class="anchored" data-anchor-id="why-red-teaming">119. Why Red Teaming?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_119.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 119</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3851s">Timestamp: 1:04:11</a>)</p>
+<p>This slide defines Red Teaming: <strong>Eliciting model vulnerabilities to prevent undesirable behaviors.</strong></p>
+<p>It is about adversarial testing—trying to trick the model into doing something bad.</p>
+</section>
+<section id="every-use-case-should-be-red-teamed" class="level3">
+<h3 class="anchored" data-anchor-id="every-use-case-should-be-red-teamed">120. Every Use Case Should Be Red Teamed</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_120.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 120</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3863s">Timestamp: 1:04:23</a>)</p>
+<p>This slide argues that <strong>“Every use case should be Red Teamed.”</strong></p>
+<p>Rajiv explains that fine-tuning a model (even slightly) can destroy the safety alignment (RLHF) provided by the base model creator. You cannot assume a model is safe just because it was safe before you fine-tuned it.</p>
+</section>
+<section id="how-to-red-teaming-with-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-red-teaming-with-a-model">121. How to: Red Teaming with a Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_121.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 121</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3907s">Timestamp: 1:05:07</a>)</p>
+<p>This slide suggests a technique: Use a separate “Risk Assessment” model (like Llama-2) to monitor the inputs and outputs of your main model, logging any risky queries.</p>
+</section>
+<section id="how-to-red-teaming-from-meta" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-red-teaming-from-meta">122. How to: Red Teaming from Meta</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_122.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 122</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3922s">Timestamp: 1:05:22</a>)</p>
+<p>This slide describes <strong>Meta’s approach</strong> to Llama 2. They hired diverse teams to attack the model regarding specific risks (criminal planning, trafficking).</p>
+<p>Rajiv notes that Meta actually held back a specific model (33b) because it failed these red team tests.</p>
+</section>
+<section id="red-teaming-process" class="level3">
+<h3 class="anchored" data-anchor-id="red-teaming-process">123. Red Teaming Process</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_123.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 123</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3954s">Timestamp: 1:05:54</a>)</p>
+<p>This slide outlines the workflow: Generate prompts (multilingual), Annotate risk (Likert scale), and use data for safety training.</p>
+</section>
+<section id="technical-methods-recap" class="level3">
+<h3 class="anchored" data-anchor-id="technical-methods-recap">124. Technical Methods Recap</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_124.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 124</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3964s">Timestamp: 1:06:04</a>)</p>
+<p>This slide shows the full <strong>Generative AI Evaluation Methods</strong> chart again.</p>
+<p>Rajiv concludes the technical section, having covered the spectrum from Exact Match to Red Teaming.</p>
+</section>
+<section id="operational-tco" class="level3">
+<h3 class="anchored" data-anchor-id="operational-tco">125. Operational (TCO)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_125.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 125</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3976s">Timestamp: 1:06:16</a>)</p>
+<p>This slide highlights the <strong>Operational (TCO)</strong> pillar.</p>
+<p>Rajiv shifts gears to discuss the cost and maintenance of running these models.</p>
+</section>
+<section id="story-github-copilot-costs" class="level3">
+<h3 class="anchored" data-anchor-id="story-github-copilot-costs">126. Story: GitHub Copilot Costs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_126.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 126</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=3993s">Timestamp: 1:06:33</a>)</p>
+<p>This slide references a story that <strong>GitHub Copilot</strong> was losing money per user (costing $20-$80/month while charging $10).</p>
+<p>Rajiv uses this to warn about the “Epidemic of cloud laundering.” You must calculate the inference costs upfront, or your successful product might bankrupt you.</p>
+</section>
+<section id="monitoring" class="level3">
+<h3 class="anchored" data-anchor-id="monitoring">127. Monitoring</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_127.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 127</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4048s">Timestamp: 1:07:28</a>)</p>
+<p>This slide introduces <strong>Monitoring</strong> as the “Sibling of Evaluate.”</p>
+<p>It lists things to watch: Functional metrics (latency, errors), Prompt Drift, and Response Monitoring.</p>
+</section>
+<section id="monitoring-metrics-gpuresponsible-ai" class="level3">
+<h3 class="anchored" data-anchor-id="monitoring-metrics-gpuresponsible-ai">128. Monitoring Metrics (GPU/Responsible AI)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_128.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 128</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4061s">Timestamp: 1:07:41</a>)</p>
+<p>This slide lists specific metrics. * <strong>GPU:</strong> Error rates (429), token counts. * <strong>Responsible AI:</strong> How often is the content filter triggering?</p>
+</section>
+<section id="performance-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="performance-metrics">129. Performance Metrics</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_129.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 129</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4073s">Timestamp: 1:07:53</a>)</p>
+<p>This slide lists <strong>Performance Metrics</strong>: * <strong>Time to first token (TTFT):</strong> Critical for user experience. * <strong>Requests Per Second (RPS).</strong> * <strong>Token render rate.</strong></p>
+</section>
+<section id="user-engagement-funnel" class="level3">
+<h3 class="anchored" data-anchor-id="user-engagement-funnel">130. User Engagement Funnel</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_130.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 130</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4081s">Timestamp: 1:08:01</a>)</p>
+<p>This slide suggests monitoring <strong>User Engagement</strong>. * Funnel: Trigger -&gt; Response -&gt; User Keeps/Accepts Response.</p>
+<p>Rajiv notes that OpenAI monitors the <strong>KV Cache</strong> utilization to understand real usage patterns better than simple GPU utilization.</p>
+</section>
+<section id="application-to-rag-1" class="level3">
+<h3 class="anchored" data-anchor-id="application-to-rag-1">131. Application to RAG</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_131.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 131</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4154s">Timestamp: 1:09:14</a>)</p>
+<p>This slide acts as a section header: <strong>APPLICATION TO RAG</strong>.</p>
+<p>Rajiv will now apply all the previous concepts to a specific use case: Retrieval Augmented Generation.</p>
+</section>
+<section id="bring-your-own-facts" class="level3">
+<h3 class="anchored" data-anchor-id="bring-your-own-facts">132. Bring Your Own Facts</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_132.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 132</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4166s">Timestamp: 1:09:26</a>)</p>
+<p>This slide explains the core philosophy of RAG: <strong>“If you need facts - bring them yourself.”</strong> Don’t rely on the LLM’s training data; provide the context.</p>
+</section>
+<section id="what-is-rag" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-rag">133. What is RAG?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_133.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 133</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4173s">Timestamp: 1:09:33</a>)</p>
+<p>This slide defines RAG: Improving responses by grounding the model on external knowledge sources.</p>
+</section>
+<section id="evaluating-rag-the-wrong-way" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-rag-the-wrong-way">134. Evaluating RAG (The Wrong Way)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_134.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 134</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4191s">Timestamp: 1:09:51</a>)</p>
+<p>This slide shows a “recipe” for RAG evaluation focusing solely on factuality precision (95%).</p>
+<p>Rajiv presents this as a <strong>trap</strong>. He asks, “What’s wrong with this?”</p>
+</section>
+<section id="missing-the-point" class="level3">
+<h3 class="anchored" data-anchor-id="missing-the-point">135. Missing the Point</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_135.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 135</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4207s">Timestamp: 1:10:07</a>)</p>
+<p>This slide explicitly states that focusing only on technical details misses the larger point of view.</p>
+<p>Rajiv is baiting the audience to remember the <strong>Three Pillars</strong>.</p>
+</section>
+<section id="three-pillars-rag-context" class="level3">
+<h3 class="anchored" data-anchor-id="three-pillars-rag-context">136. Three Pillars (RAG Context)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_136.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 136</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4220s">Timestamp: 1:10:20</a>)</p>
+<p>This slide brings back the <strong>Technical, Business, Operational</strong> pillars.</p>
+<p>Rajiv insists we must start with the Business metrics before jumping into technical precision.</p>
+</section>
+<section id="business-metric-for-rag" class="level3">
+<h3 class="anchored" data-anchor-id="business-metric-for-rag">137. Business Metric for RAG</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_137.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 137</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4228s">Timestamp: 1:10:28</a>)</p>
+<p>This slide outlines the <strong>Business questions</strong>: * What is the value of a correct answer? * What is the <strong>cost/consequence</strong> of a wrong answer?</p>
+<p>Rajiv warns against building a “science experiment” without knowing the ROI.</p>
+</section>
+<section id="operational-metrics-for-rag" class="level3">
+<h3 class="anchored" data-anchor-id="operational-metrics-for-rag">138. Operational Metrics for RAG</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_138.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 138</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4258s">Timestamp: 1:10:58</a>)</p>
+<p>This slide lists <strong>Operational questions</strong>: * Labeling effort? * Running costs? * Is IT ready to support this?</p>
+</section>
+<section id="three-pillars-transition" class="level3">
+<h3 class="anchored" data-anchor-id="three-pillars-transition">139. Three Pillars (Transition)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_139.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 139</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4303s">Timestamp: 1:11:43</a>)</p>
+<p>This slide shows the three pillars again, preparing to zoom in on the Technical side.</p>
+</section>
+<section id="technical-pillar" class="level3">
+<h3 class="anchored" data-anchor-id="technical-pillar">140. Technical Pillar</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_140.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 140</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4305s">Timestamp: 1:11:45</a>)</p>
+<p>This slide highlights <strong>Technical (F1)</strong>. Now that we’ve justified the business case, how do we technically evaluate RAG?</p>
+</section>
+<section id="current-approaches-eyeballing" class="level3">
+<h3 class="anchored" data-anchor-id="current-approaches-eyeballing">141. Current Approaches (Eyeballing)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_141.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 141</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4311s">Timestamp: 1:11:51</a>)</p>
+<p>This slide critiques the current state: <strong>“Eyeballing a few examples.”</strong></p>
+<p>Rajiv notes that most developers just look at a few chats and say “looks good.” This is insufficient for production.</p>
+</section>
+<section id="evaluate-llm-system" class="level3">
+<h3 class="anchored" data-anchor-id="evaluate-llm-system">142. Evaluate LLM System</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_142.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 142</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4334s">Timestamp: 1:12:14</a>)</p>
+<p>This slide lists system-level questions: Accuracy, references, understandability, query time.</p>
+</section>
+<section id="decomposing-rag" class="level3">
+<h3 class="anchored" data-anchor-id="decomposing-rag">143. Decomposing RAG</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_143.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 143</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4357s">Timestamp: 1:12:37</a>)</p>
+<p>This slide brings back the RAG diagram, emphasizing <strong>decomposition</strong>. 1. Retrieval 2. Augmented Generation</p>
+<p>Rajiv argues we must evaluate these independently to find the bottleneck. Often, the problem is the <strong>Retriever</strong>, not the LLM.</p>
+</section>
+<section id="component-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="component-metrics">144. Component Metrics</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_144.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 144</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4373s">Timestamp: 1:12:53</a>)</p>
+<p>This slide details metrics for each component: * <strong>Retrieval:</strong> Precision, Recall, Order. * <strong>Augmentation:</strong> Correctness, Toxicity, Hallucination.</p>
+</section>
+<section id="analyze-retrieval" class="level3">
+<h3 class="anchored" data-anchor-id="analyze-retrieval">145. Analyze Retrieval</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_145.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 145</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4433s">Timestamp: 1:13:53</a>)</p>
+<p>This slide explains how to evaluate retrieval. You need a dataset of <strong>(Query, Relevant Documents)</strong>.</p>
+<p>You run your retriever and check if it found the documents in your ground truth set.</p>
+</section>
+<section id="methods-for-retrieval" class="level3">
+<h3 class="anchored" data-anchor-id="methods-for-retrieval">146. Methods for Retrieval</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_146.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 146</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4453s">Timestamp: 1:14:13</a>)</p>
+<p>This slide highlights <strong>Exact Matching</strong> on the chart.</p>
+<p>For retrieval, we can use exact matching (or set intersection) because we know exactly which document IDs should be returned.</p>
+</section>
+<section id="retrieval-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="retrieval-metrics">147. Retrieval Metrics</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_147.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 147</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4456s">Timestamp: 1:14:16</a>)</p>
+<p>This slide lists retrieval metrics: <strong>Success rate (Hit-rate)</strong> and <strong>Mean Reciprocal Rank (MRR)</strong>.</p>
+</section>
+<section id="analyze-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="analyze-augmentation">148. Analyze Augmentation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_148.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 148</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4488s">Timestamp: 1:14:48</a>)</p>
+<p>This slide explains how to evaluate the generation step. You need <strong>(Context, Generated Response, Ground Truth)</strong>.</p>
+</section>
+<section id="methods-for-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="methods-for-augmentation">149. Methods for Augmentation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_149.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 149</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4502s">Timestamp: 1:15:02</a>)</p>
+<p>This slide highlights <strong>Human</strong> and <strong>Model-based</strong> approaches on the chart.</p>
+<p>For generation, exact match doesn’t work. We need flexible evaluators (Humans or LLMs) to judge faithfulness and relevancy.</p>
+</section>
+<section id="augmentation-modules" class="level3">
+<h3 class="anchored" data-anchor-id="augmentation-modules">150. Augmentation Modules</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_150.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 150</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4505s">Timestamp: 1:15:05</a>)</p>
+<p>This slide lists modules to test: * <strong>Label-free:</strong> Faithfulness (did it stick to context?), Relevancy. * <strong>With-labels:</strong> Correctness (compared to ground truth).</p>
+</section>
+<section id="pro-tip-imbalance" class="level3">
+<h3 class="anchored" data-anchor-id="pro-tip-imbalance">151. Pro Tip: Imbalance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_151.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 151</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4528s">Timestamp: 1:15:28</a>)</p>
+<p>This slide warns about <strong>Imbalanced Data</strong>. If most retrieved documents are irrelevant, accuracy is a bad metric. Use <strong>Precision and Recall</strong>.</p>
+</section>
+<section id="pro-tip-synthetic-data" class="level3">
+<h3 class="anchored" data-anchor-id="pro-tip-synthetic-data">152. Pro Tip: Synthetic Data</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_152.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 152</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4535s">Timestamp: 1:15:35</a>)</p>
+<p>This slide suggests generating <strong>Synthetic Evaluation Datasets</strong>.</p>
+<p>You can use an LLM to read your documents and generate Question/Answer pairs. This creates a “Gold Standard” dataset for retrieval evaluation without manual labeling.</p>
+</section>
+<section id="notebooks-used" class="level3">
+<h3 class="anchored" data-anchor-id="notebooks-used">153. Notebooks Used</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_153.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 153</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4574s">Timestamp: 1:16:14</a>)</p>
+<p>This slide lists the notebooks available in the GitHub repo: Prompting, Guidance, Eleuther Harness, Langtest, Ragas.</p>
+</section>
+<section id="final-slide" class="level3">
+<h3 class="anchored" data-anchor-id="final-slide">154. Final Slide</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_154.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 154</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/iQl03pQlYWY&amp;t=4592s">Timestamp: 1:16:32</a>)</p>
+<p>The presentation concludes with the title slide again, providing the speaker’s contact info and the GitHub link one last time. Rajiv thanks the audience and promises updates as the field evolves.</p>
+<hr>
+<p><em>This annotated presentation was generated from the talk using AI-assisted tools. Each slide includes timestamps and detailed explanations.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/rajivshah\.com\/blog");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ @rajistics - Rajiv Shah
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com">
+<p><u>About Me</u></p>
+</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="./index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/">
+      <i class="bi bi-instagram" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics">
+      <i class="bi bi-tiktok" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w">
+      <i class="bi bi-youtube" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

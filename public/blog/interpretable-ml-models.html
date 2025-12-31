@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-09-25">
+
+<title>Interpretable Machine Learning Models Simply Explained – Rajiv Shah - rajistics blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-475ad4fe1e4ce2c827a237f0e4cf2c17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Rajiv Shah - rajistics blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com"> 
+<span class="menu-text"><u>About Me</u></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/"> <i class="bi bi-instagram" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics"> <i class="bi bi-tiktok" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Interpretable Machine Learning Models Simply Explained</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Interpretability</div>
+                <div class="quarto-category">Machine Learning</div>
+                <div class="quarto-category">XAI</div>
+                <div class="quarto-category">Model Explanation</div>
+                <div class="quarto-category">Annotated Talk</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 25, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#video" id="toc-video" class="nav-link active" data-scroll-target="#video">Video</a></li>
+  <li><a href="#annotated-presentation" id="toc-annotated-presentation" class="nav-link" data-scroll-target="#annotated-presentation">Annotated Presentation</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="interpretable-ml-models.ipynb" download="interpretable-ml-models.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="video" class="level2">
+<h2 class="anchored" data-anchor-id="video">Video</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/lx4SJOVtxI8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Watch the <a href="https://youtu.be/lx4SJOVtxI8">full video</a></p>
+<hr>
+</section>
+<section id="annotated-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="annotated-presentation">Annotated Presentation</h2>
+<p>Below is an annotated version of the presentation, with timestamped links to the relevant parts of the video for each slide.</p>
+<p>Here is the annotated presentation for “Rules: A Simple &amp; Effective Machine Learning Approach” by Rajiv Shah.</p>
+<section id="title-slide" class="level3">
+<h3 class="anchored" data-anchor-id="title-slide">1. Title Slide</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_1.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 1</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=0s">Timestamp: 00:00:00</a>)</p>
+<p>The presentation begins by introducing the core topic: <strong>Interpretable Models</strong> and the use of rules in machine learning. Rajiv Shah sets the stage by contrasting this talk with previous discussions on explainability (using tools to explain complex models). Instead, this session focuses on choosing models that are inherently easy to understand.</p>
+<p>Shah expresses his interest in how machine learning helps us understand the world. He notes that while tools like SHAP or LIME help unpack complex models, there is immense value in approaching the problem differently: by selecting model architectures that are transparent by design.</p>
+<p>The speaker invites the audience to view this not just as a technical lecture but as a discussion on the trade-offs between model complexity and interpretability, setting a collaborative tone for the presentation.</p>
+</section>
+<section id="table-of-contents" class="level3">
+<h3 class="anchored" data-anchor-id="table-of-contents">2. Table of Contents</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_2.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 2</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=150s">Timestamp: 00:02:30</a>)</p>
+<p>This slide outlines the roadmap for the presentation. Shah explains that he will begin with the “Big Picture” concepts—specifically the <strong>“Why?”</strong> and the <strong>“Baseline”</strong>—before diving into four specific technical approaches to rule-based modeling.</p>
+<p>The four specific methods to be covered are <strong>Rulefit</strong>, <strong>GA2M</strong> (Generalized Additive Models with interactions), <strong>Rule Lists</strong>, and <strong>Scorecards</strong>. This structure moves from theoretical justification to practical application, comparing different algorithms that prioritize transparency.</p>
+<p>Shah also mentions that a GitHub repository is available with code examples for everything shown, allowing the audience to reproduce the results for the tabular datasets discussed.</p>
+</section>
+<section id="section-1-why" class="level3">
+<h3 class="anchored" data-anchor-id="section-1-why">3. Section 1: Why?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_3.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 3</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=189s">Timestamp: 00:03:09</a>)</p>
+<p>This section header introduces the fundamental question: <strong>Why do we want rules?</strong> The speaker moves past the obvious statement that “AI is important” to investigate the influences that drive data scientists toward complex, opaque models.</p>
+<p>Shah prepares to discuss the cultural and competitive pressures in data science that prioritize raw accuracy over usability. This section serves as a critique of the “accuracy at all costs” mindset often found in the industry.</p>
+</section>
+<section id="mark-cuban-quote" class="level3">
+<h3 class="anchored" data-anchor-id="mark-cuban-quote">4. Mark Cuban Quote</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_4.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 4</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=197s">Timestamp: 00:03:17</a>)</p>
+<p>The slide features a quote from Mark Cuban: <em>“Artificial Intelligence, deep learning, machine learning — whatever you’re doing if you don’t understand it — learn it. Because otherwise you’re going to be a dinosaur within 3 years.”</em></p>
+<p>Shah briefly references this as the “obligatory” acknowledgment of AI’s massive importance in the current landscape. It reinforces that while the field is moving fast, the <em>understanding</em> of these systems is paramount, which ties into the presentation’s focus on interpretability.</p>
+</section>
+<section id="influences-kaggle-academia" class="level3">
+<h3 class="anchored" data-anchor-id="influences-kaggle-academia">5. Influences: Kaggle &amp; Academia</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_5.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 5</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=220s">Timestamp: 00:03:40</a>)</p>
+<p>Shah identifies <strong>Kaggle competitions</strong> and academic research as two primary influences on data scientists. He notes that these platforms heavily incentivize accuracy above all else. For example, in the Zillow Prize, the difference between the top scores is minuscule, yet teams fight for that fraction of a percentage.</p>
+<p>He argues that this environment trains data scientists to focus solely on improving metrics (like RMSE or AUC), often ignoring other critical trade-offs like model complexity, deployment difficulty, or explainability.</p>
+<p>As he states, <em>“One of the byproducts of Kaggle is a very heavy focus on making sure you improve your models around accuracy… and that’s how you can get a conference paper.”</em> This sets up the problem of complexity creep.</p>
+</section>
+<section id="the-netflix-prize-winners" class="level3">
+<h3 class="anchored" data-anchor-id="the-netflix-prize-winners">6. The Netflix Prize Winners</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_6.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 6</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=339s">Timestamp: 00:05:39</a>)</p>
+<p>This slide shows the winners of the famous <strong>Netflix Prize</strong>, a competition held about 15 years ago where a team won $1 million for improving Netflix’s recommendation algorithm by 10%.</p>
+<p>Shah uses this story to illustrate the peak of the “accuracy” mindset. The competition drew massive interest and drove innovation, but it also encouraged teams to prioritize the leaderboard score over the practicality of the solution.</p>
+</section>
+<section id="netflix-prize-progress-graph" class="level3">
+<h3 class="anchored" data-anchor-id="netflix-prize-progress-graph">7. Netflix Prize Progress Graph</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_7.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 7</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=374s">Timestamp: 00:06:14</a>)</p>
+<p>The graph displays the progress of teams over time during the Netflix competition. Shah points out that after an initial period of rapid improvement using standard algorithms, progress plateaued.</p>
+<p>To break through these plateaus, teams began using <strong>Ensembling</strong>—combining multiple models together. The winning solution was an ensemble of <strong>107 different models</strong>. Shah emphasizes that while this strategy is powerful for eking out the last bit of performance, it creates immense complexity.</p>
+</section>
+<section id="the-engineering-cost-of-complexity" class="level3">
+<h3 class="anchored" data-anchor-id="the-engineering-cost-of-complexity">8. The Engineering Cost of Complexity</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_8.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 8</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=459s">Timestamp: 00:07:39</a>)</p>
+<p>This slide reveals the ironic conclusion of the Netflix Prize: the winning model was <strong>never implemented</strong>. The engineering costs to deploy an ensemble of 107 models were simply too high compared to the marginal gain in accuracy.</p>
+<p>Shah uses this as a cautionary tale: <em>“If your focus is on accuracy… it drives you down towards this complexity… but often you end up with these complex models [that] are often very difficult to implement.”</em> This highlights the disconnect between competitive data science and enterprise reality.</p>
+</section>
+<section id="understandable-white-box-model-clear-2" class="level3">
+<h3 class="anchored" data-anchor-id="understandable-white-box-model-clear-2">9. Understandable White Box Model (CLEAR-2)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_9.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 9</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=484s">Timestamp: 00:08:04</a>)</p>
+<p>Shah transitions to the alternative: <strong>Interpretable Models</strong>. This slide shows a simple linear model (CLEAR-2) with only two features. This is a classic “White Box” model where the relationship between inputs and outputs is transparent.</p>
+<p>The speaker contrasts this with the “Black Box” nature of complex ensembles. He argues that if you cannot understand what is going on inside a model, you cannot effectively debug it, nor can you easily convince stakeholders to trust it.</p>
+</section>
+<section id="complex-white-box-model-clear-8" class="level3">
+<h3 class="anchored" data-anchor-id="complex-white-box-model-clear-8">10. Complex White Box Model (CLEAR-8)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_10.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 10</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=711s">Timestamp: 00:11:51</a>)</p>
+<p>This slide presents a linear model with eight features (CLEAR-8). While technically still a “White Box” model, Shah implies that as feature counts grow, true understandability diminishes.</p>
+<p>He touches on this concept later in the “Caveats” section, noting that even linear models can become confusing if there is <strong>multicollinearity</strong> (features moving in the same direction). Just because we can see the coefficients doesn’t mean the model is intuitively “explainable” to a human if the variables interact in complex, non-obvious ways.</p>
+</section>
+<section id="easy-to-understand-decision-tree" class="level3">
+<h3 class="anchored" data-anchor-id="easy-to-understand-decision-tree">11. Easy to Understand Decision Tree</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_11.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 11</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1155s">Timestamp: 00:19:15</a>)</p>
+<p>Here, a simple Decision Tree is presented. Shah connects this to the history of rule-based learning, noting that early research found that keeping decision trees “short and stumpy” made them very easy for humans to explain.</p>
+<p>This visual represents the ideal of interpretability: a clear path of logic (e.g., “If X is less than 3, go left”) that leads to a prediction. This is the foundation for the <strong>Rulefit</strong> method discussed later.</p>
+</section>
+<section id="too-much-to-comprehend" class="level3">
+<h3 class="anchored" data-anchor-id="too-much-to-comprehend">12. Too Much to Comprehend</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_12.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 12</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=466s">Timestamp: 00:07:46</a>)</p>
+<p>Contrasting the previous slide, this image shows a chaotic forest of decision trees. This represents modern ensemble methods like Random Forests or Gradient Boosted Machines.</p>
+<p>Shah uses this visual to reinforce the point that while ensembles offer <strong>“Better Performance,”</strong> the sheer number of decision paths makes them <strong>“too much to Comprehend.”</strong> You lose the ability to trace the “why” behind a specific prediction, turning the system into a Black Box.</p>
+</section>
+<section id="pedro-domingos-tweet" class="level3">
+<h3 class="anchored" data-anchor-id="pedro-domingos-tweet">13. Pedro Domingos Tweet</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_13.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 13</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=502s">Timestamp: 00:08:22</a>)</p>
+<p>Shah acknowledges the counter-argument by showing a tweet from Pedro Domingos, a prominent machine learning researcher, who suggests that demanding explainability limits the potential of AI.</p>
+<p>Shah respectfully disagrees with this stance in the context of enterprise data science. He argues that in the real world, <em>“If you don’t understand what’s going on in your model, it’s hard for you to debug it, it’s hard to convince somebody else to adopt your model.”</em> Practicality and trust often outweigh raw theoretical power.</p>
+</section>
+<section id="benefits-of-interpretable-models" class="level3">
+<h3 class="anchored" data-anchor-id="benefits-of-interpretable-models">14. Benefits of Interpretable Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_14.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 14</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=556s">Timestamp: 00:09:16</a>)</p>
+<p>This slide summarizes the key benefits of using interpretable models, referencing the work of <strong>Cynthia Rudin</strong>. The main advantages are: 1. <strong>Debugging:</strong> It is easier to spot weird behaviors. 2. <strong>Trust:</strong> Stakeholders and legal/risk teams are more likely to approve the model. 3. <strong>Deployment:</strong> These models can often be deployed as simple SQL queries or basic code, avoiding the need for heavy GPU infrastructure.</p>
+<p>Shah emphasizes the deployment aspect: <em>“You don’t have to go out and get a GPU… you can actually deploy directly within a database.”</em></p>
+</section>
+<section id="caveats-of-interpretable-models" class="level3">
+<h3 class="anchored" data-anchor-id="caveats-of-interpretable-models">15. Caveats of Interpretable Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_15.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 15</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=660s">Timestamp: 00:11:00</a>)</p>
+<p>Shah provides a necessary reality check. He clarifies that selecting an interpretable <em>algorithm</em> is only one part of the process. True interpretability depends on the entire data pipeline.</p>
+<p>Issues like <strong>data labeling</strong>, <strong>feature engineering</strong>, and <strong>multicollinearity</strong> can render even a simple model confusing. For example, if two correlated features have opposite coefficients in a linear model, it becomes very difficult to explain the logic to a business user, even if the math is simple.</p>
+</section>
+<section id="section-2-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="section-2-baseline">16. Section 2: Baseline</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_16.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 16</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=735s">Timestamp: 00:12:15</a>)</p>
+<p>This slide introduces the <strong>Baseline</strong> section. Shah advocates for always starting a project with a simple baseline model to establish a performance benchmark.</p>
+<p>He shares an anecdote about people spending a year on a project only to be nearly matched by a simple model built in two hours. Establishing a baseline helps determine how much effort should be spent chasing incremental accuracy improvements.</p>
+</section>
+<section id="the-problem-uci-adult-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="the-problem-uci-adult-dataset">17. The Problem: UCI Adult Dataset</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_17.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 17</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=774s">Timestamp: 00:12:54</a>)</p>
+<p>Shah introduces the dataset he will use for all examples in the talk: the <strong>UCI Adult Dataset</strong> (Census Income). The goal is a binary classification problem: predicting whether someone has a high or low income based on demographics.</p>
+<p>He chooses this dataset because it represents typical enterprise tabular data: it has 30,000 rows, a mix of numerical and categorical features, and contains collinearity and interaction effects. This makes it a realistic test bed for the models he will demonstrate.</p>
+</section>
+<section id="baseline-models" class="level3">
+<h3 class="anchored" data-anchor-id="baseline-models">18. Baseline Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_18.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 18</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=833s">Timestamp: 00:13:53</a>)</p>
+<p>The speaker outlines the three baseline models he built to bracket the performance possibilities: 1. <strong>Logistic Regression:</strong> The standard statistical approach. 2. <strong>AutoML (H2O):</strong> A stacked ensemble of many models (Neural Networks, GBMs, etc.) representing the “maximum” possible performance. 3. <strong>OneR:</strong> A very simple rule-based algorithm.</p>
+<p>These baselines provide the context for evaluating the interpretable models later.</p>
+</section>
+<section id="baseline-models-plot" class="level3">
+<h3 class="anchored" data-anchor-id="baseline-models-plot">19. Baseline Models Plot</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_19.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 19</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=852s">Timestamp: 00:14:12</a>)</p>
+<p>This plot visualizes <strong>Complexity vs.&nbsp;AUC</strong> (Area Under the Curve). * <strong>OneR</strong> is at the bottom (AUC ~0.60) with very low complexity. * <strong>Logistic Regression</strong> is in the middle (AUC ~0.91). * <strong>Stacked Ensemble</strong> is at the top (AUC ~0.93) but with massive complexity.</p>
+<p>Shah notes that while the Stacked Ensemble wins on accuracy, the Logistic Regression is surprisingly close, highlighting that simpler models can often be “good enough.”</p>
+</section>
+<section id="oner-example" class="level3">
+<h3 class="anchored" data-anchor-id="oner-example">20. OneR Example</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_20.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 20</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=917s">Timestamp: 00:15:17</a>)</p>
+<p>Shah explains the <strong>OneR</strong> (One Rule) algorithm. This method finds the single feature in the dataset that best predicts the target. In the example shown (Iris dataset), utilizing just “Petal Width” classifies 96% of instances correctly.</p>
+<p>He suggests OneR is a great way to detect <strong>Target Leakage</strong>—if one feature predicts the target perfectly, it might be “cheating.” It also sets the floor for performance; if a complex model can’t beat OneR, something is wrong.</p>
+</section>
+<section id="baseline-models-plot-recap" class="level3">
+<h3 class="anchored" data-anchor-id="baseline-models-plot-recap">21. Baseline Models Plot (Recap)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_21.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 21</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=996s">Timestamp: 00:16:36</a>)</p>
+<p>Returning to the complexity plot, Shah reiterates the performance gap. The AutoML model sets the “ceiling” at 0.93 AUC.</p>
+<p>The goal for the rest of the presentation is to see where the interpretable models (Rulefit, GA2M, etc.) fall on this graph. Can they approach the 0.93 AUC of the ensemble without incurring the massive complexity penalty?</p>
+</section>
+<section id="section-3-rulefit" class="level3">
+<h3 class="anchored" data-anchor-id="section-3-rulefit">22. Section 3: Rulefit</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_22.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 22</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1098s">Timestamp: 00:18:18</a>)</p>
+<p>This slide introduces the first major interpretable technique: <strong>Rulefit</strong>. Shah mentions familiarity with this from his time at Data Robot and notes that it is a powerful way to combine the benefits of trees and linear models.</p>
+</section>
+<section id="what-is-rulefit" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-rulefit">23. What is Rulefit?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_23.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 23</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1110s">Timestamp: 00:18:30</a>)</p>
+<p><strong>Rulefit</strong> is an algorithm developed by Friedman and Popescu (2008). It works by: 1. Building a random forest of short, “stumpy” decision trees. 2. Extracting each path through the trees as a “Rule.” 3. Using these rules as binary features in a sparse linear model (Lasso).</p>
+<p>This approach allows the model to capture interactions (via the trees) while maintaining the interpretability of a linear equation.</p>
+</section>
+<section id="h2o-rulefit-output" class="level3">
+<h3 class="anchored" data-anchor-id="h2o-rulefit-output">24. H2O Rulefit Output</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_24.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 24</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1339s">Timestamp: 00:22:19</a>)</p>
+<p>Shah displays the output from the <strong>H2O Rulefit</strong> implementation. The model generates human-readable rules, such as: <em>“If Education &lt; 12 AND Capital Gain &lt; $7000, THEN Coefficient is negative.”</em></p>
+<p>He notes that while the rules are readable, the raw output can look like “computer-ese.” However, it allows a data scientist to identify specific segments of the population (e.g., low education, low capital gain) that strongly drive the prediction.</p>
+</section>
+<section id="overlapping-rules" class="level3">
+<h3 class="anchored" data-anchor-id="overlapping-rules">25. Overlapping Rules</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_25.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 25</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1470s">Timestamp: 00:24:30</a>)</p>
+<p>A key characteristic of Rulefit is that the rules <strong>overlap</strong>. A single data point might satisfy multiple rules simultaneously.</p>
+<p>Shah points out that this adds a layer of complexity to interpretability. To understand a prediction, you have to sum up the coefficients of <em>all</em> the rules that apply to that person. This is different from a decision tree where you fall into exactly one leaf node.</p>
+</section>
+<section id="h2o-rulefit-with-linear-terms" class="level3">
+<h3 class="anchored" data-anchor-id="h2o-rulefit-with-linear-terms">26. H2O Rulefit with Linear Terms</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_26.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 26</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1555s">Timestamp: 00:25:55</a>)</p>
+<p>One limitation of pure rules is handling continuous variables (like age or miles driven). Rules have to “bin” these variables (e.g., Age &lt; 30, Age 30-40).</p>
+<p>Shah explains that H2O Rulefit solves this by including <strong>Linear Terms</strong>. The model can use rules for non-linear interactions <em>and</em> standard linear coefficients for continuous trends. This hybrid approach boosts the AUC significantly (up to 0.88 in this example) by capturing linear relationships more naturally.</p>
+</section>
+<section id="rulefit-results" class="level3">
+<h3 class="anchored" data-anchor-id="rulefit-results">27. Rulefit Results</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_27.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 27</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1624s">Timestamp: 00:27:04</a>)</p>
+<p>This slide plots the performance of Rulefit models with varying numbers of rules. Shah demonstrates that by increasing the number of rules (complexity), the AUC climbs closer to the Stacked Ensemble.</p>
+<p>He concludes that Rulefit is a versatile tool. You can tune the “dial” of complexity: fewer rules for more interpretability, or more rules for higher accuracy, often getting very competitive performance.</p>
+</section>
+<section id="section-4-ga2m" class="level3">
+<h3 class="anchored" data-anchor-id="section-4-ga2m">28. Section 4: GA2M</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_28.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 28</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1895s">Timestamp: 00:31:35</a>)</p>
+<p>The presentation moves to the second technique: <strong>GA2M</strong> (Generalized Additive Models with pairwise interactions). Shah notes that while GAMs have existed for a while, modern implementations like Microsoft’s <strong>Explainable Boosting Machines (EBM)</strong> have made them much more accessible and powerful.</p>
+</section>
+<section id="what-is-ga2m" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-ga2m">29. What is GA2M?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_29.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 29</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1922s">Timestamp: 00:32:02</a>)</p>
+<p><strong>GA2M</strong> is essentially a linear model where features are binned, and pairwise interactions are automatically detected. Shah highlights <strong>InterpretML</strong>, an open-source library from Microsoft that implements this via EBMs.</p>
+<p>The model structure is additive: <span class="math inline">\(g(E[y]) = \beta_0 + \sum f_j(x_j) + \sum f_{ij}(x_i, x_j)\)</span>. This means the final score is just the sum of individual feature scores and interaction scores, making it very transparent.</p>
+</section>
+<section id="ga2m-binning" class="level3">
+<h3 class="anchored" data-anchor-id="ga2m-binning">30. GA2M Binning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_30.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 30</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1962s">Timestamp: 00:32:42</a>)</p>
+<p>Shah explains how GA2M handles numerical data. Instead of a single slope coefficient (like in logistic regression), the model <strong>bins</strong> the continuous feature (e.g., dividing “criminal history” into ranges).</p>
+<p>Each bin gets its own coefficient. This allows the model to learn non-linear patterns (e.g., risk might go up, then down, then up again as a variable increases) while remaining easy to inspect.</p>
+</section>
+<section id="interactions-in-ga2m" class="level3">
+<h3 class="anchored" data-anchor-id="interactions-in-ga2m">31. Interactions in GA2M</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_31.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 31</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=1988s">Timestamp: 00:33:08</a>)</p>
+<p>The “2” in GA2M stands for <strong>pairwise interactions</strong>. Shah emphasizes that this is the model’s superpower. While standard linear models struggle with interactions (e.g., the combined effect of age and education), GA2M has an efficient algorithm to automatically find the most important pairs.</p>
+<p>This allows the model to achieve accuracy levels comparable to complex ensembles (AUC 0.93) because it captures the interaction signal that simple linear models miss.</p>
+</section>
+<section id="ga2m-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="ga2m-visualization">32. GA2M Visualization</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_32.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 32</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2114s">Timestamp: 00:35:14</a>)</p>
+<p>Shah showcases the <strong>InterpretML</strong> dashboard. It provides clear visualizations of how each feature contributes to the prediction.</p>
+<p>In the example, we see the coefficients for different marital statuses. This acts like a “lookup table” for risk. Shah argues that this is very “model risk management friendly” because stakeholders can validate every single coefficient and interaction term to ensure they make business sense.</p>
+</section>
+<section id="section-5-rule-lists" class="level3">
+<h3 class="anchored" data-anchor-id="section-5-rule-lists">33. Section 5: Rule Lists</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_33.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 33</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2428s">Timestamp: 00:40:28</a>)</p>
+<p>The third approach is <strong>Rule Lists</strong>. Shah introduces this as a method to solve the “overlapping rules” problem found in Rulefit.</p>
+</section>
+<section id="what-are-rule-lists" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-rule-lists">34. What are Rule Lists?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_34.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 34</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2448s">Timestamp: 00:40:48</a>)</p>
+<p><strong>Rule Lists</strong> are ordered sets of <strong>IF-THEN-ELSE</strong> statements. Unlike Rulefit, where you sum up multiple rules, here an observation triggers only the <strong>first</strong> rule it matches.</p>
+<p>Shah mentions implementations like <strong>CORELS</strong> and <strong>SBRL</strong> (Scalable Bayesian Rule Lists). The goal is to produce a concise list that a human can read from top to bottom to make a decision.</p>
+</section>
+<section id="sbrl-process" class="level3">
+<h3 class="anchored" data-anchor-id="sbrl-process">35. SBRL Process</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_35.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 35</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2469s">Timestamp: 00:41:09</a>)</p>
+<p>Creating an optimal rule list is computationally expensive because the algorithm must search through many permutations to find the best order.</p>
+<p>Shah explains the logic: The algorithm finds a rule that covers a subset of data, removes those instances, and then finds the next rule for the remaining data. This sequential “peeling off” of data creates the IF-ELSE structure.</p>
+</section>
+<section id="sbrl-output-example" class="level3">
+<h3 class="anchored" data-anchor-id="sbrl-output-example">36. SBRL Output Example</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_36.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 36</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2505s">Timestamp: 00:41:45</a>)</p>
+<p>The output of an SBRL model is shown. It reads like a checklist: 1. <em>IF Capital Gain &gt; $7500 -&gt; High Income (99% prob)</em> 2. <em>ELSE IF Education &lt; 4 -&gt; Low Income (90% prob)</em> 3. <em>ELSE…</em></p>
+<p>Shah highlights the simplicity: <em>“You just go down the list until you find the rule… much easier to explain to those marketing people.”</em> The trade-off is a drop in accuracy (AUC 0.86) compared to GA2M or Rulefit.</p>
+</section>
+<section id="section-6-scorecard" class="level3">
+<h3 class="anchored" data-anchor-id="section-6-scorecard">37. Section 6: Scorecard</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_37.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 37</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2692s">Timestamp: 00:44:52</a>)</p>
+<p>The final approach is the <strong>Scorecard</strong>. Shah introduces this as perhaps the simplest and most widely recognized format for decision-making in industries like credit and criminal justice.</p>
+</section>
+<section id="what-are-scorecards" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-scorecards">38. What are Scorecards?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_38.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 38</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2704s">Timestamp: 00:45:04</a>)</p>
+<p><strong>Scorecards</strong> are simple additive models where features are assigned integer “points.” To get a prediction, you simply add up the points.</p>
+<p>Shah mentions tools like <strong>Optbinning</strong> and <strong>SLIM</strong> (Sparse Linear Integer Models). This format is beloved in operations because it can be printed on a physical card or implemented in a basic spreadsheet.</p>
+</section>
+<section id="scorecard-example" class="level3">
+<h3 class="anchored" data-anchor-id="scorecard-example">39. Scorecard Example</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_39.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 39</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=2768s">Timestamp: 00:46:08</a>)</p>
+<p>This slide shows a scorecard built for the Adult dataset. * <em>Capital Gain &gt; 7000? +29 points.</em> * <em>Age &lt; 25? -5 points.</em></p>
+<p>Shah expresses a personal preference for this over raw coefficients: <em>“I actually like this better… I think it’s a little easier to understand which features are most important.”</em> The integer points make the “weight” of each factor immediately obvious to a layperson.</p>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">40. Summary</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_40.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 40</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=3071s">Timestamp: 00:51:11</a>)</p>
+<p>Shah begins to wrap up the presentation, preparing to consolidate the four methods (Rulefit, GA2M, Rule Lists, Scorecards) into a final comparison.</p>
+</section>
+<section id="complexity-vs-auc-summary-plot" class="level3">
+<h3 class="anchored" data-anchor-id="complexity-vs-auc-summary-plot">41. Complexity vs AUC Summary Plot</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_41.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 41</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=3073s">Timestamp: 00:51:13</a>)</p>
+<p>This is the definitive comparison graph of the talk. It places all discussed models on the <strong>Complexity vs.&nbsp;AUC</strong> plane. * <strong>GA2M (EBM)</strong> and <strong>Rulefit</strong> sit high up, offering near-SOTA accuracy with moderate interpretability. * <strong>Scorecards</strong> and <strong>Rule Lists</strong> sit lower on accuracy but offer maximum simplicity.</p>
+<p>Shah summarizes the trade-off: <em>“The Rule Lists and Scorecard… you lose a little bit [of accuracy]… but we talked about the trade-offs of being able to easily understand.”</em></p>
+</section>
+<section id="take-away" class="level3">
+<h3 class="anchored" data-anchor-id="take-away">42. Take Away</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_42.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 42</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=3128s">Timestamp: 00:52:08</a>)</p>
+<p>The final message is a call to action: <strong>Try these approaches.</strong></p>
+<p>Shah encourages data scientists to add these tools to their toolkit. He asks them to consider the specific needs of their problem: Is it about transparency in <em>calculation</em> (Scorecard)? Or understanding <em>factors</em> (GA2M)? Often, a simple model that gets deployed is far better than a complex model that gets stuck in review.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">43. Conclusion</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_43.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 43</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/lx4SJOVtxI8&amp;t=3172s">Timestamp: 00:52:52</a>)</p>
+<p>The presentation concludes with Rajiv Shah’s contact information. He mentions an upcoming blog post that will synthesize these topics and invites the audience to reach out with questions or feedback.</p>
+<p>He reiterates that these interpretable models are often easier to get “buy-in” for, making them a pragmatic choice for real-world data science success.</p>
+<hr>
+<p><em>This annotated presentation was generated from the talk using AI-assisted tools. Each slide includes timestamps and detailed explanations.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/rajivshah\.com\/blog");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ @rajistics - Rajiv Shah
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com">
+<p><u>About Me</u></p>
+</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="./index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/">
+      <i class="bi bi-instagram" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics">
+      <i class="bi bi-tiktok" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w">
+      <i class="bi bi-youtube" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

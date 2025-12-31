@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-09-20">
+
+<title>Spark of AI: How Transfer Learning Unlocked AI’s Potential – Rajiv Shah - rajistics blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-475ad4fe1e4ce2c827a237f0e4cf2c17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Rajiv Shah - rajistics blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com"> 
+<span class="menu-text"><u>About Me</u></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/"> <i class="bi bi-instagram" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics"> <i class="bi bi-tiktok" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Spark of AI: How Transfer Learning Unlocked AI’s Potential</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Transfer Learning</div>
+                <div class="quarto-category">AI</div>
+                <div class="quarto-category">LLM</div>
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Annotated Talk</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 20, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#video" id="toc-video" class="nav-link active" data-scroll-target="#video">Video</a></li>
+  <li><a href="#annotated-presentation" id="toc-annotated-presentation" class="nav-link" data-scroll-target="#annotated-presentation">Annotated Presentation</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="spark-of-ai-transfer-learning.ipynb" download="spark-of-ai-transfer-learning.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="video" class="level2">
+<h2 class="anchored" data-anchor-id="video">Video</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/6NuGEukBfcA" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Watch the <a href="https://youtu.be/6NuGEukBfcA">full video</a></p>
+<hr>
+</section>
+<section id="annotated-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="annotated-presentation">Annotated Presentation</h2>
+<p>Below is an annotated version of the presentation, with timestamped links to the relevant parts of the video for each slide.</p>
+<p>Here is the annotated presentation based on the provided video transcript and slide summaries.</p>
+<section id="the-spark-of-the-ai-revolution" class="level3">
+<h3 class="anchored" data-anchor-id="the-spark-of-the-ai-revolution">1. The Spark of the AI Revolution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_1.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 1</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=0s">Timestamp: 00:00</a>)</p>
+<p>The presentation begins with the title slide, “The Spark of the AI Revolution: Transfer Learning,” presented by Rajiv Shah from Snowflake. This talk was originally given at the University of Cincinnati and recorded later to share the insights with a broader audience.</p>
+<p>Rajiv sets the stage by explaining that this is not a deep technical dive into code, but rather a descriptive history and analysis of the drivers behind the current AI boom. The goal is to explain how AI learns and how individuals can start to interrogate and understand these technologies in their own lives.</p>
+<p>The core premise is that <strong>Transfer Learning</strong> is the catalyst that shifted AI from academic curiosity to a revolutionary force. The talk aims to bridge the gap for those unfamiliar with the underlying mechanics of how models like ChatGPT came to be.</p>
+</section>
+<section id="sparks-of-agi-early-experiments" class="level3">
+<h3 class="anchored" data-anchor-id="sparks-of-agi-early-experiments">2. Sparks of AGI: Early Experiments</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_2.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 2</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=60s">Timestamp: 01:00</a>)</p>
+<p>This slide illustrates an early experiment conducted by researchers investigating GPT-4. To understand how the model was learning, they gave it a concept and asked it to draw it using code (SVG). The slide displays a progression of abstract animal figures, showing how the model’s ability to represent concepts improved over time during training.</p>
+<p>This references the paper “Sparks of Artificial General Intelligence,” which caused significant waves in the tech community. It suggests that these models were beginning to show signs of <strong>Artificial General Intelligence (AGI)</strong>—reasoning capabilities that extend beyond narrow tasks.</p>
+<p>The visual progression from crude shapes to recognizable forms serves as a metaphor for the rapid evolution of these models. It highlights the mystery and potential power hidden within the training process of Large Language Models (LLMs).</p>
+</section>
+<section id="extinction-level-threat" class="level3">
+<h3 class="anchored" data-anchor-id="extinction-level-threat">3. Extinction Level Threat?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_3.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 3</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=96s">Timestamp: 01:36</a>)</p>
+<p>The presentation addresses the extreme concerns surrounding the rapid scaling of AI technologies. The slide features a dramatic image reminiscent of the Terminator, referencing fears that unchecked AI development could pose an <strong>“extinction-level” threat</strong> to humanity.</p>
+<p>Rajiv notes that as these technologies scale, there is a segment of the research and safety community worried about catastrophic outcomes. This sets up a contrast between the theoretical existential risks and the practical, everyday reality of how AI is currently being used.</p>
+<p>This slide acknowledges the “hype and fear” cycle that dominates the media narrative, validating the audience’s anxiety before pivoting to a more grounded explanation of how the technology actually works.</p>
+</section>
+<section id="the-new-ai-overlords" class="level3">
+<h3 class="anchored" data-anchor-id="the-new-ai-overlords">4. The New AI Overlords</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_4.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 4</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=102s">Timestamp: 01:42</a>)</p>
+<p>Shifting to a lighter tone, this slide highlights the widespread adoption of AI by the younger generation. It cites a statistic that <strong>89% of students</strong> have used ChatGPT for homework, humorously suggesting that children have already “accepted our new AI overlords.”</p>
+<p>The slide points out a discrepancy in honesty, noting that while 89% use it, a significant portion (implied by the “11% are lying” joke) might not admit it. This reflects a fundamental shift in education and information retrieval that has already taken place.</p>
+<p>This context emphasizes that the AI revolution is not just a future possibility but a current reality affecting how the next generation learns and works. It underscores the urgency of understanding these tools.</p>
+</section>
+<section id="fundamental-questions" class="level3">
+<h3 class="anchored" data-anchor-id="fundamental-questions">5. Fundamental Questions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_5.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 5</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=113s">Timestamp: 01:53</a>)</p>
+<p>This slide poses the central questions that the presentation will answer: “What is AI doing?” and “How should you think about AI?” It serves as an agenda setting for the technical explanation that follows.</p>
+<p>Rajiv transitions here from the societal impact of AI to the mechanics of machine learning. He prepares the audience to look “under the hood” to demystify the “magic” of tools like ChatGPT.</p>
+<p>The goal is to move the audience from passive consumers of AI hype to critical thinkers who understand the limitations and capabilities of the technology based on how it is built.</p>
+</section>
+<section id="how-we-teach-computers" class="level3">
+<h3 class="anchored" data-anchor-id="how-we-teach-computers">6. How We Teach Computers</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_6.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 6</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=122s">Timestamp: 02:02</a>)</p>
+<p>The presentation begins its technical explanation with a fundamental question: <strong>“How do we teach computers?”</strong> The slide uses imagery of blueprints and tools, likening the traditional process of building AI models to craftsmanship.</p>
+<p>This introduces the concept of <strong>Supervised Learning</strong> in a relatable way. Before discussing neural networks, Rajiv grounds the audience in traditional analytics, where humans explicitly guide the machine on what to look for.</p>
+<p>The focus here is on the human element in traditional machine learning—the “artisan” who must carefully select inputs to get a desired output.</p>
+</section>
+<section id="identifying-features" class="level3">
+<h3 class="anchored" data-anchor-id="identifying-features">7. Identifying Features</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_7.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 7</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=131s">Timestamp: 02:11</a>)</p>
+<p>Using a real estate example, this slide explains the concept of <strong>Features</strong> (or variables). To teach a computer to value a house, one must identify specific characteristics like square footage, number of bedrooms, or closet space.</p>
+<p>Rajiv explains that we capture these characteristics and organize them into a tabular format. This process is known as <strong>Feature Engineering</strong>, where the data scientist decides which attributes are relevant for the problem at hand.</p>
+<p>This is the bedrock of traditional enterprise AI: converting real-world objects into structured data points that a machine can process mathematically.</p>
+</section>
+<section id="historical-data-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="historical-data-patterns">8. Historical Data Patterns</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_8.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 8</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=170s">Timestamp: 02:50</a>)</p>
+<p>This slide displays a scatter plot correlating “Sales Price” with “Square Feet.” It illustrates how enterprises gather historical data to look for patterns and relationships backwards in time.</p>
+<p>Rajiv notes that much of traditional analytics is simply looking at this historical data to understand what happened. However, the power of AI lies in using this data for <strong>forward-looking</strong> purposes.</p>
+<p>The visual clearly shows a trend: as square footage increases, the price generally increases. This linear relationship is what the machine needs to “learn.”</p>
+</section>
+<section id="learning-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="learning-the-model">9. Learning the Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_9.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 9</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=183s">Timestamp: 03:03</a>)</p>
+<p>Here, a line is drawn through the data points on the scatter plot. This line represents the <strong>Model</strong>. Learning, in this context, is simply the mathematical process of fitting this line to the historical data to minimize error.</p>
+<p>Rajiv explains that the model “understands the relationships” defined by the data. Instead of a human manually writing rules, the algorithm finds the best-fit trend based on the input features.</p>
+<p>This simplifies the concept of training a model down to its essence: finding a mathematical representation of a trend within a dataset.</p>
+</section>
+<section id="making-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="making-predictions">10. Making Predictions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_10.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 10</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=196s">Timestamp: 03:16</a>)</p>
+<p>This slide demonstrates the utility of the trained model. When a “New House” comes onto the market, the model uses the learned line to predict its value based on its square footage.</p>
+<p>This defines the <strong>Inference</strong> stage of machine learning. The model is no longer learning; it is applying its “knowledge” (the line) to unseen data to generate a prediction.</p>
+<p>It highlights the portability of a model—once trained, it can be used to make rapid assessments of new data points without human intervention.</p>
+</section>
+<section id="the-domain-limitation" class="level3">
+<h3 class="anchored" data-anchor-id="the-domain-limitation">11. The Domain Limitation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_11.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 11</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=210s">Timestamp: 03:30</a>)</p>
+<p>The presentation introduces a critical limitation of traditional models. The slide shows the model trained on San Francisco data being applied to houses in South Carolina. The result is labeled “Poor Model.”</p>
+<p>Rajiv explains that while you can technically take the model with you, it will fail because the <strong>underlying relationships</strong> between features (size) and targets (price) are different in different domains (geographies).</p>
+<p>This illustrates the concept of <strong>Domain Shift</strong> or lack of generalization. A model is only as good as the data it was trained on, and it assumes the future (or new location) looks exactly like the past.</p>
+</section>
+<section id="the-thinking-emoji" class="level3">
+<h3 class="anchored" data-anchor-id="the-thinking-emoji">12. The Thinking Emoji</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_12.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 12</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=223s">Timestamp: 03:43</a>)</p>
+<p>This slide reinforces the previous point with a thinking emoji, emphasizing the realization that the existing model is inadequate. The “San Francisco Model” does not fit the “South Carolina Data.”</p>
+<p>It serves as a visual pause to let the problem sink in: traditional machine learning is brittle. It requires the data distribution to remain constant.</p>
+<p>Rajiv uses this to set up the labor-intensive nature of traditional analytics, where models cannot simply be “transferred” across different contexts.</p>
+</section>
+<section id="train-new-model" class="level3">
+<h3 class="anchored" data-anchor-id="train-new-model">13. Train New Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_13.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 13</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=235s">Timestamp: 03:55</a>)</p>
+<p>The solution in the traditional paradigm is presented here: <strong>“Train New Model.”</strong> To get accurate predictions for South Carolina, one must collect local data and repeat the entire training process from scratch.</p>
+<p>This highlights the “Never-Ending Battle” of enterprise analytics. Data scientists are constantly retraining models for every specific region, product line, or use case.</p>
+<p>This sets the baseline for why Transfer Learning (introduced later) is such a revolution. In the old way, knowledge was not portable; every problem required a bespoke solution.</p>
+</section>
+<section id="artisan-ai" class="level3">
+<h3 class="anchored" data-anchor-id="artisan-ai">14. Artisan AI</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_14.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 14</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=255s">Timestamp: 04:15</a>)</p>
+<p>Rajiv coins the term <strong>“Artisan AI”</strong> to describe this traditional approach. The slide features an image of a craftsman, symbolizing that these models are hand-built and rely heavily on human-crafted features.</p>
+<p>This approach is slow and difficult to scale. Just as an artisan can only produce a limited number of goods, a data science team using these methods can only maintain a limited number of models.</p>
+<p>It emphasizes that the intelligence in these systems comes largely from the human who engineered the features, not the machine itself.</p>
+</section>
+<section id="enterprise-ai-use-cases" class="level3">
+<h3 class="anchored" data-anchor-id="enterprise-ai-use-cases">15. Enterprise AI Use Cases</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_15.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 15</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=263s">Timestamp: 04:23</a>)</p>
+<p>This slide lists common Enterprise AI applications: Forecasting, Pricing, Customer Churn, and Fraud. It notes that <strong>80% of production models</strong> currently fall into this category.</p>
+<p>Rajiv grounds the talk in the reality of today’s business world. Despite the hype around Generative AI, most companies are still running on these “Artisan” structured data models.</p>
+<p>This distinction is crucial for understanding the market. There is “Old AI” (highly effective, structured, labor-intensive) and “New AI” (generative, unstructured, scalable), and they solve different problems.</p>
+</section>
+<section id="the-computer-science-perspective" class="level3">
+<h3 class="anchored" data-anchor-id="the-computer-science-perspective">16. The Computer Science Perspective</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_16.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 16</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=281s">Timestamp: 04:41</a>)</p>
+<p>The presentation shifts from the enterprise view to the academic Computer Science view. The slide asks, “How should we teach computers?” signaling a move toward more advanced methodologies.</p>
+<p>Rajiv indicates that computer scientists were trying to find ways to move beyond the limitations of manual feature engineering. They wanted machines to learn the features themselves.</p>
+<p>This transition introduces the concept of <strong>Deep Learning</strong> and the move toward processing unstructured data like audio, images, and text.</p>
+</section>
+<section id="frederick-jelineks-insight" class="level3">
+<h3 class="anchored" data-anchor-id="frederick-jelineks-insight">17. Frederick Jelinek’s Insight</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_17.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 17</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=289s">Timestamp: 04:49</a>)</p>
+<p>This slide introduces a quote from Frederick Jelinek, a pioneer in speech recognition: <strong>“Every time I fire a linguist, the performance of the speech recognizer goes up.”</strong></p>
+<p>This provocative quote encapsulates a major shift in AI philosophy. It suggests that human expertise (linguistics) often gets in the way of raw data processing. Instead of hard-coding grammar rules, it is better to let the model learn patterns directly from the data.</p>
+<p>Rajiv asks the audience to “chew on that,” as it foreshadows the “Bitter Lesson” of AI: massive compute and data often outperform human domain expertise.</p>
+</section>
+<section id="computer-vision-in-2010" class="level3">
+<h3 class="anchored" data-anchor-id="computer-vision-in-2010">18. Computer Vision in 2010</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_18.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 18</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=347s">Timestamp: 05:47</a>)</p>
+<p>The slide depicts the state of Computer Vision around 2010. It shows a process of manual feature extraction (like HOG - Histogram of Oriented Gradients) used to identify shapes and edges.</p>
+<p>Rajiv explains that even in vision, researchers were essentially doing “Artisan AI.” They sat around thinking about how to mathematically describe the shape of a car or a truck to a computer.</p>
+<p>This illustrates that before the deep learning boom, computer vision was stuck in the same “feature engineering” trap as tabular analytics.</p>
+</section>
+<section id="svm-classification" class="level3">
+<h3 class="anchored" data-anchor-id="svm-classification">19. SVM Classification</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_19.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 19</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=365s">Timestamp: 06:05</a>)</p>
+<p>Following feature extraction, this slide shows a <strong>Support Vector Machine (SVM)</strong> classifier separating data points (cars vs.&nbsp;trucks). This was the standard approach: extract features manually, then use a simple algorithm to classify them.</p>
+<p>This reinforces the previous point about the limitations of the time. The intelligence was in the manual extraction, not the classification model.</p>
+<p>Rajiv mentions his own work at Caterpillar, noting that this was exactly how they tried to separate images of machinery—a tedious and specific process.</p>
+</section>
+<section id="fei-fei-li-and-big-data" class="level3">
+<h3 class="anchored" data-anchor-id="fei-fei-li-and-big-data">20. Fei-Fei Li and Big Data</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_20.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 20</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=375s">Timestamp: 06:15</a>)</p>
+<p>The slide introduces <strong>Professor Fei-Fei Li</strong>, a visionary in computer vision. It features a collage of images, hinting at the need for scale.</p>
+<p>Rajiv explains that Fei-Fei Li recognized that for computer vision to advance, it needed to move away from tiny datasets (100-200 images) and toward massive scale. She understood that deep learning required vast amounts of data to generalize.</p>
+<p>This marks the beginning of the “Big Data” era in AI, where the focus shifted from better algorithms to better and larger datasets.</p>
+</section>
+<section id="imagenet" class="level3">
+<h3 class="anchored" data-anchor-id="imagenet">21. ImageNet</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_21.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 21</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=401s">Timestamp: 06:41</a>)</p>
+<p>This slide details <strong>ImageNet</strong>, the dataset Fei-Fei Li helped create. It contains <strong>14 million images</strong> across <strong>1000 classes</strong>.</p>
+<p>Rajiv highlights the sheer effort involved, noting the use of <strong>Mechanical Turk</strong> to crowdsource the labeling of these images. He calls this the “dirty secret” of AI—that it is powered by low-wage human labor labeling data.</p>
+<p>ImageNet became the benchmark that drove the AI revolution. It provided the “fuel” necessary for neural networks to finally work.</p>
+</section>
+<section id="alexnet-and-gpus" class="level3">
+<h3 class="anchored" data-anchor-id="alexnet-and-gpus">22. AlexNet and GPUs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_22.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 22</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=464s">Timestamp: 07:44</a>)</p>
+<p>The presentation introduces <strong>Alex Krizhevsky</strong>, a graduate student under Geoffrey Hinton. The slide mentions “AlexNet” and the use of GPUs (Graphics Processing Units).</p>
+<p>Rajiv tells the story of how Alex decided to use NVIDIA gaming cards to train neural networks. Traditional CPUs were too slow for the math required by deep learning.</p>
+<p>This moment—combining the massive ImageNet dataset with the parallel processing power of GPUs—was the “big bang” of modern AI.</p>
+</section>
+<section id="alexnet-training-details" class="level3">
+<h3 class="anchored" data-anchor-id="alexnet-training-details">23. AlexNet Training Details</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_23.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 23</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=485s">Timestamp: 08:05</a>)</p>
+<p>This slide provides the technical specs of AlexNet: trained on <strong>1.2 million images</strong>, using <strong>2 GPUs</strong>, taking roughly <strong>6 days</strong>, with <strong>60 million parameters</strong>.</p>
+<p>Rajiv emphasizes that while 6 days seems long, the result was a model vastly superior to anything else. It proved that neural networks, which had been theoretical for decades, were now practical.</p>
+<p>The “60 million parameters” figure is a precursor to the “billions” and “trillions” we see today, marking the start of the parameter scaling race.</p>
+</section>
+<section id="crushing-the-competition" class="level3">
+<h3 class="anchored" data-anchor-id="crushing-the-competition">24. Crushing the Competition</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_24.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 24</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=507s">Timestamp: 08:27</a>)</p>
+<p>A chart displays the results of the ImageNet Large Scale Visual Recognition Challenge. It shows AlexNet achieving a significantly lower error rate than the competitors.</p>
+<p>Rajiv notes that the performance jump was so dramatic that by the following year, <strong>every competitor</strong> had switched to using the AlexNet architecture.</p>
+<p>This visualizes the paradigm shift. The “Artisan” methods were instantly obsolete, replaced by Deep Learning.</p>
+</section>
+<section id="feature-engineering-vs.-deep-learning" class="level3">
+<h3 class="anchored" data-anchor-id="feature-engineering-vs.-deep-learning">25. Feature Engineering vs.&nbsp;Deep Learning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_25.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 25</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=517s">Timestamp: 08:37</a>)</p>
+<p>Using a humorous meme format, this slide compares the “Old Way” (Feature Engineering + SVM) with the “New Way” (AlexNet). The AlexNet side is depicted as a powerful, overwhelming force.</p>
+<p>This solidifies the takeaway: Deep Learning didn’t just improve upon the old methods; it completely replaced them for unstructured data tasks like vision.</p>
+<p>It emphasizes that the model learned the features itself (edges, textures, shapes) rather than having humans manually code them.</p>
+</section>
+<section id="the-1000-classes" class="level3">
+<h3 class="anchored" data-anchor-id="the-1000-classes">26. The 1000 Classes</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_26.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 26</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=531s">Timestamp: 08:51</a>)</p>
+<p>This slide shows examples of the <strong>1000 classes</strong> in ImageNet, ranging from specific dog breeds to everyday objects.</p>
+<p>Rajiv explains that this model learned to identify a vast array of things from the raw pixels. It went from raw vision to understanding textures, shapes, and objects.</p>
+<p>However, he sets up the next problem: What if you want to identify something <em>not</em> in those 1000 classes?</p>
+</section>
+<section id="the-hot-dog-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-hot-dog-problem">27. The Hot Dog Problem</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_27.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 27</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=541s">Timestamp: 09:01</a>)</p>
+<p>referencing a famous scene from the show <em>Silicon Valley</em>, this slide presents the specific challenge of classifying “Hot Dogs.”</p>
+<p>Rajiv uses this to ask: How do you help a buddy with a startup who needs to find hot dogs if “hot dog” isn’t one of the primary categories, or if they need a specific <em>type</em> of hot dog? Do you have to start from scratch?</p>
+<p>This sets the stage for <strong>Transfer Learning</strong>—the solution to avoiding the need for 14 million images every time you have a new problem.</p>
+</section>
+<section id="pre-trained-models" class="level3">
+<h3 class="anchored" data-anchor-id="pre-trained-models">28. Pre-Trained Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_28.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 28</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=552s">Timestamp: 09:12</a>)</p>
+<p>The slide introduces the concept of a <strong>Pre-trained Model</strong>. This is the model that has already learned the 1000 classes from ImageNet.</p>
+<p>Rajiv explains that this model already “knows” how to see. It understands edges, curves, and textures. This knowledge is contained in the “weights” of the neural network.</p>
+<p>The key idea is that we don’t need to relearn how to “see” every time we want to identify a new object.</p>
+</section>
+<section id="transfer-learning-mechanics" class="level3">
+<h3 class="anchored" data-anchor-id="transfer-learning-mechanics">29. Transfer Learning Mechanics</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_29.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 29</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=570s">Timestamp: 09:30</a>)</p>
+<p>This technical slide illustrates how <strong>Transfer Learning</strong> works. It shows the layers of a neural network. We keep the early layers (which know shapes and textures) and only retrain the final layers for the new task (e.g., identifying boats).</p>
+<p>Rajiv explains that we can transfer “most of that knowledge” and only change a <strong>small amount of parameters</strong> (less than 10%).</p>
+<p>This is the revolution: You can build a world-class model with a <em>small</em> amount of data by standing on the shoulders of the giant ImageNet model.</p>
+</section>
+<section id="the-revolution" class="level3">
+<h3 class="anchored" data-anchor-id="the-revolution">30. The Revolution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_30.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 30</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=594s">Timestamp: 09:54</a>)</p>
+<p>A graph titled “Transfer Learning Revolution” shows the dramatic improvement in accuracy when using transfer learning versus training from scratch. It includes a quote from <strong>Andrew Ng</strong> stating that transfer learning will be the next driver of commercial success.</p>
+<p>Rajiv emphasizes that this capability allowed startups and companies to build powerful AI without needing Google-sized datasets. It democratized access to high-performance computer vision.</p>
+<p>This wraps up the vision section of the talk, establishing Transfer Learning as the “Spark.”</p>
+</section>
+<section id="the-implications" class="level3">
+<h3 class="anchored" data-anchor-id="the-implications">31. The Implications</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_31.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 31</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=611s">Timestamp: 10:11</a>)</p>
+<p>The slide shows a YouTube video thumbnail from 2016 featuring Geoffrey Hinton. This transitions the talk to the societal and professional implications of this technology.</p>
+<p>Rajiv prepares to share a famous prediction by Hinton regarding the medical field, specifically radiology. It signals a shift from “how it works” to “what it does to jobs.”</p>
+</section>
+<section id="the-coyote-moment" class="level3">
+<h3 class="anchored" data-anchor-id="the-coyote-moment">32. The Coyote Moment</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_32.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 32</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=619s">Timestamp: 10:19</a>)</p>
+<p>The slide displays a webpage for the University of Cincinnati Radiology Fellows. Rajiv quotes Hinton: <strong>“Radiologists are like the coyote that’s already over the edge of the cliff but hasn’t yet looked down.”</strong></p>
+<p>Hinton suggested people should stop training radiologists because AI interprets images better. Rajiv humorously notes that since he was speaking <em>at</em> U of C, he had to show the “coyotes” in the audience.</p>
+<p>This highlights the tension between AI capabilities and human expertise, a recurring theme in the presentation.</p>
+</section>
+<section id="nlp-the-academic-view" class="level3">
+<h3 class="anchored" data-anchor-id="nlp-the-academic-view">33. NLP: The Academic View</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_33.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 33</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=642s">Timestamp: 10:42</a>)</p>
+<p>The presentation switches domains from Computer Vision to <strong>Natural Language Processing (NLP)</strong>. The slide depicts a traditional academic setting, representing the text researchers.</p>
+<p>Rajiv explains that while Computer Vision was having its revolution with AlexNet, the text folks were still doing things the “Old Way”—crafting features and rules for language.</p>
+<p>They saw the success in vision and wondered how to replicate it for text, but language proved more difficult to model than images initially.</p>
+</section>
+<section id="traditional-nlp-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="traditional-nlp-tasks">34. Traditional NLP Tasks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_34.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 34</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=664s">Timestamp: 11:04</a>)</p>
+<p>This slide lists various NLP tasks: Classification, Information Extraction, and Sentiment Analysis.</p>
+<p>Rajiv notes that traditionally, each of these was a <strong>separate discipline</strong>. You built a specific model for sentiment, a different one for translation, and another for summarization. There was no “one model to rule them all.”</p>
+<p>This fragmentation made NLP difficult and resource-intensive, as knowledge didn’t transfer between tasks.</p>
+</section>
+<section id="the-glue-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="the-glue-benchmark">35. The GLUE Benchmark</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_35.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 35</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=685s">Timestamp: 11:25</a>)</p>
+<p>The slide introduces the <strong>GLUE Benchmark</strong> (General Language Understanding Evaluation). This was a collection of different text tasks put together to measure general language ability.</p>
+<p>Rajiv explains this was an attempt to push the field toward general-purpose models. Researchers wanted a single metric to see if a model could understand language broadly, not just solve one specific trick.</p>
+</section>
+<section id="the-transformer-architecture" class="level3">
+<h3 class="anchored" data-anchor-id="the-transformer-architecture">36. The Transformer Architecture</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_36.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 36</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=697s">Timestamp: 11:37</a>)</p>
+<p>This slide marks the turning point for text: the introduction of the <strong>Transformer</strong> architecture by Google researchers in 2017 (the “Attention Is All You Need” paper).</p>
+<p>Rajiv highlights that this architecture was not only more accurate (higher BLEU scores) but, crucially, more efficient.</p>
+<p>The Transformer allowed for parallel processing of text, unlike previous sequential models (RNNs/LSTMs), unlocking the ability to train on massive datasets.</p>
+</section>
+<section id="lower-training-costs" class="level3">
+<h3 class="anchored" data-anchor-id="lower-training-costs">37. Lower Training Costs</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_37.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 37</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=706s">Timestamp: 11:46</a>)</p>
+<p>The slide emphasizes the <strong>Training Cost</strong> reduction associated with Transformers.</p>
+<p>Rajiv points out that because the architecture used less processing power per unit of data, researchers immediately asked: “What happens if we give it <em>more</em> processing?”</p>
+<p>This efficiency paradox—making something cheaper allows you to do vastly more of it—sparked the scaling era of LLMs.</p>
+</section>
+<section id="exponential-growth" class="level3">
+<h3 class="anchored" data-anchor-id="exponential-growth">38. Exponential Growth</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_38.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 38</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=716s">Timestamp: 11:56</a>)</p>
+<p>A graph demonstrates the exponential growth in the size of Transformer models (measured in parameters) over just a few years. The curve shoots upward vertically.</p>
+<p>Rajiv explains that this scaling—simply making the models bigger and feeding them more data—led to the performance of GPT-4.</p>
+<p>This visualizes the “Scale” aspect of modern AI. We haven’t necessarily changed the architecture since 2017; we’ve just made it significantly larger.</p>
+</section>
+<section id="gpt-4-and-images" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-4-and-images">39. GPT-4 and Images</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_39.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 39</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=731s">Timestamp: 12:11</a>)</p>
+<p>The presentation circles back to the GPT-4 generated images from Slide 2.</p>
+<p>Rajiv connects the Transformer architecture and scaling directly to these “Sparks of AGI.” The ability to reason and draw emerged from simply predicting the next word at a massive scale.</p>
+</section>
+<section id="the-era-of-chatgpt" class="level3">
+<h3 class="anchored" data-anchor-id="the-era-of-chatgpt">40. The Era of ChatGPT</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_40.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 40</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=736s">Timestamp: 12:16</a>)</p>
+<p>The slide displays the ChatGPT logo, symbolizing the current era where these technical advancements reached the public consciousness.</p>
+<p>Rajiv sets up the next section of the talk: explaining exactly <strong>how</strong> a model like ChatGPT is trained. He moves from history to the “Recipe.”</p>
+</section>
+<section id="the-learning-process" class="level3">
+<h3 class="anchored" data-anchor-id="the-learning-process">41. The Learning Process</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_41.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 41</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=740s">Timestamp: 12:20</a>)</p>
+<p>A visual diagram outlines the evolutionary stages of ChatGPT. It previews the three steps Rajiv will cover: Pre-training, Fine-tuning, and Alignment.</p>
+<p>This roadmap helps the audience understand that ChatGPT isn’t just one static thing; it’s the result of a multi-stage pipeline involving different types of learning.</p>
+</section>
+<section id="recipe-step-1-foundation-model" class="level3">
+<h3 class="anchored" data-anchor-id="recipe-step-1-foundation-model">42. Recipe Step 1: Foundation Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_42.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 42</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=747s">Timestamp: 12:27</a>)</p>
+<p>The first step identified is the <strong>“Foundation Model”</strong> (or Base Model).</p>
+<p>Rajiv explains that the core capability of these models is <strong>Next Word Prediction</strong>. Before it can answer questions or be helpful, it must simply learn the statistical structure of language.</p>
+</section>
+<section id="predictive-keyboards" class="level3">
+<h3 class="anchored" data-anchor-id="predictive-keyboards">43. Predictive Keyboards</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_43.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 43</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=751s">Timestamp: 12:31</a>)</p>
+<p>To make the concept relatable, the slide compares LLMs to the <strong>predictive text</strong> feature on a smartphone keyboard.</p>
+<p>Rajiv notes that while the game on your phone is simple, scaling that concept up to the entire internet makes it incredibly powerful. It grounds the “magic” of AI in a familiar user experience.</p>
+</section>
+<section id="next-token-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="next-token-prediction">44. Next Token Prediction</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_44.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 44</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=760s">Timestamp: 12:40</a>)</p>
+<p>This technical slide defines <strong>“Next Token Prediction.”</strong> It explains that the model looks at a sequence of text and calculates the probability of what comes next.</p>
+<p>Rajiv emphasizes that this is a hard statistical problem. There are many possibilities for the next word, and the model must learn to weigh them based on context.</p>
+</section>
+<section id="the-homer-simpson-challenge" class="level3">
+<h3 class="anchored" data-anchor-id="the-homer-simpson-challenge">45. The Homer Simpson Challenge</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_45.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 45</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=785s">Timestamp: 13:05</a>)</p>
+<p>Rajiv introduces a specific experiment: Training a Transformer to speak like <strong>Homer Simpson</strong>. He mentions using 7MB of Simpsons scripts (~7 million tokens).</p>
+<p>This serves as a concrete example to show how training data size affects model performance.</p>
+</section>
+<section id="million-tokens" class="level3">
+<h3 class="anchored" data-anchor-id="million-tokens">46. 4 Million Tokens</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_46.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 46</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=812s">Timestamp: 13:32</a>)</p>
+<p>The slide shows the output of the model when trained on only <strong>4 Million tokens</strong>. The text is “nonsensical and random.”</p>
+<p>Rajiv demonstrates that with insufficient data, the model hasn’t learned grammar or structure yet. It’s just outputting characters.</p>
+</section>
+<section id="million-tokens-1" class="level3">
+<h3 class="anchored" data-anchor-id="million-tokens-1">47. 16 Million Tokens</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_47.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 47</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=817s">Timestamp: 13:37</a>)</p>
+<p>At <strong>16 Million tokens</strong>, the output improves slightly. It contains random words and incorrect grammar, but it’s recognizable as language.</p>
+<p>This illustrates the “grokking” phase where the model starts to pick up on basic syntax but lacks semantic meaning.</p>
+</section>
+<section id="million-tokens-2" class="level3">
+<h3 class="anchored" data-anchor-id="million-tokens-2">48. 64 Million Tokens</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_48.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 48</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=819s">Timestamp: 13:39</a>)</p>
+<p>With <strong>64 Million tokens</strong>, the model generates text that is “close to a proper sentence” and sounds vaguely like Homer Simpson.</p>
+<p>Rajiv uses this progression to prove that these models are statistical engines. With enough data, they mimic the patterns of the training set effectively.</p>
+</section>
+<section id="gpt-2-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-2-specifications">49. GPT-2 Specifications</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_49.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 49</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=834s">Timestamp: 13:54</a>)</p>
+<p>The slide details <strong>GPT-2</strong> (released in 2019), which had <strong>1.5 Billion parameters</strong>.</p>
+<p>Rajiv recalls that when GPT-2 came out, he wasn’t excited because it was just a “creative storytelling model.” It wasn’t factually accurate. He wants the audience to remember that at their core, these models are just predicting the next word, not checking facts.</p>
+</section>
+<section id="llama-3.1-and-scale" class="level3">
+<h3 class="anchored" data-anchor-id="llama-3.1-and-scale">50. Llama 3.1 and Scale</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_50.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 50</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=867s">Timestamp: 14:27</a>)</p>
+<p>Updating the timeline, this slide shows <strong>Llama 3.1</strong>. It highlights the training data: <strong>15 Trillion Tokens</strong> and the compute: <strong>40 Million GPU Hours</strong>.</p>
+<p>Rajiv emphasizes that 15 trillion tokens is an “unfathomable amount of information.” The scale has increased 10,000x since GPT-2.</p>
+<p>This underscores the energy and compute intensity of modern AI—it requires massive infrastructure.</p>
+</section>
+<section id="hallucinations" class="level3">
+<h3 class="anchored" data-anchor-id="hallucinations">51. Hallucinations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_51.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 51</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=915s">Timestamp: 15:15</a>)</p>
+<p>This slide addresses <strong>Hallucinations</strong>. It uses an example of asking for the “Capital of Mars.” The model will confidently invent an answer.</p>
+<p>Rajiv argues that “hallucination” isn’t the right metaphor because the model isn’t malfunctioning. It is doing exactly what it was designed to do: predict the most likely next word. It has no concept of “truth,” only statistical likelihood.</p>
+</section>
+<section id="gpt-2-failure-on-sentiment" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-2-failure-on-sentiment">52. GPT-2 Failure on Sentiment</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_52.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 52</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=977s">Timestamp: 16:17</a>)</p>
+<p>Rajiv shows an example of trying to use the base GPT-2 model for a specific task: <strong>Customer Sentiment</strong>. When prompted, the model just continues the story instead of classifying the sentiment.</p>
+<p>This illustrates that Base Models are creative but <strong>not useful for following instructions</strong>. They don’t know they are supposed to solve a problem; they just want to write text.</p>
+</section>
+<section id="recipe-step-2-instruction-fine-tuned" class="level3">
+<h3 class="anchored" data-anchor-id="recipe-step-2-instruction-fine-tuned">53. Recipe Step 2: Instruction Fine-Tuned</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_53.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 53</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=998s">Timestamp: 16:38</a>)</p>
+<p>This introduces the second step in the ChatGPT recipe: <strong>“Instruction Fine-Tuned Model.”</strong></p>
+<p>Rajiv explains that to make the model useful, we must teach it to follow orders. This is done via Transfer Learning—taking the base model and training it further on examples of instructions and answers.</p>
+</section>
+<section id="fine-tuning-for-sentiment" class="level3">
+<h3 class="anchored" data-anchor-id="fine-tuning-for-sentiment">54. Fine-Tuning for Sentiment</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_54.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 54</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1006s">Timestamp: 16:46</a>)</p>
+<p>The slide shows the process of fine-tuning the language model specifically for <strong>Sentiment Analysis</strong>.</p>
+<p>By showing the model examples of “Sentence -&gt; Sentiment,” we can tweak the parameters so it learns to perform classification rather than just storytelling.</p>
+</section>
+<section id="multi-task-fine-tuning" class="level3">
+<h3 class="anchored" data-anchor-id="multi-task-fine-tuning">55. Multi-Task Fine-Tuning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_55.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 55</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1042s">Timestamp: 17:22</a>)</p>
+<p>Rajiv expands the concept. We don’t just fine-tune for one task; we fine-tune for <strong>Topic Classification</strong> as well.</p>
+<p>The key insight is that <strong>one model</strong> can now solve multiple problems. Unlike the “Old NLP” where you needed separate models, the LLM can swap between tasks based on the instruction.</p>
+</section>
+<section id="translation-task" class="level3">
+<h3 class="anchored" data-anchor-id="translation-task">56. Translation Task</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_56.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 56</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1044s">Timestamp: 17:24</a>)</p>
+<p>The slide adds <strong>Translation</strong> to the mix, using about 10,000 examples.</p>
+<p>This reinforces the “General Purpose” nature of LLMs. They are Swiss Army knives for text.</p>
+</section>
+<section id="generalization-to-new-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="generalization-to-new-tasks">57. Generalization to New Tasks</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_57.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 57</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1050s">Timestamp: 17:30</a>)</p>
+<p>Rajiv poses a challenge: What happens if you give the model a task it <strong>hasn’t</strong> seen before?</p>
+<p>The slide indicates the model will try to solve it. This is the breakthrough of <strong>Generalization</strong>. Because it understands language so well, it can interpolate and attempt tasks it wasn’t explicitly trained on.</p>
+</section>
+<section id="practical-applications" class="level3">
+<h3 class="anchored" data-anchor-id="practical-applications">58. Practical Applications</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_58.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 58</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1075s">Timestamp: 17:55</a>)</p>
+<p>This slide showcases the wide array of use cases: Code explanation, Creative writing, Information extraction, etc.</p>
+<p>Rajiv explains that these capabilities exist because we have “trained these models to follow instructions.” This is why we can talk to them via <strong>Prompts</strong>.</p>
+</section>
+<section id="zero-shot-learning" class="level3">
+<h3 class="anchored" data-anchor-id="zero-shot-learning">59. Zero Shot Learning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_59.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 59</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1099s">Timestamp: 18:19</a>)</p>
+<p>The slide introduces <strong>“Zero shot learning”</strong> and <strong>“Prompting.”</strong></p>
+<p>This is the ability to get a result without showing the model any examples (zero shots). Rajiv notes that there is a “whole language” around prompting, but fundamentally, it’s just giving the model the instruction we trained it to expect.</p>
+</section>
+<section id="weeks-vs.-days" class="level3">
+<h3 class="anchored" data-anchor-id="weeks-vs.-days">60. Weeks vs.&nbsp;Days</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_60.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 60</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1121s">Timestamp: 18:41</a>)</p>
+<p>A comparison slide contrasts “Training a ML Model (weeks)” with “Prompting a LLM (days).”</p>
+<p>Rajiv highlights the efficiency shift. In the old days, solving a sentiment problem meant weeks of data collection and training. Now, it takes minutes to write a prompt. This is a massive productivity booster for NLP tasks.</p>
+</section>
+<section id="reasoning-and-planning" class="level3">
+<h3 class="anchored" data-anchor-id="reasoning-and-planning">61. Reasoning and Planning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_61.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 61</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1165s">Timestamp: 19:25</a>)</p>
+<p>The presentation pivots to the limitations of LLMs, specifically regarding <strong>Reasoning and Planning</strong>. The slide shows a “Block Stacking” puzzle.</p>
+<p>Rajiv explains that stacking blocks requires planning several steps ahead. It is not a one-step prediction problem; it requires maintaining a state of the world in memory.</p>
+</section>
+<section id="mystery-world-failure" class="level3">
+<h3 class="anchored" data-anchor-id="mystery-world-failure">62. Mystery World Failure</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_62.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 62</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1240s">Timestamp: 20:40</a>)</p>
+<p>The slide introduces <strong>“Mystery World,”</strong> a variation of the block problem where the names of the blocks are changed to random words.</p>
+<p>While a human (or a 4-year-old) understands that changing the name doesn’t change the physics of stacking, <strong>GPT-4 fails</strong> (3% accuracy). Rajiv explains that the model gets distracted by the creative aspect of the words and loses the logical thread. It shows these models struggle with abstract reasoning.</p>
+</section>
+<section id="recipe-step-3-aligned-model" class="level3">
+<h3 class="anchored" data-anchor-id="recipe-step-3-aligned-model">63. Recipe Step 3: Aligned Model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_63.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 63</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1316s">Timestamp: 21:56</a>)</p>
+<p>The final step in the recipe is the <strong>“Aligned Model.”</strong></p>
+<p>Rajiv introduces the need for safety and helpfulness. A model that follows instructions perfectly might follow <em>bad</em> instructions. We need to align it with human values.</p>
+</section>
+<section id="galactica-science-llm" class="level3">
+<h3 class="anchored" data-anchor-id="galactica-science-llm">64. Galactica: Science LLM</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_64.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 64</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1320s">Timestamp: 22:00</a>)</p>
+<p>The slide presents <strong>Galactica</strong>, a model released by Meta focused on science.</p>
+<p>Rajiv describes the intent: a helpful assistant for researchers to write code, summarize papers, and generate scientific content. It was meant to be a specialized tool.</p>
+</section>
+<section id="galactica-output" class="level3">
+<h3 class="anchored" data-anchor-id="galactica-output">65. Galactica Output</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_65.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 65</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1340s">Timestamp: 22:20</a>)</p>
+<p>An example of Galactica’s output shows it generating technical content.</p>
+<p>Rajiv highlights the potential utility. It looked like a powerful tool for accelerating scientific discovery.</p>
+</section>
+<section id="galactica-pulled" class="level3">
+<h3 class="anchored" data-anchor-id="galactica-pulled">66. Galactica Pulled</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_66.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 66</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1367s">Timestamp: 22:47</a>)</p>
+<p>The slide reveals that Meta <strong>pulled the model</strong> shortly after release.</p>
+<p>Rajiv explains why: users found they could ask it for the “benefits of eating crushed glass” or “benefits of suicide,” and the model would happily generate a scientific-sounding justification. It lacked a safety layer. This incident underscored the necessity of <strong>Red Teaming</strong> and alignment before release.</p>
+</section>
+<section id="learning-what-is-helpful" class="level3">
+<h3 class="anchored" data-anchor-id="learning-what-is-helpful">67. Learning What is Helpful</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_67.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 67</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1439s">Timestamp: 23:59</a>)</p>
+<p>To explain how we define “helpful,” Rajiv shows a <strong>Stack Overflow</strong> question.</p>
+<p>He notes that defining “helpful” mathematically is difficult. Unlike “square footage,” helpfulness is subjective and nuanced.</p>
+</section>
+<section id="technical-answer" class="level3">
+<h3 class="anchored" data-anchor-id="technical-answer">68. Technical Answer</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_68.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 68</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1445s">Timestamp: 24:05</a>)</p>
+<p>The slide shows a detailed technical answer.</p>
+<p>Rajiv points out that trying to create a “feature list” for what makes this answer helpful is nearly impossible. We can’t write a rule-based program to detect helpfulness.</p>
+</section>
+<section id="the-dating-app-analogy" class="level3">
+<h3 class="anchored" data-anchor-id="the-dating-app-analogy">69. The Dating App Analogy</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_69.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 69</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1466s">Timestamp: 24:26</a>)</p>
+<p>Rajiv uses a humorous <strong>Dating App</strong> analogy. He compares the “Old Way” (filling out long compatibility forms/features) with the “New Way” (Swiping).</p>
+<p>He explains that <strong>Swiping</strong> is a way of capturing human preferences without asking the user to explicitly define them. This is how we teach AI what is helpful.</p>
+</section>
+<section id="collect-human-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="collect-human-feedback">70. Collect Human Feedback</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_70.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 70</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1495s">Timestamp: 24:55</a>)</p>
+<p>The slide details the process: <strong>“Collect Human Feedback.”</strong></p>
+<p>We present the model with two options and ask a human, “Which is better?” By collecting thousands of these “swipes,” we build a dataset of human preference.</p>
+</section>
+<section id="rlhf-reinforcement-learning-from-human-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="rlhf-reinforcement-learning-from-human-feedback">71. RLHF (Reinforcement Learning from Human Feedback)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_71.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 71</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1505s">Timestamp: 25:05</a>)</p>
+<p>This slide introduces the technical term: <strong>RLHF</strong>.</p>
+<p>Rajiv explains this is the layer that turns a raw instruction-following model into a safe, helpful product like ChatGPT. It is an active curation process, similar to curating an Instagram feed.</p>
+</section>
+<section id="the-makeover-example" class="level3">
+<h3 class="anchored" data-anchor-id="the-makeover-example">72. The Makeover Example</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_72.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 72</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1527s">Timestamp: 25:27</a>)</p>
+<p>A “Before and After” makeover image illustrates the effect of RLHF.</p>
+<p>The “Before” is the raw model (messy, potentially harmful). The “After” is the aligned model (polished, safe, presentable).</p>
+</section>
+<section id="tuning-responses" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-responses">73. Tuning Responses</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_73.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 73</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1544s">Timestamp: 25:44</a>)</p>
+<p>The slide shows different ways an AI can answer a question: <strong>Sycophantic</strong> (sucking up to the user), <strong>Baseline Truthful</strong> (blunt), or <strong>Helpful Truthful</strong>.</p>
+<p>Rajiv notes we can train models to have specific personalities. We can make them polite, or we can make them “kiss your butt” if the user wants validation.</p>
+</section>
+<section id="ai-conversations" class="level3">
+<h3 class="anchored" data-anchor-id="ai-conversations">74. AI Conversations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_74.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 74</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1577s">Timestamp: 26:17</a>)</p>
+<p>This slide references <strong>Character.ai</strong> and the trend of people spending hours talking to AI personas.</p>
+<p>Rajiv mentions research showing people sometimes <strong>prefer AI doctors</strong> over human ones because the AI is patient, listens, and is polite (due to alignment). This suggests a future where AI handles high-touch conversational roles.</p>
+</section>
+<section id="the-full-recipe" class="level3">
+<h3 class="anchored" data-anchor-id="the-full-recipe">75. The Full Recipe</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_75.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 75</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1639s">Timestamp: 27:19</a>)</p>
+<p>The presentation summarizes the full pipeline: <strong>Foundation Model -&gt; Instruction Fine-Tuned -&gt; Aligned Model</strong>.</p>
+<p>This visual recap cements the three-stage process in the audience’s mind.</p>
+</section>
+<section id="learning-mechanisms-recap" class="level3">
+<h3 class="anchored" data-anchor-id="learning-mechanisms-recap">76. Learning Mechanisms Recap</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_76.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 76</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1643s">Timestamp: 27:23</a>)</p>
+<p>Rajiv maps the learning mechanisms to the stages: 1. <strong>Next Word Prediction</strong> (Foundation) 2. <strong>Multi-task Training</strong> (Instruction) 3. <strong>Human Preferences</strong> (Alignment)</p>
+<p>He reiterates that understanding these three mechanics helps explain why the models behave the way they do (hallucinations, ability to code, politeness).</p>
+</section>
+<section id="key-takeaways" class="level3">
+<h3 class="anchored" data-anchor-id="key-takeaways">77. Key Takeaways</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_77.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 77</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/6NuGEukBfcA&amp;t=1663s">Timestamp: 27:43</a>)</p>
+<p>The presentation transitions to the conclusion with three main takeaways: 1. <strong>Measure Twice</strong> 2. <strong>Respect Scale</strong> 3. <strong>Critical Thinking</strong></p>
+<p>Rajiv notes in the video that he skimmed these in the original talk, but the slides provide the detail for how to work effectively with AI.</p>
+</section>
+<section id="measure-twice-benchmarks" class="level3">
+<h3 class="anchored" data-anchor-id="measure-twice-benchmarks">78. Measure Twice (Benchmarks)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_78.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 78</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide displays a collage of AI benchmarks (MMLU, HumanEval, etc.).</p>
+<p>The concept “Measure Twice” emphasizes that because AI models are probabilistic and prone to hallucination, we cannot trust them blindly. We must rely on rigorous benchmarking to understand their capabilities and failures before deployment.</p>
+</section>
+<section id="targets-for-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="targets-for-evaluation">79. Targets for Evaluation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_79.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 79</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide likely elaborates on the need for clear <strong>“targets”</strong> or ground truth when evaluating models.</p>
+<p>You cannot improve what you cannot measure. In the context of “Prompt Engineering,” this means you shouldn’t just tweak prompts randomly; you need a systematic way to measure if a prompt change actually improved the output.</p>
+</section>
+<section id="respect-scale" class="level3">
+<h3 class="anchored" data-anchor-id="respect-scale">80. Respect Scale</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_80.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 80</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide illustrates the exponential growth in <strong>single-chip inference performance</strong>.</p>
+<p>“Respect Scale” refers to the lesson that betting against hardware and data scaling is usually a losing bet. The capabilities of these models grow faster than our intuition expects.</p>
+</section>
+<section id="the-scaling-lesson-humans" class="level3">
+<h3 class="anchored" data-anchor-id="the-scaling-lesson-humans">81. The Scaling Lesson (Humans)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_81.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 81</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide likely discusses how human expertise fits into the scaling laws. As technology scales, the role of the human shifts from doing the work to evaluating the work.</p>
+</section>
+<section id="the-plateau" class="level3">
+<h3 class="anchored" data-anchor-id="the-plateau">82. The Plateau</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_82.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 82</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>A visual showing that human contribution or specific “hacks” tend to <strong>plateau</strong>, whereas general-purpose methods that leverage scale (like Transformers) continue to improve.</p>
+<p>This reinforces the “Bitter Lesson”: specialized, hand-crafted solutions eventually lose to general methods that can consume more compute.</p>
+</section>
+<section id="alexnet-vs-transformers" class="level3">
+<h3 class="anchored" data-anchor-id="alexnet-vs-transformers">83. AlexNet vs Transformers</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_83.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 83</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>A comparison between <strong>AlexNet</strong> (the start of the deep learning era) and <strong>Transformers</strong> (the current era).</p>
+<p>It highlights the massive increase: <strong>10,000x more data</strong> and <strong>1,000x more compute</strong>. This illustrates that the fundamental driver of progress has been scale.</p>
+</section>
+<section id="the-bitter-lesson" class="level3">
+<h3 class="anchored" data-anchor-id="the-bitter-lesson">84. The Bitter Lesson</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_84.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 84</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide explicitly references Rich Sutton’s <strong>“The Bitter Lesson.”</strong></p>
+<p>The lesson is that researchers often try to build their knowledge into the system (like Jelinek’s linguists), but in the long run, the only thing that matters is leveraging computation. AI succeeds when we stop trying to teach it <em>how</em> to think and just give it enough power to learn on its own.</p>
+</section>
+<section id="text-to-sql" class="level3">
+<h3 class="anchored" data-anchor-id="text-to-sql">85. Text to SQL</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_85.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 85</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>The slide examines <strong>Text to SQL</strong>, a common enterprise use case. It compares AI performance to human experts.</p>
+<p>It notes that while AI is good, humans still achieve higher exact match accuracy. This nuances the “Respect Scale” argument—for high-precision tasks, human oversight is still required.</p>
+</section>
+<section id="critical-thinking" class="level3">
+<h3 class="anchored" data-anchor-id="critical-thinking">86. Critical Thinking</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_86.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 86</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>The final takeaway is <strong>“Critical Thinking.”</strong></p>
+<p>In an age where AI can generate convincing but false information, human judgment becomes the most valuable skill. We must critically evaluate the outputs of these models.</p>
+</section>
+<section id="predictions-and-concerns" class="level3">
+<h3 class="anchored" data-anchor-id="predictions-and-concerns">87. Predictions and Concerns</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_87.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 87</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide recaps expert predictions, ranging from job displacement to existential threats.</p>
+<p>It serves as a reminder that even experts disagree on the timeline and impact, reinforcing the need for individual critical thinking rather than blind faith in pundits.</p>
+</section>
+<section id="practical-limits-bezos-and-alexa" class="level3">
+<h3 class="anchored" data-anchor-id="practical-limits-bezos-and-alexa">88. Practical Limits: Bezos and Alexa</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_88.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 88</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>A humorous slide showing <strong>Jeff Bezos</strong> and <strong>Alexa</strong>. It likely references an instance where Alexa failed to understand a simple context despite Amazon’s massive resources.</p>
+<p>This illustrates the <strong>“Practical Limits of Learning.”</strong> Despite the hype, current AI still struggles with basic context that humans find trivial.</p>
+</section>
+<section id="autonomous-driving-limits" class="level3">
+<h3 class="anchored" data-anchor-id="autonomous-driving-limits">89. Autonomous Driving Limits</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_89.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 89</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>Images of an autonomous driving interface and a car accident.</p>
+<p>This points out that in high-stakes physical environments, “99% accuracy” isn’t enough. The “long tail” of edge cases remains a massive hurdle for AI.</p>
+</section>
+<section id="chatbot-failures" class="level3">
+<h3 class="anchored" data-anchor-id="chatbot-failures">90. Chatbot Failures</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_90.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 90</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>Examples of chatbots failing simple math or making <strong>“legally binding offers”</strong> (referencing the Air Canada chatbot lawsuit).</p>
+<p>This warns against deploying these models in critical business flows without guardrails. They can confidently make costly mistakes.</p>
+</section>
+<section id="interaction-principles" class="level3">
+<h3 class="anchored" data-anchor-id="interaction-principles">91. Interaction Principles</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_91.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 91</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>This slide summarizes the three principles for interacting with AI: <strong>“Measure twice,” “Respect scale,”</strong> and <strong>“Think critically.”</strong></p>
+<p>It acts as the final instructional slide, giving the audience a mantra for navigating the AI landscape.</p>
+</section>
+<section id="evolution-of-generative-capabilities" class="level3">
+<h3 class="anchored" data-anchor-id="evolution-of-generative-capabilities">92. Evolution of Generative Capabilities</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_92.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 92</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>The slide shows a series of <strong>Unicorn images</strong> generated by GPT-4 over time.</p>
+<p>This visualizes the rapid improvement in generative capabilities. Just as the “Sparks of AGI” images improved, the fidelity of these outputs continues to evolve, reminding us that we are looking at a moving target.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">93. Conclusion</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_93.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 93</figcaption>
+</figure>
+</div>
+<p>([Timestamp: End of Transcript])</p>
+<p>The final slide concludes the presentation with Rajiv Shah’s name and affiliation (Snowflake).</p>
+<p>It wraps up the narrative: from the spark of Transfer Learning to the fire of the Generative AI revolution, offering a practical, technical, and critical perspective on the technology shaping our future.</p>
+<hr>
+<p><em>This annotated presentation was generated from the talk using AI-assisted tools. Each slide includes timestamps and detailed explanations.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/rajivshah\.com\/blog");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ @rajistics - Rajiv Shah
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com">
+<p><u>About Me</u></p>
+</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="./index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/">
+      <i class="bi bi-instagram" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics">
+      <i class="bi bi-tiktok" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w">
+      <i class="bi bi-youtube" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
