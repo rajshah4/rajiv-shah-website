@@ -85,7 +85,8 @@ ul.task-list li input[type="checkbox"] {
 
     const options = {
       valueNames: ['listing-date','listing-title','listing-subtitle','listing-description','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
-      
+      page: 25,
+    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
@@ -365,7 +366,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(25)</span></div><div class="category" data-category="QWR2ZXJzYXJpYWw=">Adversarial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QWdlbnRpYw==">Agentic <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(2)</span></div><div class="category" data-category="QW5ub3RhdGVkJTIwVGFsaw==">Annotated Talk <span class="quarto-category-count">(3)</span></div><div class="category" data-category="QW5vbWFseQ==">Anomaly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QmFza2V0YmFsbA==">Basketball <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xhc3NpZmljYXRpb24=">Classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29uZm9ybWFs">Conformal <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFByZXByb2Nlc3Npbmc=">Data Preprocessing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YWZyYW1lcw==">Dataframes <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YXNldA==">Dataset <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RWFydGhxdWFrZQ==">Earthquake <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RXZhbHVhdGlvbg==">Evaluation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RXhwbGFpbmFiaWxpdHk=">Explainability <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZmVhdHVyZXNlbGVjdGlvbg==">featureselection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RmluZXR1bmluZw==">Finetuning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuQUk=">GenAI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhdGl2ZSUyMEFJ">Generative AI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SDJP">H2O <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SHVnZ2luZ2ZhY2U=">Huggingface <span class="quarto-category-count">(2)</span></div><div class="category" data-category="S2VyYXM=">Keras <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TGFiZWw=">Label <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGVha2FnZQ==">Leakage <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TExN">LLM <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TUFQSUU=">MAPIE <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TUxPcHM=">MLOps <span class="quarto-category-count">(6)</span></div><div class="category" data-category="TU5JU1Q=">MNIST <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TkxQ">NLP <span class="quarto-category-count">(4)</span></div><div class="category" data-category="T3BlbkFJ">OpenAI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T3B0aW1pemF0aW9u">Optimization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T3V0bGllcg==">Outlier <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UXVpY2tkcmF3">Quickdraw <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UkFH">RAG <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UmV0cmlldmFs">Retrieval <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ukw=">RL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Uk5O">RNN <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U0FSQ09T">SARCOS <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2VtaS1zdXBlcnZpc2Vk">Semi-supervised <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2V0Zml0">Setfit <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2hpbnk=">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c25vd2ZsYWtl">snowflake <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BhcnNl">Sparse <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3BvcnQ=">sport <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BvcnQ=">Sport <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BvcnRWdQ==">SportVu <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGVuc29yZmxvdw==">Tensorflow <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VGVzdGluZw==">Testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGV4dC10by1TUUw=">Text-to-SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="WGdib29zdA==">Xgboost <span class="quarto-category-count">(1)</span></div></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.ipynb" download="index.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(29)</span></div><div class="category" data-category="QWR2ZXJzYXJpYWw=">Adversarial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QWdlbnRpYw==">Agentic <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QUk=">AI <span class="quarto-category-count">(3)</span></div><div class="category" data-category="QW5ub3RhdGVkJTIwVGFsaw==">Annotated Talk <span class="quarto-category-count">(7)</span></div><div class="category" data-category="QW5vbWFseQ==">Anomaly <span class="quarto-category-count">(1)</span></div><div class="category" data-category="QmFza2V0YmFsbA==">Basketball <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q2xhc3NpZmljYXRpb24=">Classification <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Q29uZm9ybWFs">Conformal <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YSUyMFByZXByb2Nlc3Npbmc=">Data Preprocessing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YWZyYW1lcw==">Dataframes <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGF0YXNldA==">Dataset <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RGVlcCUyMExlYXJuaW5n">Deep Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RWFydGhxdWFrZQ==">Earthquake <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RXZhbHVhdGlvbg==">Evaluation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RXhwbGFpbmFiaWxpdHk=">Explainability <span class="quarto-category-count">(3)</span></div><div class="category" data-category="ZmVhdHVyZXNlbGVjdGlvbg==">featureselection <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RmluZXR1bmluZw==">Finetuning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuQUk=">GenAI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R2VuZXJhdGl2ZSUyMEFJ">Generative AI <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SDJP">H2O <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SHVnZ2luZ2ZhY2U=">Huggingface <span class="quarto-category-count">(2)</span></div><div class="category" data-category="SW50ZXJwcmV0YWJpbGl0eQ==">Interpretability <span class="quarto-category-count">(2)</span></div><div class="category" data-category="S2VyYXM=">Keras <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TGFiZWw=">Label <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TGVha2FnZQ==">Leakage <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TExN">LLM <span class="quarto-category-count">(4)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(3)</span></div><div class="category" data-category="TUFQSUU=">MAPIE <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TUxPcHM=">MLOps <span class="quarto-category-count">(6)</span></div><div class="category" data-category="TU5JU1Q=">MNIST <span class="quarto-category-count">(2)</span></div><div class="category" data-category="TW9kZWwlMjBFeHBsYW5hdGlvbg==">Model Explanation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TkxQ">NLP <span class="quarto-category-count">(4)</span></div><div class="category" data-category="T3BlbkFJ">OpenAI <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T3B0aW1pemF0aW9u">Optimization <span class="quarto-category-count">(1)</span></div><div class="category" data-category="T3V0bGllcg==">Outlier <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UXVpY2tkcmF3">Quickdraw <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UkFH">RAG <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UmV0cmlldmFs">Retrieval <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ukw=">RL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Uk5O">RNN <span class="quarto-category-count">(2)</span></div><div class="category" data-category="U0FSQ09T">SARCOS <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2VtaS1zdXBlcnZpc2Vk">Semi-supervised <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2V0Zml0">Setfit <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U2hpbnk=">Shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c25vd2ZsYWtl">snowflake <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BhcnNl">Sparse <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3BvcnQ=">sport <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BvcnQ=">Sport <span class="quarto-category-count">(1)</span></div><div class="category" data-category="U3BvcnRWdQ==">SportVu <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VGVuc29yZmxvdw==">Tensorflow <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VGVzdGluZw==">Testing <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VGV4dC10by1TUUw=">Text-to-SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="VHJhbnNmZXIlMjBMZWFybmluZw==">Transfer Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="WEFJ">XAI <span class="quarto-category-count">(2)</span></div><div class="category" data-category="WGdib29zdA==">Xgboost <span class="quarto-category-count">(1)</span></div></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.ipynb" download="index.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -422,7 +423,7 @@ Dec 26, 2025
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="R2VuQUklMkNFdmFsdWF0aW9uJTJDTExNJTJDVGVzdGluZyUyQ0Fubm90YXRlZCUyMFRhbGs=" data-listing-date-sort="1761973200000" data-listing-file-modified-sort="1767186057495" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5940">
+<div class="quarto-post image-right" data-index="1" data-categories="R2VuQUklMkNFdmFsdWF0aW9uJTJDTExNJTJDVGVzdGluZyUyQ0Fubm90YXRlZCUyMFRhbGs=" data-listing-date-sort="1761973200000" data-listing-file-modified-sort="1767199879032" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5938">
 <div class="thumbnail"><a href="./genai-evaluation-guide.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_1.png" class="thumbnail-image">
@@ -436,7 +437,7 @@ Dec 26, 2025
 <a href="./genai-evaluation-guide.html" class="no-external"></a>
 </div>
 <div class="delink listing-description"><a href="./genai-evaluation-guide.html" class="no-external">
-Watch the full video | Slides
+Watch the full video
 </a></div>
 </div>
 <div class="metadata">
@@ -447,7 +448,7 @@ Nov 1, 2025
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="UkFHJTJDQUklMkNSZXRyaWV2YWwlMkNBZ2VudGljJTJDQW5ub3RhdGVkJTIwVGFsaw==" data-listing-date-sort="1761541200000" data-listing-file-modified-sort="1767186067771" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4058">
+<div class="quarto-post image-right" data-index="2" data-categories="UkFHJTJDQUklMkNSZXRyaWV2YWwlMkNBZ2VudGljJTJDQW5ub3RhdGVkJTIwVGFsaw==" data-listing-date-sort="1761541200000" data-listing-file-modified-sort="1767199879095" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="21" data-listing-word-count-sort="4056">
 <div class="thumbnail"><a href="./rag-agentic-world.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/rag-talk/slide_1.png" class="thumbnail-image">
@@ -461,7 +462,7 @@ Nov 1, 2025
 <a href="./rag-agentic-world.html" class="no-external"></a>
 </div>
 <div class="delink listing-description"><a href="./rag-agentic-world.html" class="no-external">
-Watch the full video | Slides
+Watch the full video
 </a></div>
 </div>
 <div class="metadata">
@@ -522,7 +523,57 @@ Oct 8, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="UkFHJTJDVGV4dC10by1TUUwlMkNBSSUyQ0dlbmVyYXRpdmUlMjBBSSUyQ0Fubm90YXRlZCUyMFRhbGs=" data-listing-date-sort="1726376400000" data-listing-file-modified-sort="1767198921187" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3752">
+<div class="quarto-post image-right" data-index="5" data-categories="SW50ZXJwcmV0YWJpbGl0eSUyQ01hY2hpbmUlMjBMZWFybmluZyUyQ1hBSSUyQ01vZGVsJTIwRXhwbGFuYXRpb24lMkNBbm5vdGF0ZWQlMjBUYWxr" data-listing-date-sort="1727240400000" data-listing-file-modified-sort="1767200825526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3133">
+<div class="thumbnail"><a href="./interpretable-ml-models.html" class="no-external">
+
+<img loading="lazy" src="https://rajivshah.com/blog/images/interpretable-ml-models/slide_1.png" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./interpretable-ml-models.html" class="no-external">Interpretable Machine Learning Models Simply Explained</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./interpretable-ml-models.html" class="no-external"></a>
+</div>
+<div class="delink listing-description"><a href="./interpretable-ml-models.html" class="no-external">
+Watch the full video
+</a></div>
+</div>
+<div class="metadata">
+<a href="./interpretable-ml-models.html" class="no-external">
+<div class="listing-date">
+Sep 25, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="VHJhbnNmZXIlMjBMZWFybmluZyUyQ0FJJTJDTExNJTJDRGVlcCUyMExlYXJuaW5nJTJDQW5ub3RhdGVkJTIwVGFsaw==" data-listing-date-sort="1726808400000" data-listing-file-modified-sort="1767200506888" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="30" data-listing-word-count-sort="5948">
+<div class="thumbnail"><a href="./spark-of-ai-transfer-learning.html" class="no-external">
+
+<img loading="lazy" src="https://rajivshah.com/blog/images/spark-of-ai-transfer-learning/slide_1.png" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./spark-of-ai-transfer-learning.html" class="no-external">Spark of AI: How Transfer Learning Unlocked AI’s Potential</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./spark-of-ai-transfer-learning.html" class="no-external"></a>
+</div>
+<div class="delink listing-description"><a href="./spark-of-ai-transfer-learning.html" class="no-external">
+Watch the full video
+</a></div>
+</div>
+<div class="metadata">
+<a href="./spark-of-ai-transfer-learning.html" class="no-external">
+<div class="listing-date">
+Sep 20, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="UkFHJTJDVGV4dC10by1TUUwlMkNBSSUyQ0dlbmVyYXRpdmUlMjBBSSUyQ0Fubm90YXRlZCUyMFRhbGs=" data-listing-date-sort="1726376400000" data-listing-file-modified-sort="1767199744267" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3750">
 <div class="thumbnail"><a href="./practical-rag-text-to-sql.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/practical-rag-text-to-sql/slide_1.png" class="thumbnail-image">
@@ -536,7 +587,7 @@ Oct 8, 2024
 <a href="./practical-rag-text-to-sql.html" class="no-external"></a>
 </div>
 <div class="delink listing-description"><a href="./practical-rag-text-to-sql.html" class="no-external">
-Watch the full video | Slides
+Watch the full video
 </a></div>
 </div>
 <div class="metadata">
@@ -547,7 +598,7 @@ Sep 15, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="c25vd2ZsYWtlJTJDTUxPcHM=" data-listing-date-sort="1716181200000" data-listing-file-modified-sort="1767196279257" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="814">
+<div class="quarto-post image-right" data-index="8" data-categories="c25vd2ZsYWtlJTJDTUxPcHM=" data-listing-date-sort="1716181200000" data-listing-file-modified-sort="1767196279257" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="814">
 <div class="thumbnail"><a href="./Snowpark_Forecasting_Bus.html" class="no-external">
 
 <img loading="lazy" src="./fe_forecasting.png" class="thumbnail-image">
@@ -572,7 +623,32 @@ May 20, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="TExNJTJDTkxQ" data-listing-date-sort="1675836000000" data-listing-file-modified-sort="1767186120738" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1005">
+<div class="quarto-post image-right" data-index="9" data-categories="TExNJTJDRXZhbHVhdGlvbiUyQ0dlbmVyYXRpdmUlMjBBSSUyQ1Rlc3RpbmclMkNBbm5vdGF0ZWQlMjBUYWxr" data-listing-date-sort="1700028000000" data-listing-file-modified-sort="1767201314422" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="37" data-listing-word-count-sort="7206">
+<div class="thumbnail"><a href="./evaluating-llms-deep-dive.html" class="no-external">
+
+<img loading="lazy" src="https://rajivshah.com/blog/images/evaluating-llms-deep-dive/slide_1.png" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./evaluating-llms-deep-dive.html" class="no-external">Evaluation for Large Language Models (LLMs) and Generative AI - A Deep Dive</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./evaluating-llms-deep-dive.html" class="no-external"></a>
+</div>
+<div class="delink listing-description"><a href="./evaluating-llms-deep-dive.html" class="no-external">
+Watch the full video
+</a></div>
+</div>
+<div class="metadata">
+<a href="./evaluating-llms-deep-dive.html" class="no-external">
+<div class="listing-date">
+Nov 15, 2023
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="TExNJTJDTkxQ" data-listing-date-sort="1675836000000" data-listing-file-modified-sort="1767186120738" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1005">
 <div class="thumbnail"><a href="./HF-Reasoning.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/hf/r-title.png" class="thumbnail-image">
@@ -597,7 +673,7 @@ Feb 8, 2023
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="TkxQJTJDSHVnZ2luZ2ZhY2UlMkNGaW5ldHVuaW5n" data-listing-date-sort="1667800800000" data-listing-file-modified-sort="1767186120727" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="196">
+<div class="quarto-post image-right" data-index="11" data-categories="TkxQJTJDSHVnZ2luZ2ZhY2UlMkNGaW5ldHVuaW5n" data-listing-date-sort="1667800800000" data-listing-file-modified-sort="1767186120727" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="196">
 <div class="thumbnail"><a href="./HF-Endpoint.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/hf/informal_endpoint_cover.png" class="thumbnail-image">
@@ -622,7 +698,7 @@ Nov 7, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="U2V0Zml0JTJDQ2xhc3NpZmljYXRpb24lMkNOTFA=" data-listing-date-sort="1666846800000" data-listing-file-modified-sort="1767186120797" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="213">
+<div class="quarto-post image-right" data-index="12" data-categories="U2V0Zml0JTJDQ2xhc3NpZmljYXRpb24lMkNOTFA=" data-listing-date-sort="1666846800000" data-listing-file-modified-sort="1767186120797" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="213">
 <div class="thumbnail"><a href="./setfit.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/setfit.png" class="thumbnail-image">
@@ -647,7 +723,7 @@ Oct 27, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="Q29uZm9ybWFsJTJDTUxPcHMlMkNNQVBJRQ==" data-listing-date-sort="1663995600000" data-listing-file-modified-sort="1767186120701" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="189">
+<div class="quarto-post image-right" data-index="13" data-categories="Q29uZm9ybWFsJTJDTUxPcHMlMkNNQVBJRQ==" data-listing-date-sort="1663995600000" data-listing-file-modified-sort="1767186120701" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="189">
 <div class="thumbnail"><a href="./conformal_predictions.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/conformal_inference.png" class="thumbnail-image">
@@ -672,7 +748,7 @@ Sep 24, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="TUxPcHMlMkNOTFAlMkNIdWdnaW5nZmFjZSUyQ0V4cGxhaW5hYmlsaXR5" data-listing-date-sort="1660453200000" data-listing-file-modified-sort="1767186120720" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="378">
+<div class="quarto-post image-right" data-index="14" data-categories="TUxPcHMlMkNOTFAlMkNIdWdnaW5nZmFjZSUyQ0V4cGxhaW5hYmlsaXR5" data-listing-date-sort="1660453200000" data-listing-file-modified-sort="1767186120720" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="378">
 <div class="thumbnail"><a href="./explaining_transformers.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/transformers/banner.png" class="thumbnail-image">
@@ -697,7 +773,7 @@ Aug 14, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="RGF0YXNldCUyQ0FkdmVyc2FyaWFsJTJDTU5JU1Q=" data-listing-date-sort="1660194000000" data-listing-file-modified-sort="1767186120712" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="115">
+<div class="quarto-post image-right" data-index="15" data-categories="RGF0YXNldCUyQ0FkdmVyc2FyaWFsJTJDTU5JU1Q=" data-listing-date-sort="1660194000000" data-listing-file-modified-sort="1767186120712" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="115">
 <div class="thumbnail"><a href="./DADC.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/DADC.png" class="thumbnail-image">
@@ -722,7 +798,32 @@ Aug 11, 2022
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="TGVha2FnZSUyQ0VhcnRocXVha2U=" data-listing-date-sort="1565845200000" data-listing-file-modified-sort="1740889951255" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="979">
+<div class="quarto-post image-right" data-index="16" data-categories="SW50ZXJwcmV0YWJpbGl0eSUyQ0V4cGxhaW5hYmlsaXR5JTJDTWFjaGluZSUyMExlYXJuaW5nJTJDWEFJJTJDQW5ub3RhdGVkJTIwVGFsaw==" data-listing-date-sort="1586926800000" data-listing-file-modified-sort="1767201687551" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="28" data-listing-word-count-sort="5495">
+<div class="thumbnail"><a href="./model-interpretability-explainability.html" class="no-external">
+
+<img loading="lazy" src="https://rajivshah.com/blog/images/model-interpretability-explainability/slide_1.png" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./model-interpretability-explainability.html" class="no-external">Model Interpretability and Explainability for Machine Learning Models</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./model-interpretability-explainability.html" class="no-external"></a>
+</div>
+<div class="delink listing-description"><a href="./model-interpretability-explainability.html" class="no-external">
+Watch the full video
+</a></div>
+</div>
+<div class="metadata">
+<a href="./model-interpretability-explainability.html" class="no-external">
+<div class="listing-date">
+Apr 15, 2020
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="17" data-categories="TGVha2FnZSUyQ0VhcnRocXVha2U=" data-listing-date-sort="1565845200000" data-listing-file-modified-sort="1740889951255" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="979">
 <div class="thumbnail"><a href="./standup.html" class="no-external">
 
 <img loading="lazy" src="https://cdn-images-1.medium.com/max/1600/1*jL9fT-oAR6Ki3HOvXpwMLQ.png" class="thumbnail-image">
@@ -747,7 +848,7 @@ Aug 15, 2019
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="T3B0aW1pemF0aW9uJTJDc3BvcnQ=" data-listing-date-sort="1532926800000" data-listing-file-modified-sort="1767186120758" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1194">
+<div class="quarto-post image-right" data-index="18" data-categories="T3B0aW1pemF0aW9uJTJDc3BvcnQ=" data-listing-date-sort="1532926800000" data-listing-file-modified-sort="1767186120758" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1194">
 <div class="thumbnail"><a href="./optimization.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/fanduel2.jpg" class="thumbnail-image">
@@ -772,7 +873,7 @@ Jul 30, 2018
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="U2VtaS1zdXBlcnZpc2VkJTJDTGFiZWw=" data-listing-date-sort="1516082400000" data-listing-file-modified-sort="1767186120789" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1284">
+<div class="quarto-post image-right" data-index="19" data-categories="U2VtaS1zdXBlcnZpc2VkJTJDTGFiZWw=" data-listing-date-sort="1516082400000" data-listing-file-modified-sort="1767186120789" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1284">
 <div class="thumbnail"><a href="./semi_sup.html" class="no-external">
 
 <img loading="lazy" src="https://hips.hearstapps.com/cosmouk.cdnds.net/14/38/nrm_1410777104-jul12-coveteurclueless.jpg" class="thumbnail-image">
@@ -797,7 +898,7 @@ Jan 16, 2018
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="UXVpY2tkcmF3JTJDTU5JU1QlMkNEYXRhc2V0" data-listing-date-sort="1500008400000" data-listing-file-modified-sort="1767186120774" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="457">
+<div class="quarto-post image-right" data-index="20" data-categories="UXVpY2tkcmF3JTJDTU5JU1QlMkNEYXRhc2V0" data-listing-date-sort="1500008400000" data-listing-file-modified-sort="1767186120774" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="457">
 <div class="thumbnail"><a href="./QuickDraw.html" class="no-external">
 
 <img loading="lazy" src="https://www.tensorflow.org/images/MNIST.png" class="thumbnail-image">
@@ -822,7 +923,7 @@ Jul 14, 2017
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-categories="VGVuc29yZmxvdyUyQ1IlMkNLZXJhcw==" data-listing-date-sort="1496552400000" data-listing-file-modified-sort="1740889951252" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="890">
+<div class="quarto-post image-right" data-index="21" data-categories="VGVuc29yZmxvdyUyQ1IlMkNLZXJhcw==" data-listing-date-sort="1496552400000" data-listing-file-modified-sort="1740889951252" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="890">
 <div class="thumbnail"><a href="./deeplearningR.html" class="no-external">
 
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -847,7 +948,7 @@ Jun 4, 2017
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-categories="T3BlbkFJJTJDUkw=" data-listing-date-sort="1485237600000" data-listing-file-modified-sort="1767186120748" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="736">
+<div class="quarto-post image-right" data-index="22" data-categories="T3BlbkFJJTJDUkw=" data-listing-date-sort="1485237600000" data-listing-file-modified-sort="1767186120748" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="736">
 <div class="thumbnail"><a href="./openai_mod.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/training.gif" class="thumbnail-image">
@@ -872,7 +973,7 @@ Jan 24, 2017
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-categories="SDJPJTJDTUxPcHM=" data-listing-date-sort="1471842000000" data-listing-file-modified-sort="1740889951242" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="997">
+<div class="quarto-post image-right" data-index="23" data-categories="SDJPJTJDTUxPcHM=" data-listing-date-sort="1471842000000" data-listing-file-modified-sort="1740889951242" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="997">
 <div class="thumbnail"><a href="./H2O_prod.html" class="no-external">
 
 <img loading="lazy" src="https://www.imda.gov.sg/-/media/imda/images/content/for-industry/technology-and-innovation/innovative-tech-companies/accreditation/h2o.png" class="thumbnail-image">
@@ -897,7 +998,7 @@ Aug 22, 2016
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-categories="WGdib29zdCUyQ01MT3BzJTJDRXhwbGFpbmFiaWxpdHk=" data-listing-date-sort="1470027600000" data-listing-file-modified-sort="1767186120823" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="611">
+<div class="quarto-post image-right" data-index="24" data-categories="WGdib29zdCUyQ01MT3BzJTJDRXhwbGFpbmFiaWxpdHk=" data-listing-date-sort="1470027600000" data-listing-file-modified-sort="1767186120823" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="611">
 <div class="thumbnail"><a href="./xgbfi.html" class="no-external">
 
 <img loading="lazy" src="https://rajivshah.com/blog/images/firstinteraction.png" class="thumbnail-image">
@@ -922,10 +1023,10 @@ Aug 1, 2016
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-categories="T3V0bGllciUyQ0Fub21hbHk=" data-listing-date-sort="1467003600000" data-listing-file-modified-sort="1767186120765" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="434">
+<div class="quarto-post image-right" data-index="25" data-categories="T3V0bGllciUyQ0Fub21hbHk=" data-listing-date-sort="1467003600000" data-listing-file-modified-sort="1767186120765" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="434">
 <div class="thumbnail"><a href="./outlier_app.html" class="no-external">
 
-<img loading="lazy" src="https://rajivshah.com/blog/images/algorithms.gif" class="thumbnail-image">
+<img loading="lazy" data-src="https://rajivshah.com/blog/images/algorithms.gif" class="thumbnail-image">
 
 </a></div>
 <div class="body">
@@ -947,7 +1048,7 @@ Jun 27, 2016
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="22" data-categories="Uk5OJTJDS2VyYXM=" data-listing-date-sort="1459832400000" data-listing-file-modified-sort="1740889951254" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="430">
+<div class="quarto-post image-right" data-index="26" data-categories="Uk5OJTJDS2VyYXM=" data-listing-date-sort="1459832400000" data-listing-file-modified-sort="1740889951254" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="430">
 <div class="thumbnail"><a href="./rnn_addition.html" class="no-external">
 
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -972,10 +1073,10 @@ Apr 5, 2016
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="23" data-categories="U3BvcnRWdSUyQ1Nwb3J0JTJDQmFza2V0YmFsbA==" data-listing-date-sort="1459573200000" data-listing-file-modified-sort="1767193783686" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="237">
+<div class="quarto-post image-right" data-index="27" data-categories="U3BvcnRWdSUyQ1Nwb3J0JTJDQmFza2V0YmFsbA==" data-listing-date-sort="1459573200000" data-listing-file-modified-sort="1767193783686" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="237">
 <div class="thumbnail"><a href="./sportvu_analysis.html" class="no-external">
 
-<img loading="lazy" src="https://rajivshah.com/blog/images/chull.png" class="thumbnail-image">
+<img loading="lazy" data-src="https://rajivshah.com/blog/images/chull.png" class="thumbnail-image">
 
 </a></div>
 <div class="body">
@@ -997,10 +1098,10 @@ Apr 2, 2016
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="24" data-categories="U2hpbnklMkNUZW5zb3JmbG93JTJDUk5O" data-listing-date-sort="1459486800000" data-listing-file-modified-sort="1767186120816" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="479">
+<div class="quarto-post image-right" data-index="28" data-categories="U2hpbnklMkNUZW5zb3JmbG93JTJDUk5O" data-listing-date-sort="1459486800000" data-listing-file-modified-sort="1767186120816" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="479">
 <div class="thumbnail"><a href="./tensorflow_shiny.html" class="no-external">
 
-<img loading="lazy" src="https://rajivshah.com/blog/images/shinyrnn.jpg" class="thumbnail-image">
+<img loading="lazy" data-src="https://rajivshah.com/blog/images/shinyrnn.jpg" class="thumbnail-image">
 
 </a></div>
 <div class="body">
@@ -1024,6 +1125,9 @@ Apr 1, 2016
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
+<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
+  <ul class="pagination"></ul>
+</nav>
 </div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
