@@ -30,11 +30,6 @@
       ],
       "destination": "https://rajivshah.com/blog/:path*",
       "permanent": true
-    },
-    {
-      "source": "/blog",
-      "destination": "/blog/",
-      "permanent": true
     }
   ]
 }
