@@ -131,7 +131,7 @@ const userData = {
   SSRNUrl: "https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=261155",
   GoogleSUrl: "https://scholar.google.com/citations?user=J6N60VcAAAAJ&hl=en",
   MediumUrl: "https://medium.com/@rajistics",
-  BlogUrl: "https://projects.rajivshah.com/blog/",
+  BlogUrl: "/blog/",
   socialLinks: {
     instagram: "https://instagram.com/rajistics",
     twitter: "https://twitter.com/rajistics",
@@ -153,13 +153,13 @@ const userData = {
       title: "Understanding Sparse Matrices through Interactive Visualizations",
       date:  "Mar 2025",
       source: "RajivShah",
-      link: "https://projects.rajivshah.com/blog/sparsedataframe.html",
+      link: "/blog/sparsedataframe.html",
     },
     {
       title: "Feature Selection Methods and Feature Selection Curves",
       date:  "Oct 2024",
       source: "RajivShah",
-      link: "https://projects.rajivshah.com/blog/Feature_Selection.html",
+      link: "/blog/Feature_Selection.html",
     },
     {
       title: "The honeymoon phase of generative AI is over",

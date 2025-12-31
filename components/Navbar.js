@@ -130,15 +130,15 @@ export default function Navbar() {
             )}
           </Link>
           <Link
-            href="https://projects.rajivshah.com/blog/"
+            href="/blog/"
             className={`text-base  ${
-              router.asPath === "https://projects.rajivshah.com/blog/"
+              router.asPath === "/blog/"
                 ? "text-gray-800 font-bold dark:text-gray-400"
                 : "text-gray-600 dark:text-gray-300 font-normal "
             }`}
           >
             Blog
-            {router.asPath === "https://projects.rajivshah.com/blog/" && (
+            {router.asPath === "/blog/" && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
