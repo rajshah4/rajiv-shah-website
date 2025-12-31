@@ -362,7 +362,7 @@ ul.task-list li input[type="checkbox"] {
 <p>After carefully inspecting their code, I found a mistake in their validation dataset. Their code attempted to create a validation test set based on a prediction point of November 1, 2011. The goal was to split the data at this point so that you could train on the data known at prediction time. The performance of the model is then analyzed on a test set, which is located after the prediction point. Unfortunately, the code was not written correctly; there was contamination from the future in the training data.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/leakage1.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/leakage1.png" class="img-fluid figure-img"></p>
 <figcaption>Leakage.png</figcaption>
 </figure>
 </div>
@@ -370,7 +370,7 @@ ul.task-list li input[type="checkbox"] {
 <p>After the target leakage was fixed, the fast.ai scores dropped, and I was able to reproduce the results outside of fast.ai. This simple coding mistake led to a notebook and model that appeared valid. If this model were put into production, the results would have been much worse on new data. After I identified this issue, Jeremy Howard agreed to add a note in the course materials.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/fastai2.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/fastai2.png" class="img-fluid figure-img"></p>
 <figcaption>fastai2.png</figcaption>
 </figure>
 </div>
@@ -381,14 +381,14 @@ ul.task-list li input[type="checkbox"] {
 <p>The SARCOS dataset is broken into two parts: a training dataset (sarcos_inv) and a test dataset (sarcos_inv_test). Following common data science practices, DataRobot broke the SARCOS training set into a training partition and a validation partition. I treated the SARCOS test set (sarcos_inv_test) as a holdout. When I looked at the results, I immediately noticed something suspicious. Do you see it?</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/sarcos3.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/sarcos3.png" class="img-fluid figure-img"></p>
 <figcaption>sarcos3.png</figcaption>
 </figure>
 </div>
 <p>The large drop between the validation score and the holdout score indicates that something is very different between the validation and holdout datasets. When I examined the holdout dataset (the SARCOS test set), I found that every row in the test set was in the training data too. After some investigation, I discovered that the holdout dataset was built out of the training dataset. Of the 4,449 examples in the test set, 4,445 examples are present in the training set, too. The target leakage here is significant. By overfitting or memorizing the training dataset, it’s possible to get perfect results on the test set. Overfitting, a well-known issue in machine learning, is illustrated in the following figure. The test dataset should have used out-of-sample testing to prevent overfitting.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/overfit4.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/overfit4.png" class="img-fluid figure-img"></p>
 <figcaption>overfit4.png</figcaption>
 </figure>
 </div>
@@ -403,14 +403,14 @@ ul.task-list li input[type="checkbox"] {
 <p>To understand why accuracy isn’t the best metric when classifying unbalanced data, consider the following figure. Minesweeper is a popular game where the goal is to identify a few mines that are scattered across a board. Because there are a lot of squares with no mines, you could generate a very accurate model just by predicting that every square is safe. Although a 99% accurate model for Minesweeper sounds impressive, it’s not very useful.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/minesweeper5.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/minesweeper5.png" class="img-fluid figure-img"></p>
 <figcaption>minesweeper5.png</figcaption>
 </figure>
 </div>
 <p>Automated feature selection in DataRobot provides a more parsimonious featurelist. In the Poker Hand dataset, DataRobot created a DR Reduced Features list with only six features. The starting feature list for this dataset, Cat+Cont, contained 15 features. The leaderboard below shows that the simpler DR Reduced Features list performs better than the full Cat+Cont feature list. The model below was optimized on log loss, but I am viewing the accuracy metrics for comparison to the existing benchmarks.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/DRreduce6.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/DRreduce6.png" class="img-fluid figure-img"></p>
 <figcaption>DRreduce6.png</figcaption>
 </figure>
 </div>

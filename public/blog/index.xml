@@ -31,7 +31,7 @@
 <p>After carefully inspecting their code, I found a mistake in their validation dataset. Their code attempted to create a validation test set based on a prediction point of November 1, 2011. The goal was to split the data at this point so that you could train on the data known at prediction time. The performance of the model is then analyzed on a test set, which is located after the prediction point. Unfortunately, the code was not written correctly; there was contamination from the future in the training data.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/leakage1.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/leakage1.png" class="img-fluid figure-img"></p>
 <figcaption>Leakage.png</figcaption>
 </figure>
 </div>
@@ -39,7 +39,7 @@
 <p>After the target leakage was fixed, the fast.ai scores dropped, and I was able to reproduce the results outside of fast.ai. This simple coding mistake led to a notebook and model that appeared valid. If this model were put into production, the results would have been much worse on new data. After I identified this issue, Jeremy Howard agreed to add a note in the course materials.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/fastai2.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/fastai2.png" class="img-fluid figure-img"></p>
 <figcaption>fastai2.png</figcaption>
 </figure>
 </div>
@@ -50,14 +50,14 @@
 <p>The SARCOS dataset is broken into two parts: a training dataset (sarcos_inv) and a test dataset (sarcos_inv_test). Following common data science practices, DataRobot broke the SARCOS training set into a training partition and a validation partition. I treated the SARCOS test set (sarcos_inv_test) as a holdout. When I looked at the results, I immediately noticed something suspicious. Do you see it?</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/sarcos3.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/sarcos3.png" class="img-fluid figure-img"></p>
 <figcaption>sarcos3.png</figcaption>
 </figure>
 </div>
 <p>The large drop between the validation score and the holdout score indicates that something is very different between the validation and holdout datasets. When I examined the holdout dataset (the SARCOS test set), I found that every row in the test set was in the training data too. After some investigation, I discovered that the holdout dataset was built out of the training dataset. Of the 4,449 examples in the test set, 4,445 examples are present in the training set, too. The target leakage here is significant. By overfitting or memorizing the training dataset, it’s possible to get perfect results on the test set. Overfitting, a well-known issue in machine learning, is illustrated in the following figure. The test dataset should have used out-of-sample testing to prevent overfitting.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/overfit4.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/overfit4.png" class="img-fluid figure-img"></p>
 <figcaption>overfit4.png</figcaption>
 </figure>
 </div>
@@ -72,14 +72,14 @@
 <p>To understand why accuracy isn’t the best metric when classifying unbalanced data, consider the following figure. Minesweeper is a popular game where the goal is to identify a few mines that are scattered across a board. Because there are a lot of squares with no mines, you could generate a very accurate model just by predicting that every square is safe. Although a 99% accurate model for Minesweeper sounds impressive, it’s not very useful.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/minesweeper5.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/minesweeper5.png" class="img-fluid figure-img"></p>
 <figcaption>minesweeper5.png</figcaption>
 </figure>
 </div>
 <p>Automated feature selection in DataRobot provides a more parsimonious featurelist. In the Poker Hand dataset, DataRobot created a DR Reduced Features list with only six features. The starting feature list for this dataset, Cat+Cont, contained 15 features. The leaderboard below shows that the simpler DR Reduced Features list performs better than the full Cat+Cont feature list. The model below was optimized on log loss, but I am viewing the accuracy metrics for comparison to the existing benchmarks.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/DRreduce6.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/DRreduce6.png" class="img-fluid figure-img"></p>
 <figcaption>DRreduce6.png</figcaption>
 </figure>
 </div>
@@ -133,7 +133,7 @@
 <h3 class="anchored" data-anchor-id="title-slide">1. Title Slide</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_1.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_1.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 1</figcaption>
 </figure>
 </div>
@@ -146,7 +146,7 @@
 <h3 class="anchored" data-anchor-id="evaluating-for-gen-ai-resources">2. Evaluating for Gen AI Resources</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_2.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_2.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 2</figcaption>
 </figure>
 </div>
@@ -158,7 +158,7 @@
 <h3 class="anchored" data-anchor-id="customer-support-use-case">3. Customer Support Use Case</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_3.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_3.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 3</figcaption>
 </figure>
 </div>
@@ -170,7 +170,7 @@
 <h3 class="anchored" data-anchor-id="vibe-coding">4. Vibe Coding</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_4.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_4.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 4</figcaption>
 </figure>
 </div>
@@ -182,7 +182,7 @@
 <h3 class="anchored" data-anchor-id="good-response-delayed-order">5. Good Response: Delayed Order</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_5.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_5.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 5</figcaption>
 </figure>
 </div>
@@ -194,7 +194,7 @@
 <h3 class="anchored" data-anchor-id="good-response-damaged-product">6. Good Response: Damaged Product</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_6.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_6.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 6</figcaption>
 </figure>
 </div>
@@ -206,7 +206,7 @@
 <h3 class="anchored" data-anchor-id="bad-response-irrelevance">7. Bad Response: Irrelevance</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_7.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_7.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 7</figcaption>
 </figure>
 </div>
@@ -218,7 +218,7 @@
 <h3 class="anchored" data-anchor-id="bad-response-hallucination">8. Bad Response: Hallucination</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_8.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_8.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 8</figcaption>
 </figure>
 </div>
@@ -230,7 +230,7 @@
 <h3 class="anchored" data-anchor-id="risks-of-llm-mistakes">9. Risks of LLM Mistakes</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_9.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_9.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 9</figcaption>
 </figure>
 </div>
@@ -242,7 +242,7 @@
 <h3 class="anchored" data-anchor-id="the-despair-of-gen-ai">10. The Despair of Gen AI</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_10.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_10.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 10</figcaption>
 </figure>
 </div>
@@ -254,7 +254,7 @@
 <h3 class="anchored" data-anchor-id="high-failure-rates">11. High Failure Rates</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_11.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_11.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 11</figcaption>
 </figure>
 </div>
@@ -266,7 +266,7 @@
 <h3 class="anchored" data-anchor-id="evaluation-improves-applications">12. Evaluation Improves Applications</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_12.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_12.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 12</figcaption>
 </figure>
 </div>
@@ -278,7 +278,7 @@
 <h3 class="anchored" data-anchor-id="why-evaluation-is-necessary">13. Why Evaluation is Necessary</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_13.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_13.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 13</figcaption>
 </figure>
 </div>
@@ -290,7 +290,7 @@
 <h3 class="anchored" data-anchor-id="evaluation-dimensions">14. Evaluation Dimensions</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_14.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_14.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 14</figcaption>
 </figure>
 </div>
@@ -302,7 +302,7 @@
 <h3 class="anchored" data-anchor-id="public-benchmarks">15. Public Benchmarks</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_15.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_15.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 15</figcaption>
 </figure>
 </div>
@@ -314,7 +314,7 @@
 <h3 class="anchored" data-anchor-id="custom-benchmarks">16. Custom Benchmarks</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_16.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_16.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 16</figcaption>
 </figure>
 </div>
@@ -326,7 +326,7 @@
 <h3 class="anchored" data-anchor-id="taming-gen-ai">17. Taming Gen AI</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_17.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_17.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 17</figcaption>
 </figure>
 </div>
@@ -338,7 +338,7 @@
 <h3 class="anchored" data-anchor-id="workshop-roadmap">18. Workshop Roadmap</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_18.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_18.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 18</figcaption>
 </figure>
 </div>
@@ -349,7 +349,7 @@
 <h3 class="anchored" data-anchor-id="variability-in-responses">19. Variability in Responses</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_19.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_19.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 19</figcaption>
 </figure>
 </div>
@@ -361,7 +361,7 @@
 <h3 class="anchored" data-anchor-id="input-model-output-diagram">20. Input-Model-Output Diagram</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_20.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_20.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 20</figcaption>
 </figure>
 </div>
@@ -373,7 +373,7 @@
 <h3 class="anchored" data-anchor-id="inconsistent-benchmark-scores">21. Inconsistent Benchmark Scores</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_21.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_21.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 21</figcaption>
 </figure>
 </div>
@@ -385,7 +385,7 @@
 <h3 class="anchored" data-anchor-id="mmlu-overview">22. MMLU Overview</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_22.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_22.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 22</figcaption>
 </figure>
 </div>
@@ -397,7 +397,7 @@
 <h3 class="anchored" data-anchor-id="prompt-sensitivity">23. Prompt Sensitivity</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_23.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_23.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 23</figcaption>
 </figure>
 </div>
@@ -409,7 +409,7 @@
 <h3 class="anchored" data-anchor-id="formatting-changes">24. Formatting Changes</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_24.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_24.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 24</figcaption>
 </figure>
 </div>
@@ -421,7 +421,7 @@
 <h3 class="anchored" data-anchor-id="gpt-4o-performance-drop">25. GPT-4o Performance Drop</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_25.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_25.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 25</figcaption>
 </figure>
 </div>
@@ -433,7 +433,7 @@
 <h3 class="anchored" data-anchor-id="tone-sensitivity">26. Tone Sensitivity</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_26.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_26.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 26</figcaption>
 </figure>
 </div>
@@ -445,7 +445,7 @@
 <h3 class="anchored" data-anchor-id="persistent-sensitivity">27. Persistent Sensitivity</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_27.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_27.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 27</figcaption>
 </figure>
 </div>
@@ -457,7 +457,7 @@
 <h3 class="anchored" data-anchor-id="falcon-llm-bias">28. Falcon LLM Bias</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_28.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_28.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 28</figcaption>
 </figure>
 </div>
@@ -469,7 +469,7 @@
 <h3 class="anchored" data-anchor-id="potential-cover-up">29. Potential Cover-up?</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_29.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_29.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 29</figcaption>
 </figure>
 </div>
@@ -481,7 +481,7 @@
 <h3 class="anchored" data-anchor-id="inspecting-the-system-prompt">30. Inspecting the System Prompt</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_30.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_30.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 30</figcaption>
 </figure>
 </div>
@@ -493,7 +493,7 @@
 <h3 class="anchored" data-anchor-id="claude-system-prompt">31. Claude System Prompt</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_31.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_31.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 31</figcaption>
 </figure>
 </div>
@@ -505,7 +505,7 @@
 <h3 class="anchored" data-anchor-id="complexity-of-a-single-response">32. Complexity of a Single Response</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_32.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_32.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 32</figcaption>
 </figure>
 </div>
@@ -517,7 +517,7 @@
 <h3 class="anchored" data-anchor-id="inter-text-similarity">33. Inter-text Similarity</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_33.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_33.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 33</figcaption>
 </figure>
 </div>
@@ -529,7 +529,7 @@
 <h3 class="anchored" data-anchor-id="sycophantic-models">34. Sycophantic Models</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_34.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_34.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 34</figcaption>
 </figure>
 </div>
@@ -541,7 +541,7 @@
 <h3 class="anchored" data-anchor-id="model-drift">35. Model Drift</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_35.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_35.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 35</figcaption>
 </figure>
 </div>
@@ -553,7 +553,7 @@
 <h3 class="anchored" data-anchor-id="degraded-responses-timeline">36. Degraded Responses Timeline</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_36.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_36.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 36</figcaption>
 </figure>
 </div>
@@ -565,7 +565,7 @@
 <h3 class="anchored" data-anchor-id="hyperparameters">37. Hyperparameters</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_37.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_37.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 37</figcaption>
 </figure>
 </div>
@@ -577,7 +577,7 @@
 <h3 class="anchored" data-anchor-id="non-deterministic-inference">38. Non-Deterministic Inference</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_38.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_38.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 38</figcaption>
 </figure>
 </div>
@@ -589,7 +589,7 @@
 <h3 class="anchored" data-anchor-id="addressing-non-determinism">39. Addressing Non-Determinism</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_39.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_39.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 39</figcaption>
 </figure>
 </div>
@@ -601,7 +601,7 @@
 <h3 class="anchored" data-anchor-id="updated-model-diagram">40. Updated Model Diagram</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_40.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_40.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 40</figcaption>
 </figure>
 </div>
@@ -613,7 +613,7 @@
 <h3 class="anchored" data-anchor-id="output-format-issues">41. Output Format Issues</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_41.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_41.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 41</figcaption>
 </figure>
 </div>
@@ -625,7 +625,7 @@
 <h3 class="anchored" data-anchor-id="evaluation-harness-variations">42. Evaluation Harness Variations</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_42.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_42.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 42</figcaption>
 </figure>
 </div>
@@ -637,7 +637,7 @@
 <h3 class="anchored" data-anchor-id="score-comparison-table">43. Score Comparison Table</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_43.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_43.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 43</figcaption>
 </figure>
 </div>
@@ -649,7 +649,7 @@
 <h3 class="anchored" data-anchor-id="sentiment-analysis-variance">44. Sentiment Analysis Variance</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_44.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_44.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 44</figcaption>
 </figure>
 </div>
@@ -661,7 +661,7 @@
 <h3 class="anchored" data-anchor-id="tool-use-variance">45. Tool Use Variance</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_45.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_45.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 45</figcaption>
 </figure>
 </div>
@@ -673,7 +673,7 @@
 <h3 class="anchored" data-anchor-id="summary-why-responses-differ">46. Summary: Why Responses Differ</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_46.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_46.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 46</figcaption>
 </figure>
 </div>
@@ -685,7 +685,7 @@
 <h3 class="anchored" data-anchor-id="chaos-is-okay">47. Chaos is Okay</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_47.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_47.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 47</figcaption>
 </figure>
 </div>
@@ -697,7 +697,7 @@
 <h3 class="anchored" data-anchor-id="from-chaos-to-control">48. From Chaos to Control</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_48.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_48.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 48</figcaption>
 </figure>
 </div>
@@ -709,7 +709,7 @@
 <h3 class="anchored" data-anchor-id="build-the-evaluation-dataset">49. Build the Evaluation Dataset</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_49.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_49.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 49</figcaption>
 </figure>
 </div>
@@ -721,7 +721,7 @@
 <h3 class="anchored" data-anchor-id="get-labeled-outputs-gold">50. Get Labeled Outputs (Gold)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_50.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_50.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 50</figcaption>
 </figure>
 </div>
@@ -733,7 +733,7 @@
 <h3 class="anchored" data-anchor-id="compare-to-model-output">51. Compare to Model Output</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_51.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_51.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 51</figcaption>
 </figure>
 </div>
@@ -745,7 +745,7 @@
 <h3 class="anchored" data-anchor-id="measure-equivalence">52. Measure Equivalence</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_52.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_52.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 52</figcaption>
 </figure>
 </div>
@@ -757,7 +757,7 @@
 <h3 class="anchored" data-anchor-id="optimize-using-equivalence">53. Optimize Using Equivalence</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_53.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_53.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 53</figcaption>
 </figure>
 </div>
@@ -769,7 +769,7 @@
 <h3 class="anchored" data-anchor-id="why-global-metrics-arent-enough">54. Why Global Metrics Aren’t Enough</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_54.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_54.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 54</figcaption>
 </figure>
 </div>
@@ -781,7 +781,7 @@
 <h3 class="anchored" data-anchor-id="from-global-to-targeted-evaluation">55. From Global to Targeted Evaluation</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_55.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_55.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 55</figcaption>
 </figure>
 </div>
@@ -793,7 +793,7 @@
 <h3 class="anchored" data-anchor-id="building-tests">56. Building Tests</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_56.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_56.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 56</figcaption>
 </figure>
 </div>
@@ -805,7 +805,7 @@
 <h3 class="anchored" data-anchor-id="good-vs.-bad-examples">57. Good vs.&nbsp;Bad Examples</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_57.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_57.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 57</figcaption>
 </figure>
 </div>
@@ -817,7 +817,7 @@
 <h3 class="anchored" data-anchor-id="develop-an-evaluation-mindset">58. Develop an Evaluation Mindset</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_58.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_58.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 58</figcaption>
 </figure>
 </div>
@@ -829,7 +829,7 @@
 <h3 class="anchored" data-anchor-id="collaborate-with-experts">59. Collaborate with Experts</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_59.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_59.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 59</figcaption>
 </figure>
 </div>
@@ -841,7 +841,7 @@
 <h3 class="anchored" data-anchor-id="identify-and-categorize-failures">60. Identify and Categorize Failures</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_60.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_60.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 60</figcaption>
 </figure>
 </div>
@@ -853,7 +853,7 @@
 <h3 class="anchored" data-anchor-id="define-what-good-looks-like">61. Define What Good Looks Like</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_61.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_61.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 61</figcaption>
 </figure>
 </div>
@@ -865,7 +865,7 @@
 <h3 class="anchored" data-anchor-id="document-every-issue">62. Document Every Issue</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_62.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_62.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 62</figcaption>
 </figure>
 </div>
@@ -877,7 +877,7 @@
 <h3 class="anchored" data-anchor-id="evaluation-tooling">63. Evaluation Tooling</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_63.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_63.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 63</figcaption>
 </figure>
 </div>
@@ -889,7 +889,7 @@
 <h3 class="anchored" data-anchor-id="test-1-length-check">64. Test 1: Length Check</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_64.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_64.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 64</figcaption>
 </figure>
 </div>
@@ -901,7 +901,7 @@
 <h3 class="anchored" data-anchor-id="test-2-tone-and-style">65. Test 2: Tone and Style</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_65.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_65.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 65</figcaption>
 </figure>
 </div>
@@ -913,7 +913,7 @@
 <h3 class="anchored" data-anchor-id="adding-metrics-to-documentation">66. Adding Metrics to Documentation</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_66.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_66.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 66</figcaption>
 </figure>
 </div>
@@ -925,7 +925,7 @@
 <h3 class="anchored" data-anchor-id="check-judges-against-humans">67. Check Judges Against Humans</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_67.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_67.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 67</figcaption>
 </figure>
 </div>
@@ -937,7 +937,7 @@
 <h3 class="anchored" data-anchor-id="self-evaluation-bias">68. Self-Evaluation Bias</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_68.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_68.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 68</figcaption>
 </figure>
 </div>
@@ -949,7 +949,7 @@
 <h3 class="anchored" data-anchor-id="alignment-checks">69. Alignment Checks</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_69.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_69.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 69</figcaption>
 </figure>
 </div>
@@ -961,7 +961,7 @@
 <h3 class="anchored" data-anchor-id="biases-in-llm-judges">70. Biases in LLM Judges</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_70.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_70.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 70</figcaption>
 </figure>
 </div>
@@ -973,7 +973,7 @@
 <h3 class="anchored" data-anchor-id="best-practices-for-llm-judges">71. Best Practices for LLM Judges</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_71.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_71.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 71</figcaption>
 </figure>
 </div>
@@ -985,7 +985,7 @@
 <h3 class="anchored" data-anchor-id="error-analysis-chart">72. Error Analysis Chart</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_72.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_72.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 72</figcaption>
 </figure>
 </div>
@@ -997,7 +997,7 @@
 <h3 class="anchored" data-anchor-id="comparing-prompts">73. Comparing Prompts</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_73.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_73.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 73</figcaption>
 </figure>
 </div>
@@ -1009,7 +1009,7 @@
 <h3 class="anchored" data-anchor-id="explanations-guide-improvement">74. Explanations Guide Improvement</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_74.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_74.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 74</figcaption>
 </figure>
 </div>
@@ -1021,7 +1021,7 @@
 <h3 class="anchored" data-anchor-id="limits-to-explanations">75. Limits to Explanations</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_75.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_75.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 75</figcaption>
 </figure>
 </div>
@@ -1033,7 +1033,7 @@
 <h3 class="anchored" data-anchor-id="the-evaluation-flywheel">76. The Evaluation Flywheel</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_76.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_76.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 76</figcaption>
 </figure>
 </div>
@@ -1045,7 +1045,7 @@
 <h3 class="anchored" data-anchor-id="financial-analyst-agent-example">77. Financial Analyst Agent Example</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_77.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_77.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 77</figcaption>
 </figure>
 </div>
@@ -1057,7 +1057,7 @@
 <h3 class="anchored" data-anchor-id="use-a-global-test">78. Use a Global Test?</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_78.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_78.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 78</figcaption>
 </figure>
 </div>
@@ -1069,7 +1069,7 @@
 <h3 class="anchored" data-anchor-id="global-vs.-unit-tests">79. Global vs.&nbsp;Unit Tests</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_79.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_79.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 79</figcaption>
 </figure>
 </div>
@@ -1081,7 +1081,7 @@
 <h3 class="anchored" data-anchor-id="scoring-radar-chart">80. Scoring Radar Chart</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_80.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_80.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 80</figcaption>
 </figure>
 </div>
@@ -1093,7 +1093,7 @@
 <h3 class="anchored" data-anchor-id="analyzing-failures-with-clusters">81. Analyzing Failures with Clusters</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_81.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_81.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 81</figcaption>
 </figure>
 </div>
@@ -1105,7 +1105,7 @@
 <h3 class="anchored" data-anchor-id="designing-good-unit-tests">82. Designing Good Unit Tests</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_82.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_82.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 82</figcaption>
 </figure>
 </div>
@@ -1117,7 +1117,7 @@
 <h3 class="anchored" data-anchor-id="examples-of-unit-tests">83. Examples of Unit Tests</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_83.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_83.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 83</figcaption>
 </figure>
 </div>
@@ -1129,7 +1129,7 @@
 <h3 class="anchored" data-anchor-id="evaluating-new-prompts">84. Evaluating New Prompts</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_84.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_84.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 84</figcaption>
 </figure>
 </div>
@@ -1141,7 +1141,7 @@
 <h3 class="anchored" data-anchor-id="tools---no-silver-bullet">85. Tools - No Silver Bullet</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_85.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_85.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 85</figcaption>
 </figure>
 </div>
@@ -1153,7 +1153,7 @@
 <h3 class="anchored" data-anchor-id="forest-and-trees">86. Forest and Trees</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_86.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_86.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 86</figcaption>
 </figure>
 </div>
@@ -1165,7 +1165,7 @@
 <h3 class="anchored" data-anchor-id="change-one-thing-at-a-time">87. Change One Thing at a Time</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_87.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_87.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 87</figcaption>
 </figure>
 </div>
@@ -1177,7 +1177,7 @@
 <h3 class="anchored" data-anchor-id="error-analysis-tips">88. Error Analysis Tips</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_88.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_88.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 88</figcaption>
 </figure>
 </div>
@@ -1189,7 +1189,7 @@
 <h3 class="anchored" data-anchor-id="the-evaluation-story">89. The Evaluation Story</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_89.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_89.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 89</figcaption>
 </figure>
 </div>
@@ -1201,7 +1201,7 @@
 <h3 class="anchored" data-anchor-id="the-reality-of-progress">90. The Reality of Progress</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_90.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_90.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 90</figcaption>
 </figure>
 </div>
@@ -1213,7 +1213,7 @@
 <h3 class="anchored" data-anchor-id="continual-process">91. Continual Process</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_91.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_91.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 91</figcaption>
 </figure>
 </div>
@@ -1225,7 +1225,7 @@
 <h3 class="anchored" data-anchor-id="eating-the-elephant">92. Eating the Elephant</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_92.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_92.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 92</figcaption>
 </figure>
 </div>
@@ -1237,7 +1237,7 @@
 <h3 class="anchored" data-anchor-id="adding-tests-over-time">93. Adding Tests Over Time</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_93.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_93.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 93</figcaption>
 </figure>
 </div>
@@ -1249,7 +1249,7 @@
 <h3 class="anchored" data-anchor-id="doing-evaluation-the-right-way">94. Doing Evaluation the Right Way</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_94.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_94.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 94</figcaption>
 </figure>
 </div>
@@ -1261,7 +1261,7 @@
 <h3 class="anchored" data-anchor-id="agentic-use-cases">95. Agentic Use Cases</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_95.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_95.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 95</figcaption>
 </figure>
 </div>
@@ -1273,7 +1273,7 @@
 <h3 class="anchored" data-anchor-id="crossing-the-river">96. Crossing the River</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_96.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_96.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 96</figcaption>
 </figure>
 </div>
@@ -1285,7 +1285,7 @@
 <h3 class="anchored" data-anchor-id="chat-to-purchase-router">97. Chat-to-Purchase Router</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_97.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_97.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 97</figcaption>
 </figure>
 </div>
@@ -1297,7 +1297,7 @@
 <h3 class="anchored" data-anchor-id="text-to-sql-agent">98. Text to SQL Agent</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_98.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_98.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 98</figcaption>
 </figure>
 </div>
@@ -1309,7 +1309,7 @@
 <h3 class="anchored" data-anchor-id="evaluating-office-style-agents">99. Evaluating Office-Style Agents</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_99.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_99.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 99</figcaption>
 </figure>
 </div>
@@ -1321,7 +1321,7 @@
 <h3 class="anchored" data-anchor-id="error-analysis-for-agents">100. Error Analysis for Agents</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_100.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_100.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 100</figcaption>
 </figure>
 </div>
@@ -1333,7 +1333,7 @@
 <h3 class="anchored" data-anchor-id="evaluating-workflow-vs.-response">101. Evaluating Workflow vs.&nbsp;Response</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_101.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_101.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 101</figcaption>
 </figure>
 </div>
@@ -1345,7 +1345,7 @@
 <h3 class="anchored" data-anchor-id="agentic-frameworks">102. Agentic Frameworks</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_102.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_102.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 102</figcaption>
 </figure>
 </div>
@@ -1357,7 +1357,7 @@
 <h3 class="anchored" data-anchor-id="abstraction-for-workflows">103. Abstraction for Workflows</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_103.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_103.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 103</figcaption>
 </figure>
 </div>
@@ -1369,7 +1369,7 @@
 <h3 class="anchored" data-anchor-id="when-abstractions-break">104. When Abstractions Break</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_104.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_104.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 104</figcaption>
 </figure>
 </div>
@@ -1381,7 +1381,7 @@
 <h3 class="anchored" data-anchor-id="lessons-from-agent-benchmarks">105. Lessons from Agent Benchmarks</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_105.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_105.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 105</figcaption>
 </figure>
 </div>
@@ -1393,7 +1393,7 @@
 <h3 class="anchored" data-anchor-id="conclusion">106. Conclusion</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_106.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_106.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 106</figcaption>
 </figure>
 </div>
@@ -1415,7 +1415,7 @@
   <category>Annotated Talk</category>
   <guid>https://rajivshah.com/blog/genai-evaluation-guide.html</guid>
   <pubDate>Sat, 01 Nov 2025 05:00:00 GMT</pubDate>
-  <media:content url="https://projects.rajivshah.com/images/genai-evaluation-guide/slide_1.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/genai-evaluation-guide/slide_1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>From Vectors to Agents: Managing RAG in an Agentic World</title>
@@ -1442,7 +1442,7 @@
 <h3 class="anchored" data-anchor-id="title-slide">1. Title Slide</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_1.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_1.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 1</figcaption>
 </figure>
 </div>
@@ -1454,7 +1454,7 @@
 <h3 class="anchored" data-anchor-id="acme-gpt">2. ACME GPT</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_2.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_2.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 2</figcaption>
 </figure>
 </div>
@@ -1466,7 +1466,7 @@
 <h3 class="anchored" data-anchor-id="building-rag-is-easy">3. Building RAG is Easy</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_3.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_3.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 3</figcaption>
 </figure>
 </div>
@@ -1478,7 +1478,7 @@
 <h3 class="anchored" data-anchor-id="building-rag-is-easy-code-example">4. Building RAG is Easy (Code Example)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_4.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_4.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 4</figcaption>
 </figure>
 </div>
@@ -1490,7 +1490,7 @@
 <h3 class="anchored" data-anchor-id="rag-reality-check">5. RAG Reality Check</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_5.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_5.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 5</figcaption>
 </figure>
 </div>
@@ -1502,7 +1502,7 @@
 <h3 class="anchored" data-anchor-id="maybe-try-a-different-rag">6. Maybe try a different RAG?</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_6.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_6.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 6</figcaption>
 </figure>
 </div>
@@ -1514,7 +1514,7 @@
 <h3 class="anchored" data-anchor-id="ultimate-rag-solution">7. Ultimate RAG Solution</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_7.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_7.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 7</figcaption>
 </figure>
 </div>
@@ -1526,7 +1526,7 @@
 <h3 class="anchored" data-anchor-id="rag-as-a-system">8. RAG as a system</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_8.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_8.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 8</figcaption>
 </figure>
 </div>
@@ -1538,7 +1538,7 @@
 <h3 class="anchored" data-anchor-id="designing-a-rag-solution">9. Designing a RAG Solution</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_9.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_9.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 9</figcaption>
 </figure>
 </div>
@@ -1550,7 +1550,7 @@
 <h3 class="anchored" data-anchor-id="rag-considerations">10. RAG Considerations</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_10.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_10.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 10</figcaption>
 </figure>
 </div>
@@ -1562,7 +1562,7 @@
 <h3 class="anchored" data-anchor-id="consider-query-complexity">11. Consider Query Complexity</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_11.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_11.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 11</figcaption>
 </figure>
 </div>
@@ -1574,7 +1574,7 @@
 <h3 class="anchored" data-anchor-id="retrieval-highlighted">12. Retrieval (Highlighted)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_12.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_12.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 12</figcaption>
 </figure>
 </div>
@@ -1586,7 +1586,7 @@
 <h3 class="anchored" data-anchor-id="retrieval-approaches">13. Retrieval Approaches</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_13.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_13.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 13</figcaption>
 </figure>
 </div>
@@ -1598,7 +1598,7 @@
 <h3 class="anchored" data-anchor-id="building-rag-is-easy-code-highlight">14. Building RAG is Easy (Code Highlight)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_14.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_14.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 14</figcaption>
 </figure>
 </div>
@@ -1610,7 +1610,7 @@
 <h3 class="anchored" data-anchor-id="bm25">15. BM25</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_15.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_15.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 15</figcaption>
 </figure>
 </div>
@@ -1622,7 +1622,7 @@
 <h3 class="anchored" data-anchor-id="bm25-performance">16. BM25 Performance</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_16.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_16.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 16</figcaption>
 </figure>
 </div>
@@ -1634,7 +1634,7 @@
 <h3 class="anchored" data-anchor-id="bm25-failure-cases">17. BM25 Failure Cases</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_17.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_17.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 17</figcaption>
 </figure>
 </div>
@@ -1646,7 +1646,7 @@
 <h3 class="anchored" data-anchor-id="hands-on-bm25s">18. Hands on: BM25s</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_18.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_18.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 18</figcaption>
 </figure>
 </div>
@@ -1658,7 +1658,7 @@
 <h3 class="anchored" data-anchor-id="enter-language-models">19. Enter Language Models</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_19.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_19.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 19</figcaption>
 </figure>
 </div>
@@ -1670,7 +1670,7 @@
 <h3 class="anchored" data-anchor-id="embeddings-visualized">20. Embeddings Visualized</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_20.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_20.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 20</figcaption>
 </figure>
 </div>
@@ -1682,7 +1682,7 @@
 <h3 class="anchored" data-anchor-id="semantic-search-is-widely-used">21. Semantic search is widely used</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_21.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_21.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 21</figcaption>
 </figure>
 </div>
@@ -1694,7 +1694,7 @@
 <h3 class="anchored" data-anchor-id="which-language-model">22. Which language model?</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_22.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_22.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 22</figcaption>
 </figure>
 </div>
@@ -1706,7 +1706,7 @@
 <h3 class="anchored" data-anchor-id="static-embeddings">23. Static Embeddings</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_23.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_23.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 23</figcaption>
 </figure>
 </div>
@@ -1718,7 +1718,7 @@
 <h3 class="anchored" data-anchor-id="why-context-matters">24. Why Context Matters</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_24.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_24.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 24</figcaption>
 </figure>
 </div>
@@ -1730,7 +1730,7 @@
 <h3 class="anchored" data-anchor-id="many-more-models">25. Many more models!</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_25.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_25.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 25</figcaption>
 </figure>
 </div>
@@ -1742,7 +1742,7 @@
 <h3 class="anchored" data-anchor-id="mtebrteb">26. MTEB/RTEB</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_26.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_26.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 26</figcaption>
 </figure>
 </div>
@@ -1754,7 +1754,7 @@
 <h3 class="anchored" data-anchor-id="selecting-an-embedding-model">27. Selecting an embedding model</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_27.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_27.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 27</figcaption>
 </figure>
 </div>
@@ -1766,7 +1766,7 @@
 <h3 class="anchored" data-anchor-id="selecting-an-embedding-model-other-considerations">28. Selecting an embedding model (Other Considerations)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_28.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_28.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 28</figcaption>
 </figure>
 </div>
@@ -1778,7 +1778,7 @@
 <h3 class="anchored" data-anchor-id="matryoshka-embedding-models">29. Matryoshka Embedding Models</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_29.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_29.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 29</figcaption>
 </figure>
 </div>
@@ -1790,7 +1790,7 @@
 <h3 class="anchored" data-anchor-id="sentence-transformer">30. Sentence Transformer</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_30.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_30.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 30</figcaption>
 </figure>
 </div>
@@ -1802,7 +1802,7 @@
 <h3 class="anchored" data-anchor-id="cross-encoder-reranker">31. Cross Encoder / Reranker</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_31.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_31.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 31</figcaption>
 </figure>
 </div>
@@ -1814,7 +1814,7 @@
 <h3 class="anchored" data-anchor-id="cross-encoder-reranker-duplicate">32. Cross Encoder / Reranker (Duplicate)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_32.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_32.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 32</figcaption>
 </figure>
 </div>
@@ -1825,7 +1825,7 @@
 <h3 class="anchored" data-anchor-id="cross-encoder-reranker-accuracy-boost">33. Cross Encoder / Reranker (Accuracy Boost)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_33.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_33.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 33</figcaption>
 </figure>
 </div>
@@ -1837,7 +1837,7 @@
 <h3 class="anchored" data-anchor-id="cross-encoder-reranker-execution-flow">34. Cross Encoder / Reranker (Execution Flow)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_34.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_34.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 34</figcaption>
 </figure>
 </div>
@@ -1849,7 +1849,7 @@
 <h3 class="anchored" data-anchor-id="hands-on-retriever-reranker">35. Hands On: Retriever &amp; Reranker</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_35.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_35.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 35</figcaption>
 </figure>
 </div>
@@ -1861,7 +1861,7 @@
 <h3 class="anchored" data-anchor-id="instruction-following-reranker">36. Instruction Following Reranker</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_36.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_36.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 36</figcaption>
 </figure>
 </div>
@@ -1873,7 +1873,7 @@
 <h3 class="anchored" data-anchor-id="combine-multiple-retrievers">37. Combine Multiple Retrievers</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_37.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_37.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 37</figcaption>
 </figure>
 </div>
@@ -1885,7 +1885,7 @@
 <h3 class="anchored" data-anchor-id="cascading-rerankers-in-kaggle">38. Cascading Rerankers in Kaggle</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_38.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_38.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 38</figcaption>
 </figure>
 </div>
@@ -1897,7 +1897,7 @@
 <h3 class="anchored" data-anchor-id="best-practices">39. Best practices</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_39.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_39.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 39</figcaption>
 </figure>
 </div>
@@ -1909,7 +1909,7 @@
 <h3 class="anchored" data-anchor-id="families-of-embedding-models">40. Families of Embedding Models</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_40.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_40.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 40</figcaption>
 </figure>
 </div>
@@ -1921,7 +1921,7 @@
 <h3 class="anchored" data-anchor-id="lots-of-new-models">41. Lots of New Models</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_41.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_41.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 41</figcaption>
 </figure>
 </div>
@@ -1933,7 +1933,7 @@
 <h3 class="anchored" data-anchor-id="other-retrieval-methods">42. Other retrieval methods</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_42.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_42.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 42</figcaption>
 </figure>
 </div>
@@ -1945,7 +1945,7 @@
 <h3 class="anchored" data-anchor-id="operational-concerns">43. Operational Concerns</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_43.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_43.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 43</figcaption>
 </figure>
 </div>
@@ -1957,7 +1957,7 @@
 <h3 class="anchored" data-anchor-id="vector-database-options">44. Vector Database Options</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_44.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_44.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 44</figcaption>
 </figure>
 </div>
@@ -1969,7 +1969,7 @@
 <h3 class="anchored" data-anchor-id="operational-concerns-datastore-size">45. Operational Concerns (Datastore Size)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_45.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_45.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 45</figcaption>
 </figure>
 </div>
@@ -1981,7 +1981,7 @@
 <h3 class="anchored" data-anchor-id="search-strategy-comparison">46. Search Strategy Comparison</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_46.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_46.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 46</figcaption>
 </figure>
 </div>
@@ -1993,7 +1993,7 @@
 <h3 class="anchored" data-anchor-id="tools-use-reasoning">47. Tools use / Reasoning</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_47.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_47.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 47</figcaption>
 </figure>
 </div>
@@ -2005,7 +2005,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-workflow">48. Agentic RAG (Workflow)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_48.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_48.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 48</figcaption>
 </figure>
 </div>
@@ -2017,7 +2017,7 @@
 <h3 class="anchored" data-anchor-id="tools-use-reasoning-detailed-example">49. Tools use / Reasoning (Detailed Example)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_49.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_49.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 49</figcaption>
 </figure>
 </div>
@@ -2029,7 +2029,7 @@
 <h3 class="anchored" data-anchor-id="open-deep-research">50. Open Deep Research</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_50.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_50.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 50</figcaption>
 </figure>
 </div>
@@ -2041,7 +2041,7 @@
 <h3 class="anchored" data-anchor-id="deepresearch-bench">51. DeepResearch Bench</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_51.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_51.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 51</figcaption>
 </figure>
 </div>
@@ -2053,7 +2053,7 @@
 <h3 class="anchored" data-anchor-id="westlaw-ai-deep-research">52. Westlaw AI Deep Research</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_52.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_52.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 52</figcaption>
 </figure>
 </div>
@@ -2065,7 +2065,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-self-rag">53. Agentic RAG (Self-RAG)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_53.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_53.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 53</figcaption>
 </figure>
 </div>
@@ -2077,7 +2077,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-langchain-reddit">54. Agentic RAG (LangChain Reddit)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_54.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_54.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 54</figcaption>
 </figure>
 </div>
@@ -2088,7 +2088,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-efficiency-concerns">55. Agentic RAG (Efficiency Concerns)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_55.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_55.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 55</figcaption>
 </figure>
 </div>
@@ -2100,7 +2100,7 @@
 <h3 class="anchored" data-anchor-id="research-bright">56. Research: BRIGHT</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_56.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_56.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 56</figcaption>
 </figure>
 </div>
@@ -2112,7 +2112,7 @@
 <h3 class="anchored" data-anchor-id="bright-1-diver">57. BRIGHT #1: DIVER</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_57.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_57.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 57</figcaption>
 </figure>
 </div>
@@ -2124,7 +2124,7 @@
 <h3 class="anchored" data-anchor-id="bright-1-diver-llm-instructions">58. BRIGHT #1: DIVER (LLM Instructions)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_58.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_58.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 58</figcaption>
 </figure>
 </div>
@@ -2136,7 +2136,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-on-wixqa">59. Agentic RAG on WixQA</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_59.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_59.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 59</figcaption>
 </figure>
 </div>
@@ -2148,7 +2148,7 @@
 <h3 class="anchored" data-anchor-id="rethink-your-assumptions">60. Rethink your Assumptions</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_60.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_60.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 60</figcaption>
 </figure>
 </div>
@@ -2160,7 +2160,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-with-bm25">61. Agentic RAG with BM25</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_61.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_61.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 61</figcaption>
 </figure>
 </div>
@@ -2172,7 +2172,7 @@
 <h3 class="anchored" data-anchor-id="agentic-rag-for-code-search">62. Agentic RAG for Code Search</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_62.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_62.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 62</figcaption>
 </figure>
 </div>
@@ -2184,7 +2184,7 @@
 <h3 class="anchored" data-anchor-id="combine-retrieval-approaches">63. Combine Retrieval Approaches</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_63.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_63.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 63</figcaption>
 </figure>
 </div>
@@ -2196,7 +2196,7 @@
 <h3 class="anchored" data-anchor-id="hands-on-agentic-rag-smolagents">64. Hands on: Agentic RAG (Smolagents)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_64.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_64.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 64</figcaption>
 </figure>
 </div>
@@ -2207,7 +2207,7 @@
 <h3 class="anchored" data-anchor-id="solutions-for-a-rag-solution">65. Solutions for a RAG Solution</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_65.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_65.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 65</figcaption>
 </figure>
 </div>
@@ -2218,7 +2218,7 @@
 <h3 class="anchored" data-anchor-id="retriever-checklist">66. Retriever Checklist</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_66.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_66.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 66</figcaption>
 </figure>
 </div>
@@ -2230,7 +2230,7 @@
 <h3 class="anchored" data-anchor-id="rag-as-a-system-retrieval-with-instruction-following-reranker">67. RAG as a system (Retrieval with Instruction Following Reranker)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_67.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_67.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 67</figcaption>
 </figure>
 </div>
@@ -2241,7 +2241,7 @@
 <h3 class="anchored" data-anchor-id="rag---generation">68. RAG - Generation</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_68.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_68.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 68</figcaption>
 </figure>
 </div>
@@ -2253,7 +2253,7 @@
 <h3 class="anchored" data-anchor-id="rag---generation-model-selection">69. RAG - Generation (Model Selection)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_69.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_69.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 69</figcaption>
 </figure>
 </div>
@@ -2264,7 +2264,7 @@
 <h3 class="anchored" data-anchor-id="chunking-approaches">70. Chunking approaches</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_70.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_70.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 70</figcaption>
 </figure>
 </div>
@@ -2275,7 +2275,7 @@
 <h3 class="anchored" data-anchor-id="title-slide-duplicate">71. Title Slide (Duplicate)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_71.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/rag-talk/slide_71.png" class="img-fluid figure-img"></p>
 <figcaption>Slide 71</figcaption>
 </figure>
 </div>
@@ -2296,7 +2296,7 @@
   <category>Annotated Talk</category>
   <guid>https://rajivshah.com/blog/rag-agentic-world.html</guid>
   <pubDate>Mon, 27 Oct 2025 05:00:00 GMT</pubDate>
-  <media:content url="https://projects.rajivshah.com/images/rag-talk/slide_1.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/rag-talk/slide_1.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Understanding Sparse Matrices through Interactive Visualizations</title>
@@ -2357,7 +2357,7 @@
   <category>Data Preprocessing</category>
   <guid>https://rajivshah.com/blog/sparsedataframe.html</guid>
   <pubDate>Fri, 07 Mar 2025 06:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/sparsedataframe.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/sparsedataframe.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Reasoning in Large Language Models</title>
@@ -2371,7 +2371,7 @@
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/hf/r-title.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/r-title.png" class="img-fluid figure-img"></p>
 <figcaption>Reasoning</figcaption>
 </figure>
 </div>
@@ -2381,7 +2381,7 @@
 <p>I came upon the <a href="https://github.com/google/BIG-bench">Big Bench Benchmark</a>, composed of more than 200 reasoning tasks. The tasks include playing chess, describing code, guessing the perpetrator of a crime in a short story, identifying sarcasm, and even recognizing self-awareness. A common benchmark to test models is the Big Bench Hard (BBH), a subset of 23 tasks from Big Bench. Early models like OpenAI’s text-ada-00 struggle to reach a random score of 25. However, several newer models reach and surpass the average human rater score of 67.7. You can see results for these models in these publications: <a href="https://arxiv.org/pdf/2301.13688.pdf">1</a>, <a href="https://arxiv.org/pdf/2210.09261.pdf">2</a>, and <a href="https://arxiv.org/pdf/2210.11416.pdf">3</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/hf/BBH.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/BBH.png" class="img-fluid figure-img"></p>
 <figcaption>Big Bench Hard (23 Tasks) (1).png</figcaption>
 </figure>
 </div>
@@ -2393,11 +2393,11 @@
 <pre><code>Q: If there are 3 cars in the parking lot and 2 more cars arrive, how many cars are in the parking lot?
 A: The answer is 5</code></pre>
 <p>If you ask an older text generation model like GPT-2 to complete this, it doesn’t understand the question and instead continues to write a story like this.</p>
-<p><img src="http://projects.rajivshah.com/images/hf/R-Cars-GPT2.png" alt="R-Cars-GPT2.png" style="zoom:50%;"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/R-Cars-GPT2.png" alt="R-Cars-GPT2.png" style="zoom:50%;"></p>
 <p>While I don’t have access to PalM - 540B parameter model in the Big Bench, I was able to work with the Flan-T5 XXL using this publicly available space. I entered the problem and got this answer!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/hf/R-Cars-Flan.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/R-Cars-Flan.png" class="img-fluid figure-img"></p>
 <figcaption>R-Cars-Flan.png</figcaption>
 </figure>
 </div>
@@ -2431,7 +2431,7 @@ A: The answer is</code></pre>
 <p>I was amazed at how well the model did, even when I changed the order.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/hf/Rcommon2.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/Rcommon2.gif" class="img-fluid figure-img"></p>
 <figcaption>Reasongif</figcaption>
 </figure>
 </div>
@@ -2453,7 +2453,7 @@ A: The answer is</code></pre>
   <category>NLP</category>
   <guid>https://rajivshah.com/blog/HF-Reasoning.html</guid>
   <pubDate>Wed, 08 Feb 2023 06:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/hf/r-title.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/hf/r-title.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Text style transfer in a spreadsheet using Hugging Face Inference Endpoints</title>
@@ -2467,7 +2467,7 @@ A: The answer is</code></pre>
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/hf/informal_endpoint_cover.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/informal_endpoint_cover.png" class="img-fluid figure-img"></p>
 <figcaption>SetFit</figcaption>
 </figure>
 </div>
@@ -2478,16 +2478,16 @@ A: The answer is</code></pre>
 <section id="step-1" class="level3">
 <h3 class="anchored" data-anchor-id="step-1">Step 1</h3>
 <p>The first step is identifying an <a href="https://huggingface.co/rajistics/informal_formal_style_transfer">informal to formal text style model</a>. Next, we deploy the model using <a href="https://ui.endpoints.huggingface.co/endpoints">Hugging Face Inference endpoints</a>. <a href="https://huggingface.co/docs/inference-endpoints/index">Inference endpoints</a> is a production-grade solution for model deployment.</p>
-<p><img src="http://projects.rajivshah.com/images/hf/model-inference.png" class="img-fluid"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/model-inference.png" class="img-fluid"></p>
 </section>
 <section id="step-2" class="level3">
 <h3 class="anchored" data-anchor-id="step-2">Step 2</h3>
 <p>Let’s incorporate the endpoint into Google Sheets custom function to make the model easy to use.</p>
-<p><img src="http://projects.rajivshah.com/images/hf/HF_IE_examples-min.png" class="img-fluid"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/HF_IE_examples-min.png" class="img-fluid"></p>
 <p>I added the code to Google Sheets through the Apps Script extension. Grab it <a href="https://gist.github.com/rajshah4/6cde451b7f126aeaa67d89503cba5b93">here as a gist</a>. Once that is saved, you can use the new function as a formula. Now, I can use one simple command if I want to do textual style transfer!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/hf/informal_endpoints.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/hf/informal_endpoints.png" class="img-fluid figure-img"></p>
 <figcaption>Alt Text</figcaption>
 </figure>
 </div>
@@ -2506,7 +2506,7 @@ A: The answer is</code></pre>
   <category>Finetuning</category>
   <guid>https://rajivshah.com/blog/HF-Endpoint.html</guid>
   <pubDate>Mon, 07 Nov 2022 06:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/hf/informal_endpoint_cover.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/hf/informal_endpoint_cover.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Few shot text classification with SetFit</title>
@@ -2520,7 +2520,7 @@ A: The answer is</code></pre>
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/setfit.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/setfit.png" class="img-fluid figure-img"></p>
 <figcaption>SetFit</figcaption>
 </figure>
 </div>
@@ -2541,7 +2541,7 @@ A: The answer is</code></pre>
   <category>NLP</category>
   <guid>https://rajivshah.com/blog/setfit.html</guid>
   <pubDate>Thu, 27 Oct 2022 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/setfit.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/setfit.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Getting predictions intervals with conformal inference</title>
@@ -2555,7 +2555,7 @@ A: The answer is</code></pre>
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/conformal_inference.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/conformal_inference.png" class="img-fluid figure-img"></p>
 <figcaption>Conformal</figcaption>
 </figure>
 </div>
@@ -2581,7 +2581,7 @@ A: The answer is</code></pre>
   <category>MAPIE</category>
   <guid>https://rajivshah.com/blog/conformal_predictions.html</guid>
   <pubDate>Sat, 24 Sep 2022 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/conformal_inference.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/conformal_inference.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Explaining predictions from 🤗 transformer models</title>
@@ -2595,7 +2595,7 @@ A: The answer is</code></pre>
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/transformers/banner.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/transformers/banner.png" class="img-fluid figure-img"></p>
 <figcaption>Banner</figcaption>
 </figure>
 </div>
@@ -2605,14 +2605,14 @@ A: The answer is</code></pre>
 <p>Explanations are useful for explaining predictions. In the case of text, they highlight how the text influenced the prediction. They are helpful for 🩺 diagnosing model issues, 👀 showing stakeholders understand how a model is working, and 🧑‍⚖️ meeting regulatory requirements. Here is an explanation 👇 using shap. For more on explanations, check out the <a href="https://youtu.be/SVfrxFdJNB4">explanations in machine learning video</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/transformers/shap.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/transformers/shap.png" class="img-fluid figure-img"></p>
 <figcaption>Screen Shot 2022-08-12 at 9.25.07 AM</figcaption>
 </figure>
 </div>
 <p>Let’s review 3 packages you can use to get explanations. All of these work with transformers, provide visualizations, and only require a few lines of code.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/transformers/code.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/transformers/code.png" class="img-fluid figure-img"></p>
 <figcaption>Red and Purple Real Estate Soft Gradients Twitter Ad (1)</figcaption>
 </figure>
 </div>
@@ -2624,7 +2624,7 @@ A: The answer is</code></pre>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/transformers/cluster.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/transformers/cluster.png" class="img-fluid figure-img"></p>
 <figcaption>Screen Shot 2022-08-12 at 9.35.34 AM</figcaption>
 </figure>
 </div>
@@ -2636,7 +2636,7 @@ A: The answer is</code></pre>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/transformers/ti.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/transformers/ti.png" class="img-fluid figure-img"></p>
 <figcaption>Screen Shot 2022-08-12 at 9.27.04 AM</figcaption>
 </figure>
 </div>
@@ -2648,7 +2648,7 @@ A: The answer is</code></pre>
 <p>You can see below how explanations can differ when using different explanation methods. A great reminder that explanations for text are complicated and need to be appropriately caveated.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/transformers/ferret.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/transformers/ferret.png" class="img-fluid figure-img"></p>
 <figcaption>Screen Shot 2022-08-11 at 1.19.05 PM</figcaption>
 </figure>
 </div>
@@ -2668,7 +2668,7 @@ A: The answer is</code></pre>
   <category>Explainability</category>
   <guid>https://rajivshah.com/blog/explaining_transformers.html</guid>
   <pubDate>Sun, 14 Aug 2022 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/transformers/banner.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/transformers/banner.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Dynamic Adversarial Data Collection</title>
@@ -2682,7 +2682,7 @@ A: The answer is</code></pre>
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/DADC.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/DADC.png" class="img-fluid figure-img"></p>
 <figcaption>img</figcaption>
 </figure>
 </div>
@@ -2700,7 +2700,7 @@ A: The answer is</code></pre>
   <category>MNIST</category>
   <guid>https://rajivshah.com/blog/DADC.html</guid>
   <pubDate>Thu, 11 Aug 2022 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/DADC.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/DADC.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Stand Up for Best Practices</title>
@@ -2774,7 +2774,7 @@ A: The answer is</code></pre>
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/fanduel2.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/fanduel2.jpg" class="img-fluid figure-img"></p>
 <figcaption>fanduel</figcaption>
 </figure>
 </div>
@@ -2797,7 +2797,7 @@ y&gt;=2    ## small bookcases
 <p>If we do the algebra by hand, we can convert out constraints to <code>y &lt;= 12 - 3x</code>. Then we graph all the constraints and find the feasible area for the portion of making small and large bookcases:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/graph.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/graph.png" class="img-fluid figure-img"></p>
 <figcaption>graph</figcaption>
 </figure>
 </div>
@@ -2813,28 +2813,28 @@ y&gt;=2    ## small bookcases
 <p>So for this problem, let’s start by loading a dataset and taking a look at the raw data. You need to know both the salary as well as the expected points. Most football fans spend a lot of time trying to predict how many points a player will score. If you want to build a model for predicting the expected performance of a player, take a look at Ben’s blog post.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/qbs.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/qbs.png" class="img-fluid figure-img"></p>
 <figcaption>QB points</figcaption>
 </figure>
 </div>
 <p>The goal here is to build the best possible team for a salary cap, let’s say $50,000. A team consists of a quarterback, running backs, wide receivers, tight ends, and a defense. We can use the <code>lpSolve</code> package in R to set up the problem. Here is a code snippet for setting up the constraints.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/constraints.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/constraints.png" class="img-fluid figure-img"></p>
 <figcaption>constraints</figcaption>
 </figure>
 </div>
 <p>If you parse through this, you can see we have set a minimum and maximum for QB of 1 player. However, for the RB, we have allowed a maximum of 3 and a minimum of 2. This is not unusual in fantasy football, be because there is a role called a flex player, which anyone can choose and they can either be a RB, WR, or TE. Now let’s look at the code for the objective:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/objective.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/objective.png" class="img-fluid figure-img"></p>
 <figcaption>objective</figcaption>
 </figure>
 </div>
 <p>The code shows that we have set up the problem to maximize the objective of the most points and include our constraints. Once the code is run, it outputs an optimal team! I forked an existing repo and have made the R code and dataset are <a href="https://github.com/rajshah4/linear-optimization-fantasy-football">available here.</a> A more sophisticated <a href="https://github.com/mattbrondum/Fantasy-Football-Optimization">python</a> optimization repo is also available.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/finalteam.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/finalteam.png" class="img-fluid figure-img"></p>
 <figcaption>finalteam</figcaption>
 </figure>
 </div>
@@ -2842,7 +2842,7 @@ y&gt;=2    ## small bookcases
 <section id="advanced-steps" class="level3">
 <h3 class="anchored" data-anchor-id="advanced-steps">Advanced steps</h3>
 <p>So far, we have built a very simple optimization to solve the problem. There are several other strategies to further improve the optimizer. First, the variance of our teams can be increased by using a strategy called <strong>stacking</strong>, where you make sure your QB and WR are on the same team. A simple optimization is a constraint for selecting a QB and WR from the same team. Another strategy is using an <strong>overlap</strong> constraint for selecting multiple lineups. An overlap constraint ensures a diversity of players and not the same set of players for each optimized team. This strategy is particularly effective when submitting multiple lineups. You can read more about these <a href="https://arxiv.org/pdf/1604.01455v2.pdf">strategies here</a> and run the code in Julia <a href="https://github.com/dscotthunter/Fantasy-Hockey-IP-Code">here</a>. An code snippet of the stacking constraint (this is for a hockey optimization):</p>
-<p><img src="http://projects.rajivshah.com/images/goalie.png" class="img-fluid" alt="goalie">.</p>
+<p><img src="https://rajivshah.com/blog/images/goalie.png" class="img-fluid" alt="goalie">.</p>
 <p>Last year, at Sloan sports conference, <a href="http://www.sloansportsconference.com/wp-content/uploads/2018/02/1001.pdf">Haugh and Sighal</a> , presented a paper with additional optimization constraints. They include what an <strong>opponents team</strong> is likely to look like. After all, there are some players that are much more popular. Using this knowledge, you can predict the likely teams that will oppose your team. The approach here used Dirichlet regressions for modeling players. The result was a much-improved optimizer that was capable of consistently winning!</p>
 <p>I hope this post has shown you how optimization strategies can help you find the best possible solution.</p>
 <p>​</p>
@@ -2855,7 +2855,7 @@ y&gt;=2    ## small bookcases
   <category>sport</category>
   <guid>https://rajivshah.com/blog/optimization.html</guid>
   <pubDate>Mon, 30 Jul 2018 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/fanduel2.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://rajivshah.com/blog/images/fanduel2.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Using Unlabeled Data to Label Data</title>
@@ -2892,7 +2892,7 @@ y&gt;=2    ## small bookcases
 </section>
 <section id="just-build-a-model" class="level3">
 <h3 class="anchored" data-anchor-id="just-build-a-model">Just Build a Model</h3>
-<p>The first idea is to label a handful of the images, train a machine learning algorithm, and then predict the remaining set of labels. For this exercise, I am using the <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion-MNIST</a> dataset (you could also make your own <a href="http://projects.rajivshah.com/blog/2017/07/14/QuickDraw/">using quickdraw</a>). There are ten classes of images to identify and here is a sample of what they look like:</p>
+<p>The first idea is to label a handful of the images, train a machine learning algorithm, and then predict the remaining set of labels. For this exercise, I am using the <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion-MNIST</a> dataset (you could also make your own <a href="https://rajivshah.com/blog/blog/2017/07/14/QuickDraw/">using quickdraw</a>). There are ten classes of images to identify and here is a sample of what they look like:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://pbs.twimg.com/media/DJNuE7BWAAAo3eC.jpg" class="img-fluid figure-img"></p>
@@ -2904,7 +2904,7 @@ y&gt;=2    ## small bookcases
 <p>I evaluated the performance based on labeling 100, 200, 500, 1000, and 2000 images.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/All.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/All.png" class="img-fluid figure-img"></p>
 <figcaption>All</figcaption>
 </figure>
 </div>
@@ -2919,7 +2919,7 @@ y&gt;=2    ## small bookcases
 <p>Effectively this means we are taking our wide data (784 features/variables) reducing it down to 128 features. We then take this new compressed data and train our machine learning algorithm (SVM in this case). The graph below shows the difference in performance between an SVM fed with an autoencoder (AE_SVM) versus the SVM on the raw data.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/AE.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/AE.png" class="img-fluid figure-img"></p>
 <figcaption>AE</figcaption>
 </figure>
 </div>
@@ -2932,7 +2932,7 @@ y&gt;=2    ## small bookcases
 <p>For coding my CVAE, I used the example CVAE from the list of <a href="https://keras.rstudio.com/articles/examples/variational_autoencoder_deconv.html">examples over at RStudio’s Keras page</a>. Like the previous autoencoder, we design the latent space to reduce the data to 128 features. We then use this new data to train an SVM model. Below is a plot of the performance of the CVAE as compared to the SVM and RandomForest on the raw data.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/CVAE.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/CVAE.png" class="img-fluid figure-img"></p>
 <figcaption>CVAE</figcaption>
 </figure>
 </div>
@@ -2986,21 +2986,21 @@ y&gt;=2    ## small bookcases
 <p>As a starting point, Google has graciously made the dataset publicly available with <a href="https://github.com/googlecreativelab/quickdraw-dataset">documentation on the dataset</a>. All the data is sitting in Google’s <a href="https://console.cloud.google.com/storage/browser/quickdraw_dataset/?pli=1">Cloud Console</a>, but for the images, you want this link of the <a href="https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap/?pli=1">numpy_bitmaps</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/GCP2.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/GCP2.png" class="img-fluid figure-img"></p>
 <figcaption>GCP2</figcaption>
 </figure>
 </div>
 <p>You should arrive on a page that allows you to download all the images for any category. So this is when you have fun! Go ahead and pick your own categories. I started with eyeglasses, face, pencil, and television. As I learned from the face, the drawings that have fine points can be more difficult to learn. But you should play around and pick fun categories.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/shortqd.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/shortqd.png" class="img-fluid figure-img"></p>
 <figcaption>shortqd</figcaption>
 </figure>
 </div>
 <p>The next challenge is taking these .npy files and using them. Here is a short <a href="https://gist.github.com/rajshah4/903d086adb4e5075415381e1f6038a88">python gist</a> that I used to read the .npy files and combine them to create a 80,000 images dataset that I could use in place of MNIST. They are saved in a hdf5 format that is cross platform and often used in deep learning.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/gist.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/gist.png" class="img-fluid figure-img"></p>
 <figcaption>gist</figcaption>
 </figure>
 </div>
@@ -3010,7 +3010,7 @@ y&gt;=2    ## small bookcases
 <p>The next thing is to go have fun with it. I used this dataset in place of MNIST for some work playing around with autoencoders in Python from the <a href="https://blog.keras.io/building-autoencoders-in-keras.html">Keras tutorials</a>. The below picture represents the original images at the top and reconstructed ones at the bottom, using an autoencoder.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/vae10.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/vae10.png" class="img-fluid figure-img"></p>
 <figcaption>vae10</figcaption>
 </figure>
 </div>
@@ -3023,7 +3023,7 @@ y_train &lt;- (h5read("y_train.h5", "name-of-dataset"))</code></pre>
 <p>Here is a visualization of its latent space using my custom quickdraw dataset. For me, this was a nice fresh alternative to always staring at the MNIST dataset. So next time you see MNIST listed . . . go build your own!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/VAEgw.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/VAEgw.gif" class="img-fluid figure-img"></p>
 <figcaption>VAE15</figcaption>
 </figure>
 </div>
@@ -3173,7 +3173,7 @@ model %&gt;%
 <p>Ahh! In the spirit of open source, OpenAI stands on the shoulders of another reinforcement library, <a href="http://rlpy.readthedocs.io/en/latest/">RLPy</a>. You can learn a lot more about them at the RLPy site or take a look at their <a href="https://github.com/rlpy/rlpy">github</a>. If you browse here, you can find the original script that was used in OpenAI under <code>rlpy /rlpy/Domains</code>. The interesting thing here is that there are a ton more interesting reinforcement problems!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/RLlisting.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/RLlisting.png" class="img-fluid figure-img"></p>
 <figcaption>RLlisting</figcaption>
 </figure>
 </div>
@@ -3184,11 +3184,11 @@ model %&gt;%
 <p>I decided to modify the <a href="https://gym.openai.com/envs/Acrobot-v1">Acrobot</a> environment. Acrobot is a 2-link pendulum with only the second joint actuated (it has three states, left, right, and no movement). The goal is to swing the end to a height of at least one link above the base. If you look at the leaderboard on OpenAIs site, they meet that criterion, but its not very impressive. Here is the current <a href="https://gym.openai.com/evaluations/eval_Ig1wrPzQlGipmBAhZ5Tw">highest scoring entry</a>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/training.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/training.gif" class="img-fluid figure-img"></p>
 <figcaption>training</figcaption>
 </figure>
 </div>
-<p>This is way boring compared to what Hardmaru shows in his <a href="http://otoro.net/ml/pendulum-cne/">demo</a>, where a pendulum is capable of balancing for a short time.<img src="http://projects.rajivshah.com/images/hardmaru.gif" class="img-fluid" alt="hardmaru"></p>
+<p>This is way boring compared to what Hardmaru shows in his <a href="http://otoro.net/ml/pendulum-cne/">demo</a>, where a pendulum is capable of balancing for a short time.<img src="https://rajivshah.com/blog/images/hardmaru.gif" class="img-fluid" alt="hardmaru"></p>
 <p>So I decided to try and modify the Acrobot demo to make this task a little more interesting, <a href="https://gist.github.com/rajshah4/677698166b860bc11d34507ee18b2d41">Acrobot gist here</a>. The main change was to the reward system. I added a variable <code>steps_beyond_done</code> that would keep track of successes when the end was swung high. I also changed the reward structure, so it would gradually be rewarded as it swung higher. I also changed g to 0, this removes gravity’s effect.</p>
 <pre><code>self.rewardx = (-np.cos(s[0]) - np.cos(s[1] + s[0])) ##Swung height is calculated 
 if self.rewardx &lt; .5:
@@ -3218,14 +3218,14 @@ if self.steps_beyond_done &gt; 12:
 <p>I then ran an <a href="https://github.com/arnomoonens/DeepRL">implementation of Asynchronous Advantage Actor Critic A3C)</a> by Arno Moonens. After running for a half hour, you can see the improvement in the algorithm:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/training1.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/training1.gif" class="img-fluid figure-img"></p>
 <figcaption>training1</figcaption>
 </figure>
 </div>
 <p>Now a half hour later:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/training2.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/training2.gif" class="img-fluid figure-img"></p>
 <figcaption>training2</figcaption>
 </figure>
 </div>
@@ -3239,7 +3239,7 @@ if self.steps_beyond_done &gt; 12:
   <category>RL</category>
   <guid>https://rajivshah.com/blog/openai_mod.html</guid>
   <pubDate>Tue, 24 Jan 2017 06:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/training.gif" medium="image" type="image/gif"/>
+  <media:content url="https://rajivshah.com/blog/images/training.gif" medium="image" type="image/gif"/>
 </item>
 <item>
   <title>Taking an H2O Model to Production</title>
@@ -3357,7 +3357,7 @@ train.data &lt;- data.matrix(Icecream[,-1])</code></pre>
 <pre><code>xgb.plot.tree(feature_names = names((Icecream[,-1])), model = bst)</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/xgplot.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/xgplot.png" class="img-fluid figure-img"></p>
 <figcaption>xg tree plot</figcaption>
 </figure>
 </div>
@@ -3387,20 +3387,20 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
 <p>After the application runs, it will write out an excel spreadsheet titled: <code>XgbFeatureInteractions.xlsx</code>. This spreadsheet has the good stuff! Open up the spreadsheet and you should see:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/firstinteraction.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/firstinteraction.png" class="img-fluid figure-img"></p>
 <figcaption>interaction depth 0</figcaption>
 </figure>
 </div>
 <p>This tab of the spreadsheet shows the first order interactions. These results are similar to what variable importance showed. The good stuff is when you click on the tab for Interaction Depth 1 or Interaction Depth 2.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/secondinteraction.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/secondinteraction.png" class="img-fluid figure-img"></p>
 <figcaption>interaction depth 1</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/thirdinteraction.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/thirdinteraction.png" class="img-fluid figure-img"></p>
 <figcaption>interaction depth 2</figcaption>
 </figure>
 </div>
@@ -3416,7 +3416,7 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
   <category>Explainability</category>
   <guid>https://rajivshah.com/blog/xgbfi.html</guid>
   <pubDate>Mon, 01 Aug 2016 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/firstinteraction.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/firstinteraction.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Outlier App</title>
@@ -3430,14 +3430,14 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/algorithms.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/algorithms.gif" class="img-fluid figure-img"></p>
 <figcaption>algorithms</figcaption>
 </figure>
 </div>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
 <p>I was recently trying various outlier detection algorithms. For me, the best way to understand an algorithm is to tinker with it. I wanted to share my recent work on a shiny app that allows you to play around with various outlier algorithms.</p>
-<p>The <a href="http://projects.rajivshah.com/shiny/outlier/">shiny app is available on my site</a>, but even better, the <a href="https://github.com/rajshah4/outliers_shiny">code is on github</a> for you to run locally or improve! I also <a href="https://www.youtube.com/watch?v=1zPuRAgr1F4">posted a video</a> that provides background on the app. Let me give you a quick tour of the app:</p>
+<p>The <a href="https://rajivshah.com/blog/shiny/outlier/">shiny app is available on my site</a>, but even better, the <a href="https://github.com/rajshah4/outliers_shiny">code is on github</a> for you to run locally or improve! I also <a href="https://www.youtube.com/watch?v=1zPuRAgr1F4">posted a video</a> that provides background on the app. Let me give you a quick tour of the app:</p>
 </section>
 <section id="algorithms" class="level3">
 <h3 class="anchored" data-anchor-id="algorithms">Algorithms</h3>
@@ -3466,7 +3466,7 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/algorithms.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/algorithms.gif" class="img-fluid figure-img"></p>
 <figcaption>algorithms</figcaption>
 </figure>
 </div>
@@ -3476,36 +3476,36 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
 <p>There are also a wide range of datasets to try as well:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/datasets.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/datasets.png" class="img-fluid figure-img"></p>
 <figcaption>datasets</figcaption>
 </figure>
 </div>
 <p>Once the data is loaded, you can start exploring. One thing you can do is look at the effect scaling can have. In this example, you can see how outliers differ when scaling is used. The values on the far right no longer dominate the distance measurements, and there are now outliers from other areas:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/scaling.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/scaling.gif" class="img-fluid figure-img"></p>
 <figcaption>scaling</figcaption>
 </figure>
 </div>
-<p>By trying different algorithms, you can see how different algorithms will select outliers. In this case, you see a difference between the outliers selected using an autoencoder versus isolation forest.<img src="http://projects.rajivshah.com/images/auto_iso.gif" class="img-fluid" alt="auto_iso"></p>
+<p>By trying different algorithms, you can see how different algorithms will select outliers. In this case, you see a difference between the outliers selected using an autoencoder versus isolation forest.<img src="https://rajivshah.com/blog/images/auto_iso.gif" class="img-fluid" alt="auto_iso"></p>
 <p>Another example here is the difference between kmeans and fuzzy kmeans as show below:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/fuzzy.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/fuzzy.gif" class="img-fluid figure-img"></p>
 <figcaption>fuzzy</figcaption>
 </figure>
 </div>
 <p>A density based algorithm can also select different outliers versus a distance based algorithm. This example nicely shows the difference between kmeans and lof (local outlier factor from dbscan)</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/density.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/density.gif" class="img-fluid figure-img"></p>
 <figcaption>density</figcaption>
 </figure>
 </div>
 <p>An important part of using this visualization is studying the distance numbers that are calculated. Are these numbers meshing with your intuition? How big of a quantitative difference is there between outliers and other points?</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/outlier_table.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/outlier_table.png" class="img-fluid figure-img"></p>
 <figcaption>outlier_table</figcaption>
 </figure>
 </div>
@@ -3514,7 +3514,7 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
 <p>The next thing is whether to expand this to larger datasets. This is something that you would run locally (large datasets take too long to run for my shiny server). The downside of larger datasets is that it gets tricker to visualize them. For now, I am using a TSNE plot. I am open to suggestions, but the intent here is a way to evaluate outlier algorithms on a variety of datasets.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/multiD.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/multiD.gif" class="img-fluid figure-img"></p>
 <figcaption>datasets</figcaption>
 </figure>
 </div>
@@ -3527,7 +3527,7 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
   <category>Anomaly</category>
   <guid>https://rajivshah.com/blog/outlier_app.html</guid>
   <pubDate>Mon, 27 Jun 2016 05:00:00 GMT</pubDate>
-  <media:content url="http://projects.rajivshah.com/images/algorithms.gif" medium="image" type="image/gif"/>
+  <media:content url="https://rajivshah.com/blog/images/algorithms.gif" medium="image" type="image/gif"/>
 </item>
 <item>
   <title>RNN Addition (1st Grade)</title>

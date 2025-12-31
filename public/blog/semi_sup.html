@@ -376,7 +376,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="just-build-a-model" class="level3">
 <h3 class="anchored" data-anchor-id="just-build-a-model">Just Build a Model</h3>
-<p>The first idea is to label a handful of the images, train a machine learning algorithm, and then predict the remaining set of labels. For this exercise, I am using the <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion-MNIST</a> dataset (you could also make your own <a href="http://projects.rajivshah.com/blog/2017/07/14/QuickDraw/">using quickdraw</a>). There are ten classes of images to identify and here is a sample of what they look like:</p>
+<p>The first idea is to label a handful of the images, train a machine learning algorithm, and then predict the remaining set of labels. For this exercise, I am using the <a href="https://github.com/zalandoresearch/fashion-mnist">Fashion-MNIST</a> dataset (you could also make your own <a href="https://rajivshah.com/blog/blog/2017/07/14/QuickDraw/">using quickdraw</a>). There are ten classes of images to identify and here is a sample of what they look like:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://pbs.twimg.com/media/DJNuE7BWAAAo3eC.jpg" class="img-fluid figure-img"></p>
@@ -388,7 +388,7 @@ ul.task-list li input[type="checkbox"] {
 <p>I evaluated the performance based on labeling 100, 200, 500, 1000, and 2000 images.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/All.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/All.png" class="img-fluid figure-img"></p>
 <figcaption>All</figcaption>
 </figure>
 </div>
@@ -403,7 +403,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Effectively this means we are taking our wide data (784 features/variables) reducing it down to 128 features. We then take this new compressed data and train our machine learning algorithm (SVM in this case). The graph below shows the difference in performance between an SVM fed with an autoencoder (AE_SVM) versus the SVM on the raw data.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/AE.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/AE.png" class="img-fluid figure-img"></p>
 <figcaption>AE</figcaption>
 </figure>
 </div>
@@ -416,7 +416,7 @@ ul.task-list li input[type="checkbox"] {
 <p>For coding my CVAE, I used the example CVAE from the list of <a href="https://keras.rstudio.com/articles/examples/variational_autoencoder_deconv.html">examples over at RStudio’s Keras page</a>. Like the previous autoencoder, we design the latent space to reduce the data to 128 features. We then use this new data to train an SVM model. Below is a plot of the performance of the CVAE as compared to the SVM and RandomForest on the raw data.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/CVAE.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/CVAE.png" class="img-fluid figure-img"></p>
 <figcaption>CVAE</figcaption>
 </figure>
 </div>

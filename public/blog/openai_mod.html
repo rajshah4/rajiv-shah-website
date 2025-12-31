@@ -362,7 +362,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Ahh! In the spirit of open source, OpenAI stands on the shoulders of another reinforcement library, <a href="http://rlpy.readthedocs.io/en/latest/">RLPy</a>. You can learn a lot more about them at the RLPy site or take a look at their <a href="https://github.com/rlpy/rlpy">github</a>. If you browse here, you can find the original script that was used in OpenAI under <code>rlpy /rlpy/Domains</code>. The interesting thing here is that there are a ton more interesting reinforcement problems!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/RLlisting.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/RLlisting.png" class="img-fluid figure-img"></p>
 <figcaption>RLlisting</figcaption>
 </figure>
 </div>
@@ -373,11 +373,11 @@ ul.task-list li input[type="checkbox"] {
 <p>I decided to modify the <a href="https://gym.openai.com/envs/Acrobot-v1">Acrobot</a> environment. Acrobot is a 2-link pendulum with only the second joint actuated (it has three states, left, right, and no movement). The goal is to swing the end to a height of at least one link above the base. If you look at the leaderboard on OpenAIs site, they meet that criterion, but its not very impressive. Here is the current <a href="https://gym.openai.com/evaluations/eval_Ig1wrPzQlGipmBAhZ5Tw">highest scoring entry</a>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/training.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/training.gif" class="img-fluid figure-img"></p>
 <figcaption>training</figcaption>
 </figure>
 </div>
-<p>This is way boring compared to what Hardmaru shows in his <a href="http://otoro.net/ml/pendulum-cne/">demo</a>, where a pendulum is capable of balancing for a short time.<img src="http://projects.rajivshah.com/images/hardmaru.gif" class="img-fluid" alt="hardmaru"></p>
+<p>This is way boring compared to what Hardmaru shows in his <a href="http://otoro.net/ml/pendulum-cne/">demo</a>, where a pendulum is capable of balancing for a short time.<img src="https://rajivshah.com/blog/images/hardmaru.gif" class="img-fluid" alt="hardmaru"></p>
 <p>So I decided to try and modify the Acrobot demo to make this task a little more interesting, <a href="https://gist.github.com/rajshah4/677698166b860bc11d34507ee18b2d41">Acrobot gist here</a>. The main change was to the reward system. I added a variable <code>steps_beyond_done</code> that would keep track of successes when the end was swung high. I also changed the reward structure, so it would gradually be rewarded as it swung higher. I also changed g to 0, this removes gravity’s effect.</p>
 <pre><code>self.rewardx = (-np.cos(s[0]) - np.cos(s[1] + s[0])) ##Swung height is calculated 
 if self.rewardx &lt; .5:
@@ -407,14 +407,14 @@ if self.steps_beyond_done &gt; 12:
 <p>I then ran an <a href="https://github.com/arnomoonens/DeepRL">implementation of Asynchronous Advantage Actor Critic A3C)</a> by Arno Moonens. After running for a half hour, you can see the improvement in the algorithm:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/training1.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/training1.gif" class="img-fluid figure-img"></p>
 <figcaption>training1</figcaption>
 </figure>
 </div>
 <p>Now a half hour later:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/training2.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/training2.gif" class="img-fluid figure-img"></p>
 <figcaption>training2</figcaption>
 </figure>
 </div>

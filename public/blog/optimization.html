@@ -353,7 +353,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/fanduel2.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/fanduel2.jpg" class="img-fluid figure-img"></p>
 <figcaption>fanduel</figcaption>
 </figure>
 </div>
@@ -376,7 +376,7 @@ y&gt;=2    ## small bookcases
 <p>If we do the algebra by hand, we can convert out constraints to <code>y &lt;= 12 - 3x</code>. Then we graph all the constraints and find the feasible area for the portion of making small and large bookcases:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/graph.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/graph.png" class="img-fluid figure-img"></p>
 <figcaption>graph</figcaption>
 </figure>
 </div>
@@ -392,28 +392,28 @@ y&gt;=2    ## small bookcases
 <p>So for this problem, let’s start by loading a dataset and taking a look at the raw data. You need to know both the salary as well as the expected points. Most football fans spend a lot of time trying to predict how many points a player will score. If you want to build a model for predicting the expected performance of a player, take a look at Ben’s blog post.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/qbs.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/qbs.png" class="img-fluid figure-img"></p>
 <figcaption>QB points</figcaption>
 </figure>
 </div>
 <p>The goal here is to build the best possible team for a salary cap, let’s say $50,000. A team consists of a quarterback, running backs, wide receivers, tight ends, and a defense. We can use the <code>lpSolve</code> package in R to set up the problem. Here is a code snippet for setting up the constraints.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/constraints.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/constraints.png" class="img-fluid figure-img"></p>
 <figcaption>constraints</figcaption>
 </figure>
 </div>
 <p>If you parse through this, you can see we have set a minimum and maximum for QB of 1 player. However, for the RB, we have allowed a maximum of 3 and a minimum of 2. This is not unusual in fantasy football, be because there is a role called a flex player, which anyone can choose and they can either be a RB, WR, or TE. Now let’s look at the code for the objective:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/objective.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/objective.png" class="img-fluid figure-img"></p>
 <figcaption>objective</figcaption>
 </figure>
 </div>
 <p>The code shows that we have set up the problem to maximize the objective of the most points and include our constraints. Once the code is run, it outputs an optimal team! I forked an existing repo and have made the R code and dataset are <a href="https://github.com/rajshah4/linear-optimization-fantasy-football">available here.</a> A more sophisticated <a href="https://github.com/mattbrondum/Fantasy-Football-Optimization">python</a> optimization repo is also available.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/finalteam.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/finalteam.png" class="img-fluid figure-img"></p>
 <figcaption>finalteam</figcaption>
 </figure>
 </div>
@@ -421,7 +421,7 @@ y&gt;=2    ## small bookcases
 <section id="advanced-steps" class="level3">
 <h3 class="anchored" data-anchor-id="advanced-steps">Advanced steps</h3>
 <p>So far, we have built a very simple optimization to solve the problem. There are several other strategies to further improve the optimizer. First, the variance of our teams can be increased by using a strategy called <strong>stacking</strong>, where you make sure your QB and WR are on the same team. A simple optimization is a constraint for selecting a QB and WR from the same team. Another strategy is using an <strong>overlap</strong> constraint for selecting multiple lineups. An overlap constraint ensures a diversity of players and not the same set of players for each optimized team. This strategy is particularly effective when submitting multiple lineups. You can read more about these <a href="https://arxiv.org/pdf/1604.01455v2.pdf">strategies here</a> and run the code in Julia <a href="https://github.com/dscotthunter/Fantasy-Hockey-IP-Code">here</a>. An code snippet of the stacking constraint (this is for a hockey optimization):</p>
-<p><img src="http://projects.rajivshah.com/images/goalie.png" class="img-fluid" alt="goalie">.</p>
+<p><img src="https://rajivshah.com/blog/images/goalie.png" class="img-fluid" alt="goalie">.</p>
 <p>Last year, at Sloan sports conference, <a href="http://www.sloansportsconference.com/wp-content/uploads/2018/02/1001.pdf">Haugh and Sighal</a> , presented a paper with additional optimization constraints. They include what an <strong>opponents team</strong> is likely to look like. After all, there are some players that are much more popular. Using this knowledge, you can predict the likely teams that will oppose your team. The approach here used Dirichlet regressions for modeling players. The result was a much-improved optimizer that was capable of consistently winning!</p>
 <p>I hope this post has shown you how optimization strategies can help you find the best possible solution.</p>
 <p>​</p>

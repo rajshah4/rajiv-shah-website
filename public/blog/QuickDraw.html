@@ -373,21 +373,21 @@ ul.task-list li input[type="checkbox"] {
 <p>As a starting point, Google has graciously made the dataset publicly available with <a href="https://github.com/googlecreativelab/quickdraw-dataset">documentation on the dataset</a>. All the data is sitting in Google’s <a href="https://console.cloud.google.com/storage/browser/quickdraw_dataset/?pli=1">Cloud Console</a>, but for the images, you want this link of the <a href="https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap/?pli=1">numpy_bitmaps</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/GCP2.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/GCP2.png" class="img-fluid figure-img"></p>
 <figcaption>GCP2</figcaption>
 </figure>
 </div>
 <p>You should arrive on a page that allows you to download all the images for any category. So this is when you have fun! Go ahead and pick your own categories. I started with eyeglasses, face, pencil, and television. As I learned from the face, the drawings that have fine points can be more difficult to learn. But you should play around and pick fun categories.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/shortqd.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/shortqd.png" class="img-fluid figure-img"></p>
 <figcaption>shortqd</figcaption>
 </figure>
 </div>
 <p>The next challenge is taking these .npy files and using them. Here is a short <a href="https://gist.github.com/rajshah4/903d086adb4e5075415381e1f6038a88">python gist</a> that I used to read the .npy files and combine them to create a 80,000 images dataset that I could use in place of MNIST. They are saved in a hdf5 format that is cross platform and often used in deep learning.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/gist.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/gist.png" class="img-fluid figure-img"></p>
 <figcaption>gist</figcaption>
 </figure>
 </div>
@@ -397,7 +397,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The next thing is to go have fun with it. I used this dataset in place of MNIST for some work playing around with autoencoders in Python from the <a href="https://blog.keras.io/building-autoencoders-in-keras.html">Keras tutorials</a>. The below picture represents the original images at the top and reconstructed ones at the bottom, using an autoencoder.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/vae10.png" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/vae10.png" class="img-fluid figure-img"></p>
 <figcaption>vae10</figcaption>
 </figure>
 </div>
@@ -410,7 +410,7 @@ y_train &lt;- (h5read("y_train.h5", "name-of-dataset"))</code></pre>
 <p>Here is a visualization of its latent space using my custom quickdraw dataset. For me, this was a nice fresh alternative to always staring at the MNIST dataset. So next time you see MNIST listed . . . go build your own!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="http://projects.rajivshah.com/images/VAEgw.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rajivshah.com/blog/images/VAEgw.gif" class="img-fluid figure-img"></p>
 <figcaption>VAE15</figcaption>
 </figure>
 </div>
