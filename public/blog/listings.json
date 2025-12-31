@@ -1,0 +1,29 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/running-code-failing-models.html",
+      "/genai-evaluation-guide.html",
+      "/rag-agentic-world.html",
+      "/sparsedataframe.html",
+      "/HF-Reasoning.html",
+      "/HF-Endpoint.html",
+      "/setfit.html",
+      "/conformal_predictions.html",
+      "/explaining_transformers.html",
+      "/DADC.html",
+      "/standup.html",
+      "/optimization.html",
+      "/semi_sup.html",
+      "/QuickDraw.html",
+      "/deeplearningR.html",
+      "/openai_mod.html",
+      "/H2O_prod.html",
+      "/xgbfi.html",
+      "/outlier_app.html",
+      "/rnn_addition.html",
+      "/sportvu_analysis.html",
+      "/tensorflow_shiny.html"
+    ]
+  }
+]

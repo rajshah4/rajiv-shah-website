@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-27">
+
+<title>From Vectors to Agents: Managing RAG in an Agentic World – Rajiv Shah - rajistics blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-475ad4fe1e4ce2c827a237f0e4cf2c17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ddb7102b129bb408a3919432018bab43.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Rajiv Shah - rajistics blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com"> 
+<span class="menu-text"><u>About Me</u></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/"> <i class="bi bi-instagram" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics"> <i class="bi bi-tiktok" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w"> <i class="bi bi-youtube" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">From Vectors to Agents: Managing RAG in an Agentic World</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">RAG</div>
+                <div class="quarto-category">AI</div>
+                <div class="quarto-category">Retrieval</div>
+                <div class="quarto-category">Agentic</div>
+                <div class="quarto-category">Annotated Talk</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 27, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#video" id="toc-video" class="nav-link active" data-scroll-target="#video">Video</a></li>
+  <li><a href="#annotated-presentation" id="toc-annotated-presentation" class="nav-link" data-scroll-target="#annotated-presentation">Annotated Presentation</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="rag-agentic-world.ipynb" download="rag-agentic-world.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="video" class="level2">
+<h2 class="anchored" data-anchor-id="video">Video</h2>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/AS_HlJbJjH8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Watch the <a href="https://youtu.be/AS_HlJbJjH8">full video</a> | <a href="https://youtu.be/AS_HlJbJjH8">Slides</a></p>
+<hr>
+</section>
+<section id="annotated-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="annotated-presentation">Annotated Presentation</h2>
+<p>Below is an annotated version of the presentation, with timestamped links to the relevant parts of the video for each slide.</p>
+<p>Here is the slide-by-slide annotated presentation based on the video “From Vectors to Agents: Managing RAG in an Agentic World” by Rajiv Shah.</p>
+<hr>
+<section id="title-slide" class="level3">
+<h3 class="anchored" data-anchor-id="title-slide">1. Title Slide</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_1.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 1</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=0s">Timestamp: 00:00</a>)</p>
+<p>The presentation begins with the title slide, introducing the core theme: <strong>“From Vectors to Agents: Managing RAG in an Agentic World.”</strong> The speaker, Rajiv Shah from Contextual, sets the stage for a technical deep dive into Retrieval-Augmented Generation (RAG).</p>
+<p>He outlines the agenda, promising to move beyond basic RAG concepts to focus specifically on <strong>retrieval approaches</strong>. The talk is designed to cover the spectrum from traditional methods like BM25 and Language Models to the emerging field of Agentic Search.</p>
+</section>
+<section id="acme-gpt" class="level3">
+<h3 class="anchored" data-anchor-id="acme-gpt">2. ACME GPT</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_2.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 2</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=40s">Timestamp: 00:40</a>)</p>
+<p>This slide displays a stylized logo for “ACME GPT,” representing the typical enterprise aspiration. Companies see tools like ChatGPT and immediately want to apply that capability to their internal data, asking questions like, “Can I get the list of board of directors?”</p>
+<p>However, the speaker notes a common hurdle: generic models don’t know enterprise-specific knowledge. This sets up the necessity for RAG—injecting private data into the model—rather than relying solely on the model’s pre-trained knowledge.</p>
+</section>
+<section id="building-rag-is-easy" class="level3">
+<h3 class="anchored" data-anchor-id="building-rag-is-easy">3. Building RAG is Easy</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_3.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 3</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=70s">Timestamp: 01:10</a>)</p>
+<p>The speaker illustrates the deceptively simple workflow of a basic RAG demo. The diagram shows the standard path: a user query is converted to vectors, matched against a database, and sent to an LLM.</p>
+<p>Shah acknowledges that building a “hello world” version of this is trivial. He notes, “You can build a very easy RAG demo out of the box by just grabbing some data, using an embedding model, creating vectors, doing the similarity.”</p>
+</section>
+<section id="building-rag-is-easy-code-example" class="level3">
+<h3 class="anchored" data-anchor-id="building-rag-is-easy-code-example">4. Building RAG is Easy (Code Example)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_4.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 4</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=82s">Timestamp: 01:22</a>)</p>
+<p>A Python code snippet using <strong>LangChain</strong> is displayed to reinforce how accessible basic RAG has become. The code demonstrates loading a document, chunking it, and setting up a retrieval chain in just a few lines.</p>
+<p>This slide serves as a foil for the upcoming reality check. While the code works for a demo, it hides the immense complexity required to make such a system robust, accurate, and scalable in a real-world production environment.</p>
+</section>
+<section id="rag-reality-check" class="level3">
+<h3 class="anchored" data-anchor-id="rag-reality-check">5. RAG Reality Check</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_5.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 5</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=95s">Timestamp: 01:35</a>)</p>
+<p>The tone shifts to the challenges of production. The slide highlights a sobering statistic: <strong>95% of Gen AI projects fail to reach production</strong>. The speaker details the specific reasons why demos fail when scaled: poor accuracy, unbearable latency, scaling issues with millions of documents, and ballooning costs.</p>
+<p>He emphasizes a critical, often overlooked factor: <strong>Compliance</strong>. “Inside an enterprise, not everybody gets to read every document.” A demo ignores entitlements, but a production system cannot.</p>
+</section>
+<section id="maybe-try-a-different-rag" class="level3">
+<h3 class="anchored" data-anchor-id="maybe-try-a-different-rag">6. Maybe try a different RAG?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_6.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 6</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=180s">Timestamp: 03:00</a>)</p>
+<p>This slide lists a dizzying array of RAG variants (GraphRAG, RAPTOR, CRAG, etc.) and retrieval techniques. It represents the “analysis paralysis” developers face when scouring arXiv papers for a solution to their accuracy problems.</p>
+<p>Shah warns against blindly chasing the latest academic paper to fix fundamental system issues. “The answer is not in here of pulling together like a bunch of archive papers.” Instead, he advocates for a structured framework to make decisions.</p>
+</section>
+<section id="ultimate-rag-solution" class="level3">
+<h3 class="anchored" data-anchor-id="ultimate-rag-solution">7. Ultimate RAG Solution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_7.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 7</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=210s">Timestamp: 03:30</a>)</p>
+<p>A humorous cartoon depicts a “Rube Goldberg” machine, representing the <strong>“Ultimate RAG Solution.”</strong> It mocks the tendency to over-engineer systems with too many interconnected, fragile components in the pursuit of performance.</p>
+<p>The speaker uses this visual to argue for simplicity and deliberate design. The goal is to avoid building a monstrosity that is impossible to maintain, urging the audience to think about trade-offs before complexity.</p>
+</section>
+<section id="rag-as-a-system" class="level3">
+<h3 class="anchored" data-anchor-id="rag-as-a-system">8. RAG as a system</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_8.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 8</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=215s">Timestamp: 03:35</a>)</p>
+<p>The speaker introduces a clean system architecture for RAG, broken into four distinct stages: <strong>Parsing, Querying, Retrieving, and Generation</strong>. This framework serves as the mental map for the rest of the presentation.</p>
+<p>He highlights that “Parsing” is vastly overlooked—getting information out of complex documents cleanly is a prerequisite for success. Today’s talk, however, will zoom in specifically on the <strong>Retrieving</strong> and <strong>Querying</strong> components.</p>
+</section>
+<section id="designing-a-rag-solution" class="level3">
+<h3 class="anchored" data-anchor-id="designing-a-rag-solution">9. Designing a RAG Solution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_9.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 9</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=250s">Timestamp: 04:10</a>)</p>
+<p>This slide presents a “Tradeoff Triangle” for RAG, balancing <strong>Problem Complexity, Latency, and Cost</strong>. The speaker advises having a serious conversation with stakeholders about these constraints before writing code.</p>
+<p>A key concept introduced here is the <strong>“Cost of a mistake.”</strong> In coding assistants, a mistake is low-cost (the developer fixes it). In medical RAG systems, the cost of a mistake is high (life or death), which dictates a completely different architectural approach.</p>
+</section>
+<section id="rag-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="rag-considerations">10. RAG Considerations</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_10.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 10</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=330s">Timestamp: 05:30</a>)</p>
+<p>A detailed table breaks down specific considerations that influence RAG design, such as domain difficulty, multilingual requirements, and data quality. This slide was originally created for sales teams to help scope customer problems.</p>
+<p>Shah emphasizes that understanding the <strong>nuances</strong> of the use case upfront saves heartache later. For instance, knowing if users will ask simple questions or require complex reasoning changes the retrieval strategy entirely.</p>
+</section>
+<section id="consider-query-complexity" class="level3">
+<h3 class="anchored" data-anchor-id="consider-query-complexity">11. Consider Query Complexity</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_11.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 11</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=375s">Timestamp: 06:15</a>)</p>
+<p>The speaker categorizes queries by complexity, ranging from simple <strong>Keywords</strong> (“Total Revenue”) to <strong>Semantic</strong> variations (“How much bank?”), to <strong>Multi-hop</strong> reasoning, and finally <strong>Agentic</strong> scenarios.</p>
+<p>He points out a common failure mode: “The answers aren’t in the documents… all of a sudden they’re asking for knowledge that’s outside.” Recognizing the query complexity determines whether you need a simple search engine or a complex agentic workflow.</p>
+</section>
+<section id="retrieval-highlighted" class="level3">
+<h3 class="anchored" data-anchor-id="retrieval-highlighted">12. Retrieval (Highlighted)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_12.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 12</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=452s">Timestamp: 07:32</a>)</p>
+<p>The presentation zooms back into the system diagram, highlighting the <strong>“Retrieving”</strong> box. This signals the start of the deep technical dive into retrieval algorithms.</p>
+<p>Shah notes that this area causes the most confusion due to the sheer number of model choices and architectures available. He aims to provide a practical guide to selecting the right retrieval tool.</p>
+</section>
+<section id="retrieval-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="retrieval-approaches">13. Retrieval Approaches</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_13.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 13</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=496s">Timestamp: 08:16</a>)</p>
+<p>Three primary retrieval pillars are introduced: 1. <strong>BM25:</strong> The lexical, keyword-based standard. 2. <strong>Language Models:</strong> Semantic embeddings and vector search. 3. <strong>Agentic Search:</strong> The new frontier of iterative reasoning.</p>
+<p>The speaker emphasizes that documents must be broken into pieces (<strong>chunking</strong>) because no single model context window is efficient enough to hold all enterprise data for every query.</p>
+</section>
+<section id="building-rag-is-easy-code-highlight" class="level3">
+<h3 class="anchored" data-anchor-id="building-rag-is-easy-code-highlight">14. Building RAG is Easy (Code Highlight)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_14.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 14</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=530s">Timestamp: 08:50</a>)</p>
+<p>Returning to the initial code snippet, the speaker highlights the <code>vectorstore</code> and <code>retriever</code> initialization lines. This pinpoints exactly where the upcoming concepts fit into the implementation.</p>
+<p>This visual anchor helps developers map the theoretical concepts of BM25 and Embeddings back to the actual lines of code they write in libraries like LangChain or LlamaIndex.</p>
+</section>
+<section id="bm25" class="level3">
+<h3 class="anchored" data-anchor-id="bm25">15. BM25</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_15.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 15</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=558s">Timestamp: 09:18</a>)</p>
+<p><strong>BM25 (Best Match 25)</strong> is explained as a probabilistic lexical ranking function. The slide visualizes an <strong>inverted index</strong>, mapping words (like “butterfly”) to the specific documents containing them.</p>
+<p>Shah explains that this is the 25th iteration of the formula, designed to score documents based on word frequency and saturation. It remains a powerful, fast baseline for retrieval.</p>
+</section>
+<section id="bm25-performance" class="level3">
+<h3 class="anchored" data-anchor-id="bm25-performance">16. BM25 Performance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_16.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 16</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=595s">Timestamp: 09:55</a>)</p>
+<p>A table compares the speed of a <strong>Linear Scan</strong> (Ctrl+F style) versus an <strong>Inverted Index (BM25)</strong> as the document count grows from 1,000 to 9,000.</p>
+<p>The data shows that linear search becomes exponentially slower (taking 3,000 seconds for 1k documents in this synthetic test), while BM25 remains orders of magnitude faster. This efficiency is why lexical search is still widely used in production.</p>
+</section>
+<section id="bm25-failure-cases" class="level3">
+<h3 class="anchored" data-anchor-id="bm25-failure-cases">17. BM25 Failure Cases</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_17.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 17</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=668s">Timestamp: 11:08</a>)</p>
+<p>The limitations of BM25 are exposed. Because it relies on exact word matches, it fails when users use synonyms. If a user searches for <strong>“Physician”</strong> but the documents only contain <strong>“Doctor,”</strong> BM25 will return zero results.</p>
+<p>Similarly, it struggles with acronyms like <strong>“IBM”</strong> vs <strong>“International Business Machines.”</strong> Despite this, Shah argues BM25 is a “very strong baseline” that often beats complex neural models on specific keyword-heavy datasets.</p>
+</section>
+<section id="hands-on-bm25s" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-bm25s">18. Hands on: BM25s</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_18.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 18</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=734s">Timestamp: 12:14</a>)</p>
+<p>For developers wanting to implement this, the slide points to a library called <code>bm25s</code>, a high-performance Python implementation available on Hugging Face.</p>
+<p>This reinforces the practical nature of the talk—BM25 isn’t just a legacy concept; it is an active, installable tool that developers should consider using alongside vector search.</p>
+</section>
+<section id="enter-language-models" class="level3">
+<h3 class="anchored" data-anchor-id="enter-language-models">19. Enter Language Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_19.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 19</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=744s">Timestamp: 12:24</a>)</p>
+<p>The talk transitions to <strong>Language Models (Embeddings)</strong>. The slide explains how an encoder model turns text into a dense vector (a list of numbers) that captures semantic meaning.</p>
+<p>Because these models are trained on vast amounts of data, they “have an idea of these similar concepts.” This solves the synonym problem that plagues BM25.</p>
+</section>
+<section id="embeddings-visualized" class="level3">
+<h3 class="anchored" data-anchor-id="embeddings-visualized">20. Embeddings Visualized</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_20.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 20</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=770s">Timestamp: 12:50</a>)</p>
+<p>A 2D visualization demonstrates how embeddings group related concepts in <strong>latent space</strong>. The word “Doctor” and “Physician” would be located very close to each other mathematically.</p>
+<p>This spatial proximity allows for <strong>Semantic Search</strong>: finding documents that mean the same thing as the query, even if they don’t share a single word.</p>
+</section>
+<section id="semantic-search-is-widely-used" class="level3">
+<h3 class="anchored" data-anchor-id="semantic-search-is-widely-used">21. Semantic search is widely used</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_21.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 21</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=795s">Timestamp: 13:15</a>)</p>
+<p>The speaker validates the importance of semantic search by showing a tweet from Google’s SearchLiaison regarding BERT, and a screenshot of Hugging Face’s model repository.</p>
+<p>This confirms that semantic search is the industry standard for modern information retrieval, having been deployed at massive scale by tech giants to improve result relevance.</p>
+</section>
+<section id="which-language-model" class="level3">
+<h3 class="anchored" data-anchor-id="which-language-model">22. Which language model?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_22.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 22</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=810s">Timestamp: 13:30</a>)</p>
+<p>A scatter plot compares various models based on <strong>Inference Speed</strong> (X-axis) and <strong>NDCG@10</strong> (Y-axis, a measure of retrieval quality).</p>
+<p>Shah places <strong>BM25</strong> on the right (fast but lower accuracy) to orient the audience. He points out that there is a massive variety of models with different trade-offs between compute cost and retrieval quality.</p>
+</section>
+<section id="static-embeddings" class="level3">
+<h3 class="anchored" data-anchor-id="static-embeddings">23. Static Embeddings</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_23.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 23</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=883s">Timestamp: 14:43</a>)</p>
+<p>The speaker introduces <strong>Static Embeddings</strong> (like Word2Vec or GloVe) which are located on the far right of the previous scatter plot—extremely fast, even on CPUs.</p>
+<p>These models assign a fixed vector to every word. While efficient, they lack context. The word “bank” has the same vector whether referring to a river bank or a financial bank, which limits their accuracy.</p>
+</section>
+<section id="why-context-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-context-matters">24. Why Context Matters</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_24.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 24</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=916s">Timestamp: 15:16</a>)</p>
+<p>A cartoon illustrates the difference between Static Embeddings and Transformers. The Transformer can distinguish between “Model” in a data science context versus “Model” in a fashion context.</p>
+<p>This contextual awareness is why modern Transformer-based embeddings (like BERT) generally outperform static embeddings and BM25 in complex retrieval tasks, despite being slower.</p>
+</section>
+<section id="many-more-models" class="level3">
+<h3 class="anchored" data-anchor-id="many-more-models">25. Many more models!</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_25.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 25</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=955s">Timestamp: 15:55</a>)</p>
+<p>Returning to the scatter plot, a red arrow points toward the top-left quadrant—models that are slower but achieve higher accuracy.</p>
+<p>The speaker notes that the field is constantly evolving, with “newer generations of models” pushing the boundary of what is possible in terms of retrieval quality.</p>
+</section>
+<section id="mtebrteb" class="level3">
+<h3 class="anchored" data-anchor-id="mtebrteb">26. MTEB/RTEB</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_26.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 26</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=995s">Timestamp: 16:35</a>)</p>
+<p>To help developers choose, Shah introduces the <strong>MTEB (Massive Text Embedding Benchmark)</strong> and <strong>RTEB (Retrieval Text Embedding Benchmark)</strong>. These are leaderboards hosted on Hugging Face.</p>
+<p>He highlights a key distinction: MTEB uses public datasets, while RTEB uses <strong>private, held-out datasets</strong>. This is crucial for avoiding “data contamination,” where models perform well simply because they were trained on the test data.</p>
+</section>
+<section id="selecting-an-embedding-model" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-an-embedding-model">27. Selecting an embedding model</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_27.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 27</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1008s">Timestamp: 16:48</a>)</p>
+<p>The speaker switches to a live browser view (captured in the slide) of the leaderboard. He discusses the bubble chart visualization where size often correlates with parameter count.</p>
+<p>He points out an interesting trend: “You’ll see that there’s a bunch of models here that are all the same size… but the performance differs.” This indicates improvements in training strategies and architecture rather than just throwing more compute at the problem.</p>
+</section>
+<section id="selecting-an-embedding-model-other-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-an-embedding-model-other-considerations">28. Selecting an embedding model (Other Considerations)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_28.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 28</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1147s">Timestamp: 19:07</a>)</p>
+<p>Beyond the leaderboard score, Shah lists practical selection criteria: <strong>Model Size</strong> (can it fit in memory?), <strong>Architecture</strong> (CPU vs GPU), <strong>Embedding Dimension</strong> (storage costs), and <strong>Training Data</strong> (multilingual support).</p>
+<p>He advises checking if a model is open source and quantizable, as this can significantly reduce latency without a major hit to accuracy.</p>
+</section>
+<section id="matryoshka-embedding-models" class="level3">
+<h3 class="anchored" data-anchor-id="matryoshka-embedding-models">29. Matryoshka Embedding Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_29.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 29</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1253s">Timestamp: 20:53</a>)</p>
+<p>A specific innovation is highlighted: <strong>Matryoshka Embeddings</strong>. These models allow developers to truncate vectors (e.g., from 768 dimensions down to 64) while retaining most of the performance.</p>
+<p>This is a “neat kind of innovation” for optimizing storage and search speed. OpenAI’s newer models also support this feature, offering flexibility between cost and accuracy.</p>
+</section>
+<section id="sentence-transformer" class="level3">
+<h3 class="anchored" data-anchor-id="sentence-transformer">30. Sentence Transformer</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_30.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 30</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1302s">Timestamp: 21:42</a>)</p>
+<p>The <strong>Sentence Transformer</strong> architecture is described as the dominant approach for RAG. Unlike standard BERT which works on tokens, these are fine-tuned to understand full sentences and paragraphs.</p>
+<p>This architecture uses Siamese networks to ensure that semantically similar sentences are close in vector space, making them ideal for the “chunk-level” retrieval required in RAG.</p>
+</section>
+<section id="cross-encoder-reranker" class="level3">
+<h3 class="anchored" data-anchor-id="cross-encoder-reranker">31. Cross Encoder / Reranker</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_31.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 31</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1336s">Timestamp: 22:16</a>)</p>
+<p>The concept of a <strong>Cross Encoder (or Reranker)</strong> is introduced. Unlike the bi-encoder (retriever) which processes query and document separately, the cross-encoder processes them <em>together</em>.</p>
+<p>This allows for a much deeper calculation of relevance. It is typically used as a second stage: retrieve 50 documents quickly with vectors, then use the slow but accurate Cross Encoder to rank the top 5.</p>
+</section>
+<section id="cross-encoder-reranker-duplicate" class="level3">
+<h3 class="anchored" data-anchor-id="cross-encoder-reranker-duplicate">32. Cross Encoder / Reranker (Duplicate)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_32.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 32</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1336s">Timestamp: 22:16</a>)</p>
+<p>(This slide reinforces the previous diagram, emphasizing the “crossing” of the query and document in the model architecture.)</p>
+</section>
+<section id="cross-encoder-reranker-accuracy-boost" class="level3">
+<h3 class="anchored" data-anchor-id="cross-encoder-reranker-accuracy-boost">33. Cross Encoder / Reranker (Accuracy Boost)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_33.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 33</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1387s">Timestamp: 23:07</a>)</p>
+<p>A bar chart quantifies the value of reranking. It shows a significant boost in <strong>NDCG (accuracy)</strong> when a reranker is added to the pipeline.</p>
+<p>The speaker notes that while you get a “bump” in quality, it “doesn’t come for free.” The trade-off is increased latency, as the cross-encoder is computationally expensive.</p>
+</section>
+<section id="cross-encoder-reranker-execution-flow" class="level3">
+<h3 class="anchored" data-anchor-id="cross-encoder-reranker-execution-flow">34. Cross Encoder / Reranker (Execution Flow)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_34.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 34</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1395s">Timestamp: 23:15</a>)</p>
+<p>The execution flow diagram highlights the reranker’s position in the pipeline. It sits between the Vector Store retrieval and the LLM generation.</p>
+<p>This visual reinforces the latency implication: the user has to wait for both the initial search <em>and</em> the reranking pass before the LLM even starts generating an answer.</p>
+</section>
+<section id="hands-on-retriever-reranker" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-retriever-reranker">35. Hands On: Retriever &amp; Reranker</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_35.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 35</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1410s">Timestamp: 23:30</a>)</p>
+<p>A screenshot of a Google Colab notebook is shown, demonstrating a practical implementation of the Retrieve and Re-rank strategy using the <code>SentenceTransformer</code> and <code>CrossEncoder</code> libraries.</p>
+<p>This provides a concrete resource for the audience to test the accuracy vs.&nbsp;speed trade-offs themselves on simple datasets like Wikipedia.</p>
+</section>
+<section id="instruction-following-reranker" class="level3">
+<h3 class="anchored" data-anchor-id="instruction-following-reranker">36. Instruction Following Reranker</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_36.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 36</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1428s">Timestamp: 23:48</a>)</p>
+<p>Shah mentions a specific advancement: <strong>Instruction Following Rerankers</strong> (developed by his company, Contextual). These allow developers to pass a prompt to the reranker, such as “Prioritize safety notices.”</p>
+<p>This adds a “knob” for developers to tune retrieval based on business logic without retraining the model.</p>
+</section>
+<section id="combine-multiple-retrievers" class="level3">
+<h3 class="anchored" data-anchor-id="combine-multiple-retrievers">37. Combine Multiple Retrievers</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_37.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 37</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1459s">Timestamp: 24:19</a>)</p>
+<p>The presentation suggests that you don’t have to pick just one method. You can combine BM25, various embedding models (E5, BGE), and rerankers.</p>
+<p>While combining them (Ensemble Retrieval) often yields better recall, Shah warns that “you got to engineer this.” Managing multiple indexes and fusion logic increases operational complexity and compute costs.</p>
+</section>
+<section id="cascading-rerankers-in-kaggle" class="level3">
+<h3 class="anchored" data-anchor-id="cascading-rerankers-in-kaggle">38. Cascading Rerankers in Kaggle</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_38.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 38</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1496s">Timestamp: 24:56</a>)</p>
+<p>A complex diagram from a Kaggle competition winner illustrates a <strong>Cascade Strategy</strong>. The solution used three different rerankers, filtering from 64 documents down to 8, and then to 5.</p>
+<p>This shows the extreme end of retrieval engineering, where multiple models are chained to squeeze out every percentage point of accuracy.</p>
+</section>
+<section id="best-practices" class="level3">
+<h3 class="anchored" data-anchor-id="best-practices">39. Best practices</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_39.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 39</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1516s">Timestamp: 25:16</a>)</p>
+<p>Shah distills the complexity into a recommended <strong>Best Practice</strong>: 1. <strong>Hybrid Search:</strong> Combine Semantic Search (Vectors) and Lexical Search (BM25). 2. <strong>Reciprocal Rank Fusion:</strong> Merge the results. 3. <strong>Reranker:</strong> Pass the top results through a cross-encoder.</p>
+<p>This setup provides a “pretty good standard performance out of the box” and should be the default baseline before trying exotic methods.</p>
+</section>
+<section id="families-of-embedding-models" class="level3">
+<h3 class="anchored" data-anchor-id="families-of-embedding-models">40. Families of Embedding Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_40.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 40</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1542s">Timestamp: 25:42</a>)</p>
+<p>A taxonomy slide categorizes the models discussed: <strong>Static</strong> (Fastest/Low Accuracy), <strong>Bi-Encoders</strong> (Fast/Good Accuracy), and <strong>Cross-Encoders</strong> (Slow/Best Accuracy).</p>
+<p>This summary helps the audience mentally organize the tools available in their toolbox.</p>
+</section>
+<section id="lots-of-new-models" class="level3">
+<h3 class="anchored" data-anchor-id="lots-of-new-models">41. Lots of New Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_41.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 41</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1550s">Timestamp: 25:50</a>)</p>
+<p>Logos for IBM Granite, Google EmbeddingGemma, and others appear. The speaker notes that while new models from major players appear weekly, the improvements are often “incremental.”</p>
+<p>He advises against “ripping up” a working system just to switch to a model that is 1% better on a leaderboard.</p>
+</section>
+<section id="other-retrieval-methods" class="level3">
+<h3 class="anchored" data-anchor-id="other-retrieval-methods">42. Other retrieval methods</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_42.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 42</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1578s">Timestamp: 26:18</a>)</p>
+<p>Alternative methods are briefly listed: <strong>SPLADE</strong> (Sparse retrieval), <strong>ColBERT</strong> (Late interaction), and <strong>GraphRAG</strong>.</p>
+<p>Shah acknowledges these exist and may fit specific niches, but warns against chasing the “flavor of the week” before establishing a solid baseline with hybrid search.</p>
+</section>
+<section id="operational-concerns" class="level3">
+<h3 class="anchored" data-anchor-id="operational-concerns">43. Operational Concerns</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_43.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 43</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1650s">Timestamp: 27:30</a>)</p>
+<p>The talk shifts to operations. Libraries like <strong>FAISS</strong> are mentioned for efficient vector similarity search.</p>
+<p>A key point is that for many use cases, you can simply store embeddings <strong>in memory</strong>. You don’t always need a complex vector database if your dataset fits in RAM.</p>
+</section>
+<section id="vector-database-options" class="level3">
+<h3 class="anchored" data-anchor-id="vector-database-options">44. Vector Database Options</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_44.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 44</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1675s">Timestamp: 27:55</a>)</p>
+<p>A diagram categorizes storage into <strong>Hot (In-Memory)</strong>, <strong>Warm (SSD/Disk)</strong>, and <strong>Cold</strong> tiers.</p>
+<p>Shah notes there are “tons of vector database options” (Snowflake, Pinecone, etc.). The choice should be governed by <strong>latency requirements</strong>. If you need sub-millisecond retrieval, you need in-memory storage.</p>
+</section>
+<section id="operational-concerns-datastore-size" class="level3">
+<h3 class="anchored" data-anchor-id="operational-concerns-datastore-size">45. Operational Concerns (Datastore Size)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_45.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 45</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1720s">Timestamp: 28:40</a>)</p>
+<p>A graph shows that as <strong>Datastore Size</strong> increases (X-axis), retrieval performance naturally degrades (Y-axis).</p>
+<p>To combat this, the speaker strongly recommends using <strong>Metadata Filtering</strong>. “If you’re not using something like metadata… it’s going to be very tough.” Narrowing the search scope is essential for scaling to millions of documents.</p>
+</section>
+<section id="search-strategy-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="search-strategy-comparison">46. Search Strategy Comparison</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_46.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 46</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1762s">Timestamp: 29:22</a>)</p>
+<p>The presentation pivots to the “exciting part”: <strong>Agentic RAG</strong>. A visual compares “Traditional RAG” (a linear path) with “Agentic RAG” (a winding, exploratory path).</p>
+<p>This represents the shift from a “one-shot” retrieval attempt to an iterative system that can explore, backtrack, and reason.</p>
+</section>
+<section id="tools-use-reasoning" class="level3">
+<h3 class="anchored" data-anchor-id="tools-use-reasoning">47. Tools use / Reasoning</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_47.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 47</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1780s">Timestamp: 29:40</a>)</p>
+<p>Reasoning models (like o1 or DeepSeek R1) enable LLMs to use tools effectively. A code snippet shows an agent loop: query -&gt; generate -&gt; <strong>“Did it answer the question?”</strong></p>
+<p>If the answer is no, the model can “rewrite the query… try to find that missing information, feed that back into the loop.” This self-correction is the core of Agentic RAG.</p>
+</section>
+<section id="agentic-rag-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-workflow">48. Agentic RAG (Workflow)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_48.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 48</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1832s">Timestamp: 30:32</a>)</p>
+<p>A flowchart details the Agentic RAG lifecycle. The model thinks through steps: “Oh, this is the query I need to make… based on those results… maybe we should do it a different way.”</p>
+<p>This workflow allows the system to synthesize answers from multiple sources or clarify ambiguous queries automatically.</p>
+</section>
+<section id="tools-use-reasoning-detailed-example" class="level3">
+<h3 class="anchored" data-anchor-id="tools-use-reasoning-detailed-example">49. Tools use / Reasoning (Detailed Example)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_49.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 49</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1835s">Timestamp: 30:35</a>)</p>
+<p>A specific example of a complex query is shown. The agent breaks the problem down, calls tools, and iterates.</p>
+<p>This demonstrates that the “Thinking” time is where the value is generated, allowing for a depth of research that a single retrieval pass cannot match.</p>
+</section>
+<section id="open-deep-research" class="level3">
+<h3 class="anchored" data-anchor-id="open-deep-research">50. Open Deep Research</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_50.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 50</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1862s">Timestamp: 31:02</a>)</p>
+<p>Shah references <strong>“Open Deep Research”</strong> by LangChain, an open-source framework where sub-agents go out, perform research, and report back.</p>
+<p>This is a specific category of Agentic RAG focused on generating comprehensive reports rather than quick answers.</p>
+</section>
+<section id="deepresearch-bench" class="level3">
+<h3 class="anchored" data-anchor-id="deepresearch-bench">51. DeepResearch Bench</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_51.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 51</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1890s">Timestamp: 31:30</a>)</p>
+<p>A leaderboard for <strong>DeepResearch Bench</strong> is shown, testing models on “100 PhD level research tasks.”</p>
+<p>The speaker warns that this approach “can get very expensive.” Solving a single complex query might cost significant money due to the number of tokens and iterative steps required.</p>
+</section>
+<section id="westlaw-ai-deep-research" class="level3">
+<h3 class="anchored" data-anchor-id="westlaw-ai-deep-research">52. Westlaw AI Deep Research</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_52.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 52</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1915s">Timestamp: 31:55</a>)</p>
+<p>A real-world application is highlighted: <strong>Westlaw AI</strong>. In the legal field, thoroughness is worth the latency and cost.</p>
+<p>This proves that Agentic RAG isn’t just a toy; it is being commercialized in high-value verticals where accuracy is paramount.</p>
+</section>
+<section id="agentic-rag-self-rag" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-self-rag">53. Agentic RAG (Self-RAG)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_53.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 53</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1931s">Timestamp: 32:11</a>)</p>
+<p>The concept of <strong>Self-RAG</strong> is introduced, emphasizing the “Reflection” step. The model critiques its own retrieved documents and generation quality.</p>
+<p>Shah notes that this isn’t brand new, but has become practical due to better reasoning models.</p>
+</section>
+<section id="agentic-rag-langchain-reddit" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-langchain-reddit">54. Agentic RAG (LangChain Reddit)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_54.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 54</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2044s">Timestamp: 34:04</a>)</p>
+<p>A Reddit post is shown where a developer discusses building a self-reflection RAG system. This highlights the community’s active experimentation with these loops.</p>
+</section>
+<section id="agentic-rag-efficiency-concerns" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-efficiency-concerns">55. Agentic RAG (Efficiency Concerns)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_55.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 55</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2055s">Timestamp: 34:15</a>)</p>
+<p>The discussion turns to the “Rub”: <strong>Inefficiency</strong>. Agentic loops can be slow and wasteful, re-retrieving data unnecessarily.</p>
+<p>This sets up the trade-off conversation again: Is the extra time and compute worth the accuracy gain?</p>
+</section>
+<section id="research-bright" class="level3">
+<h3 class="anchored" data-anchor-id="research-bright">56. Research: BRIGHT</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_56.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 56</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1931s">Timestamp: 32:11</a>)</p>
+<p><em>Note: The speaker introduces the BRIGHT benchmark around 32:11, slightly out of slide order in the transcript flow, but connects it here.</em></p>
+<p><strong>BRIGHT</strong> is a benchmark specifically designed for <strong>Retrieval Reasoning</strong>. Unlike standard benchmarks that test keyword matching, BRIGHT tests questions that require thinking, logic, and multi-step deduction to find the correct document.</p>
+</section>
+<section id="bright-1-diver" class="level3">
+<h3 class="anchored" data-anchor-id="bright-1-diver">57. BRIGHT #1: DIVER</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_57.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 57</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=1968s">Timestamp: 32:48</a>)</p>
+<p>The top-performing system on BRIGHT is <strong>DIVER</strong>. The diagram shows it uses the exact components discussed earlier: Chunking, Retrieving, and Reranking, but wrapped in an iterative loop.</p>
+<p>Shah points out, “It probably doesn’t look that crazy to you if you’re used to RAG.” The innovation is in the process, not necessarily a magical new model architecture.</p>
+</section>
+<section id="bright-1-diver-llm-instructions" class="level3">
+<h3 class="anchored" data-anchor-id="bright-1-diver-llm-instructions">58. BRIGHT #1: DIVER (LLM Instructions)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_58.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 58</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2011s">Timestamp: 33:31</a>)</p>
+<p>The specific prompts used in DIVER are shown. The system asks the LLM: “Given a query… what do you think would be possibly helpful to do?”</p>
+<p>This <strong>Query Expansion</strong> allows the system to generate new search terms that the user didn’t think of, bridging the semantic gap through reasoning.</p>
+</section>
+<section id="agentic-rag-on-wixqa" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-on-wixqa">59. Agentic RAG on WixQA</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_59.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 59</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2076s">Timestamp: 34:36</a>)</p>
+<p>Shah shares his own experiment results on the <strong>WixQA</strong> dataset (technical support). * <strong>One Shot RAG:</strong> 5 seconds latency, <strong>76%</strong> Factuality. * <strong>Agentic RAG:</strong> Slower latency, <strong>93%</strong> Factuality.</p>
+<p>This massive jump in accuracy (0.76 to 0.93) is the key takeaway. “That has a ton of implications.” It suggests that the limitation of RAG often isn’t the data, but the lack of reasoning applied to the retrieval process.</p>
+</section>
+<section id="rethink-your-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="rethink-your-assumptions">60. Rethink your Assumptions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_60.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 60</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2230s">Timestamp: 37:10</a>)</p>
+<p><strong>This is the climax of the technical argument.</strong> A graph from the BRIGHT paper shows that <strong>BM25 (lexical search)</strong> combined with an Agentic loop (GPT-4) outperforms advanced embedding models (Qwen).</p>
+<p>“This is crazy,” Shah exclaims. Because the LLM can rewrite queries into many variations, it mitigates BM25’s weakness (synonyms). This implies you might not need complex vector databases if you have a smart agent.</p>
+</section>
+<section id="agentic-rag-with-bm25" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-with-bm25">61. Agentic RAG with BM25</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_61.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 61</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2300s">Timestamp: 38:20</a>)</p>
+<p>Shah validates the paper’s finding with his own internal data (Financial 10Ks). <strong>Agentic RAG with BM25</strong> performed nearly as well as Agentic RAG with Embeddings.</p>
+<p>He suggests a radical possibility: “I could throw all that away [vector DBs]… just stick this in a text-only database and use BM25.”</p>
+</section>
+<section id="agentic-rag-for-code-search" class="level3">
+<h3 class="anchored" data-anchor-id="agentic-rag-for-code-search">62. Agentic RAG for Code Search</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_62.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 62</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2386s">Timestamp: 39:46</a>)</p>
+<p>He connects this finding to <strong>Claude Code</strong>, which uses a lexical approach (like <code>grep</code>) rather than vectors for code search.</p>
+<p>Since code doesn’t have the same semantic ambiguity as natural language, and agents can iterate rapidly, lexical search is proving to be superior for coding assistants.</p>
+</section>
+<section id="combine-retrieval-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="combine-retrieval-approaches">63. Combine Retrieval Approaches</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_63.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 63</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2415s">Timestamp: 40:15</a>)</p>
+<p>A <strong>DoorDash</strong> case study illustrates a two-tier guardrail system. They use simple text similarity first (fast/cheap). If that fails or is uncertain, they kick it to an LLM (slow/expensive).</p>
+<p>This “Tiered” approach optimizes the trade-off between cost and accuracy in production.</p>
+</section>
+<section id="hands-on-agentic-rag-smolagents" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on-agentic-rag-smolagents">64. Hands on: Agentic RAG (Smolagents)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_64.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 64</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2467s">Timestamp: 41:07</a>)</p>
+<p>The speaker points to <strong>Smolagents</strong>, a Hugging Face library, as a way to get hands-on with these concepts. A Colab notebook is provided for the audience to build their own agentic retrieval loops.</p>
+</section>
+<section id="solutions-for-a-rag-solution" class="level3">
+<h3 class="anchored" data-anchor-id="solutions-for-a-rag-solution">65. Solutions for a RAG Solution</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_65.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 65</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2478s">Timestamp: 41:18</a>)</p>
+<p>Shah updates the “Problem Complexity” framework from the beginning of the talk with specific recommendations: * <strong>Low Latency (&lt;5s):</strong> Use BM25 or Static Embeddings. * <strong>High Cost of Mistake:</strong> Add a Reranker. * <strong>Complex Multi-hop:</strong> Use Agentic RAG.</p>
+</section>
+<section id="retriever-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="retriever-checklist">66. Retriever Checklist</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_66.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 66</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2512s">Timestamp: 41:52</a>)</p>
+<p>A final checklist summarizes the retrieval hierarchy: 1. <strong>Keyword/BM25</strong> (The baseline). 2. <strong>Semantic Search</strong> (The standard). 3. <strong>Agentic/Reasoning</strong> (The problem solver).</p>
+<p>This provides the audience with a mental menu to choose from based on their specific constraints.</p>
+</section>
+<section id="rag-as-a-system-retrieval-with-instruction-following-reranker" class="level3">
+<h3 class="anchored" data-anchor-id="rag-as-a-system-retrieval-with-instruction-following-reranker">67. RAG as a system (Retrieval with Instruction Following Reranker)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_67.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 67</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2520s">Timestamp: 42:00</a>)</p>
+<p>The system diagram is shown one last time, updated to include the <strong>Instruction Following Reranker</strong> in the retrieval box, solidifying the modern RAG architecture.</p>
+</section>
+<section id="rag---generation" class="level3">
+<h3 class="anchored" data-anchor-id="rag---generation">68. RAG - Generation</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_68.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 68</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2530s">Timestamp: 42:10</a>)</p>
+<p><em>Note: The speaker concludes the talk at 42:10, stating “I’m going to end it here.” Slides 68-70 regarding the Generation stage were included in the deck but skipped in the video recording due to time constraints.</em></p>
+<p>This slide would have covered the final stage of RAG: generating the answer. The focus here is typically on reducing hallucinations and ensuring the tone matches the user’s needs.</p>
+</section>
+<section id="rag---generation-model-selection" class="level3">
+<h3 class="anchored" data-anchor-id="rag---generation-model-selection">69. RAG - Generation (Model Selection)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_69.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 69</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2530s">Timestamp: 42:10</a>)</p>
+<p><em>Skipped in video.</em> This slide illustrates the choice of LLM for generation (e.g., GPT-4 vs Llama 3 vs Claude). The choice depends on the “Cost/Latency budget” and specific domain requirements.</p>
+</section>
+<section id="chunking-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="chunking-approaches">70. Chunking approaches</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_70.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 70</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2530s">Timestamp: 42:10</a>)</p>
+<p><em>Skipped in video.</em> This slide compares <strong>Original Chunking</strong> (cutting text at fixed intervals) with <strong>Contextual Chunking</strong> (adding a summary prefix to every chunk). Contextual chunking significantly improves retrieval because every chunk carries the context of the parent document.</p>
+</section>
+<section id="title-slide-duplicate" class="level3">
+<h3 class="anchored" data-anchor-id="title-slide-duplicate">71. Title Slide (Duplicate)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://projects.rajivshah.com/images/rag-talk/slide_71.png" class="img-fluid figure-img"></p>
+<figcaption>Slide 71</figcaption>
+</figure>
+</div>
+<p>(<a href="https://youtu.be/AS_HlJbJjH8&amp;t=2530s">Timestamp: 42:10</a>)</p>
+<p>The presentation concludes with the title slide. Rajiv Shah thanks the audience, encouraging them to think about trade-offs rather than just chasing the latest models. “Hopefully I’ve given you a sense of thinking about these trade-offs… thank you all.”</p>
+<hr>
+<p><em>This annotated presentation was generated from the talk using AI-assisted tools. Each slide includes timestamps and detailed explanations.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/rajivshah\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ @rajistics - Rajiv Shah
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.rajivshah.com">
+<p><u>About Me</u></p>
+</a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="./index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/rajistics/">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/rajistics">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/rajistics/">
+      <i class="bi bi-instagram" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.tiktok.com/@rajistics">
+      <i class="bi bi-tiktok" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.youtube.com/channel/UCu9fxVjTz5AJO7FR1upY02w">
+      <i class="bi bi-youtube" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rajshah4">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
