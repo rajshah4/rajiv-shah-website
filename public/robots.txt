@@ -7,3 +7,4 @@ Host: https://rajivshah.com/
 
 # Sitemaps
 Sitemap: https://rajivshah.com/sitemap.xml
+Sitemap: https://rajivshah.com/blog/sitemap.xml

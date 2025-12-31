@@ -2360,6 +2360,3246 @@
   <media:content url="https://rajivshah.com/blog/images/sparsedataframe.png" medium="image" type="image/png"/>
 </item>
 <item>
+  <title>Feature Selection Methods and Feature Selection Curves</title>
+  <link>https://rajivshah.com/blog/Feature_Selection.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>How to Select the Best Features for Machine Learning!</p>
+<p>Let’s deep dive into several feature selection techniques and help you figure out when to use each one. The notebook includes two data sources: the MNIST dataset and the Madelon dataset. The MNIST dataset is a collection of 28x28 pixel images of handwritten digits. The Madelon dataset is a synthetic dataset that you can control.</p>
+<p>The notebook uses the following feature selection techniques:</p>
+<ul>
+<li>F-statistic</li>
+<li>Mutual Information</li>
+<li>Logistic Regression</li>
+<li>Logistics Regression with Lasso (L1) Regularization</li>
+<li>Feature Importance</li>
+<li>Boruta</li>
+<li>MRMR (Minimum Redundancy Maximum Relevance)</li>
+<li>Recursive Feature Elimination</li>
+<li>Feature importance rank ensembling (FIRE)</li>
+</ul>
+<p>To help visualize the feature selection process, the notebook includes a feature selection curve. The feature selection curve plots the number of features against the accuracy of the model. This helps you understand how many features you need to achieve a certain level of accuracy.</p>
+<p>This notebook is based on the following articles:<br>
+<a href="https://towardsdatascience.com/feature-selection-how-to-throw-away-95-of-your-data-and-get-95-accuracy-ad41ca016877">Feature Selection: How to Throw Away 95% of Your Features and Get 95% Accuracy</a> and the associated <a href="https://github.com/smazzanti/mrmr/blob/15cb0983a3e53114bbab94a9629e404c1d42f5d8/notebooks/mnist.ipynb">notebook</a>.</p>
+<p>A companion video to this can be found on my youtube site, <span class="citation" data-cites="rajistics">@rajistics</span>: <a href="https://youtu.be/jm7TYGv32zs">Feature Selection Methods and Feature Selection Curves</a>, it’s about 15 minutes and gives more context to the notebook.</p>
+<p>This blog post can be found at http://bit.ly/raj_fs or https://projects.rajivshah.com/blog/Feature_Selection.html</p>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> warnings<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> warnings.filterwarnings(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore"</span>)</span></code></pre></div></div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb2-2">os.environ[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"KERAS_BACKEND"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"torch"</span></span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> keras</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb2-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span></code></pre></div></div>
+</div>
+<section id="import-data" class="level1">
+<h1>Import data</h1>
+<section id="a.-mnist-very-visual-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="a.-mnist-very-visual-dataset">A. MNIST (Very visual dataset)</h3>
+<div id="cell-6" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> keras.datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> mnist</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">(X_train, y_train), (X_test, y_test) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mnist.load_data()</span>
+<span id="cb3-4"></span>
+<span id="cb3-5">X_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.reshape(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span>)</span>
+<span id="cb3-6">X_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_test.reshape(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span>)</span></code></pre></div></div>
+</div>
+<div id="cell-7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(X_train[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, :]))</span></code></pre></div></div>
+</div>
+<div id="cell-8" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">plt.imshow(X_train[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, :].reshape(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28</span>), cmap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'binary'</span>, vmin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, vmax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb5-2">plt.xticks([])</span>
+<span id="cb5-3">plt.yticks([])</span>
+<span id="cb5-4">plt.savefig(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'sample_image.png'</span>)</span></code></pre></div></div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">X_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(X_train)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Assuming X_mnist is the MNIST feature data</span></span>
+<span id="cb6-2">y_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(y_train)   </span>
+<span id="cb6-3">X_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(X_test)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Assuming X_mnist is the MNIST feature data</span></span>
+<span id="cb6-4">y_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(y_test)  </span></code></pre></div></div>
+</div>
+</section>
+<section id="b.-madelon-very-high-dimensional-dataset-that-you-control" class="level3">
+<h3 class="anchored" data-anchor-id="b.-madelon-very-high-dimensional-dataset-that-you-control">B. Madelon (Very high-dimensional dataset that you control)</h3>
+<p>If you run the following cells, Madelon will be the dataset you use. If you want to use MNIST, you should skip the following cells.</p>
+<p>Madelon is a favorite of mine because you know which features are carrying the signal and which ones are noise. In this case, the first 5 features will be informative. I often modify Madelon to include other types of noisy features, interactions, correlations, and then use this dataset to test various machine learning techniques. Since I know what the true signal is, this is very effective at helping me guage the effectiveness of these methods.</p>
+<div id="cell-11" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb7-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb7-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> make_classification</span>
+<span id="cb7-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.model_selection <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> train_test_split</span>
+<span id="cb7-5"></span>
+<span id="cb7-6">X, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> make_classification(n_samples<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10000</span>,</span>
+<span id="cb7-7">                           n_features<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>,</span>
+<span id="cb7-8">                           n_informative<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb7-9">                           n_classes<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb7-10">                           n_redundant <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb7-11">                           random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb7-12">                           flip_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>,</span>
+<span id="cb7-13">                           class_sep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,</span>
+<span id="cb7-14">                           n_clusters_per_class<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb7-15">                           shuffle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb7-16"></span>
+<span id="cb7-17">X_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(X, columns<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>i<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(X.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>])])</span>
+<span id="cb7-18">y_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(y, name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'target'</span>)</span>
+<span id="cb7-19"></span>
+<span id="cb7-20">X_train, X_test, y_train, y_test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> train_test_split(X_df, y_df, test_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb7-21"></span>
+<span id="cb7-22">X_train.columns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.columns.astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb7-23">X_test.columns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_test.columns.astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span></code></pre></div></div>
+</div>
+<div id="cell-12" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">X_train</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+<th data-quarto-table-cell-role="th">5</th>
+<th data-quarto-table-cell-role="th">6</th>
+<th data-quarto-table-cell-role="th">7</th>
+<th data-quarto-table-cell-role="th">8</th>
+<th data-quarto-table-cell-role="th">9</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">30</th>
+<th data-quarto-table-cell-role="th">31</th>
+<th data-quarto-table-cell-role="th">32</th>
+<th data-quarto-table-cell-role="th">33</th>
+<th data-quarto-table-cell-role="th">34</th>
+<th data-quarto-table-cell-role="th">35</th>
+<th data-quarto-table-cell-role="th">36</th>
+<th data-quarto-table-cell-role="th">37</th>
+<th data-quarto-table-cell-role="th">38</th>
+<th data-quarto-table-cell-role="th">39</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">9254</th>
+<td>0.926694</td>
+<td>-1.773357</td>
+<td>0.172527</td>
+<td>0.217298</td>
+<td>-1.733944</td>
+<td>0.319415</td>
+<td>0.185012</td>
+<td>1.907097</td>
+<td>-0.649596</td>
+<td>0.121499</td>
+<td>...</td>
+<td>0.706101</td>
+<td>-0.880984</td>
+<td>-0.980460</td>
+<td>-1.040219</td>
+<td>-1.495820</td>
+<td>2.793184</td>
+<td>0.206932</td>
+<td>-0.357897</td>
+<td>-1.633463</td>
+<td>-0.358298</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1561</th>
+<td>1.692096</td>
+<td>-1.412235</td>
+<td>1.294343</td>
+<td>-0.672776</td>
+<td>-0.576808</td>
+<td>1.088448</td>
+<td>0.446408</td>
+<td>1.081032</td>
+<td>-0.355654</td>
+<td>-0.940438</td>
+<td>...</td>
+<td>-2.334601</td>
+<td>-0.446046</td>
+<td>-0.577543</td>
+<td>-0.692218</td>
+<td>-0.311946</td>
+<td>0.329447</td>
+<td>-1.312834</td>
+<td>0.339797</td>
+<td>-0.291047</td>
+<td>0.931088</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1670</th>
+<td>-0.721183</td>
+<td>-1.430124</td>
+<td>0.776395</td>
+<td>0.226875</td>
+<td>-1.209252</td>
+<td>-0.458278</td>
+<td>-1.011414</td>
+<td>1.682210</td>
+<td>-1.048116</td>
+<td>-1.783993</td>
+<td>...</td>
+<td>1.440083</td>
+<td>-0.666334</td>
+<td>-0.909174</td>
+<td>0.377606</td>
+<td>1.303421</td>
+<td>-0.655019</td>
+<td>0.003210</td>
+<td>-0.802838</td>
+<td>-1.305648</td>
+<td>-0.170390</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">6087</th>
+<td>1.429094</td>
+<td>1.539467</td>
+<td>0.230706</td>
+<td>0.256132</td>
+<td>-0.478975</td>
+<td>-1.493286</td>
+<td>1.738055</td>
+<td>0.888900</td>
+<td>0.164039</td>
+<td>-2.488486</td>
+<td>...</td>
+<td>1.454662</td>
+<td>0.493267</td>
+<td>0.079875</td>
+<td>-1.390000</td>
+<td>1.330840</td>
+<td>0.212113</td>
+<td>1.955695</td>
+<td>-0.567808</td>
+<td>-0.883676</td>
+<td>-0.472567</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6669</th>
+<td>0.207305</td>
+<td>0.600810</td>
+<td>0.477484</td>
+<td>-0.784978</td>
+<td>-0.651178</td>
+<td>-0.362503</td>
+<td>1.032674</td>
+<td>0.369245</td>
+<td>-0.659173</td>
+<td>-1.210180</td>
+<td>...</td>
+<td>-3.207426</td>
+<td>0.423698</td>
+<td>1.538654</td>
+<td>-0.856037</td>
+<td>0.343482</td>
+<td>-0.119711</td>
+<td>-0.355270</td>
+<td>0.724913</td>
+<td>1.702261</td>
+<td>-1.597048</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5734</th>
+<td>0.484935</td>
+<td>0.695846</td>
+<td>1.481478</td>
+<td>0.223780</td>
+<td>-1.012330</td>
+<td>-2.116814</td>
+<td>0.613437</td>
+<td>2.080326</td>
+<td>-0.730603</td>
+<td>1.408916</td>
+<td>...</td>
+<td>0.328236</td>
+<td>0.413631</td>
+<td>0.337577</td>
+<td>-0.747556</td>
+<td>0.020008</td>
+<td>-0.202360</td>
+<td>1.484470</td>
+<td>-0.465176</td>
+<td>1.391591</td>
+<td>0.294199</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5191</th>
+<td>-0.715630</td>
+<td>-1.895183</td>
+<td>-1.091845</td>
+<td>-0.579646</td>
+<td>-0.474871</td>
+<td>2.217163</td>
+<td>-0.666726</td>
+<td>-0.763180</td>
+<td>0.261672</td>
+<td>1.570425</td>
+<td>...</td>
+<td>0.280017</td>
+<td>0.836381</td>
+<td>0.115396</td>
+<td>-0.044588</td>
+<td>0.516398</td>
+<td>-0.630678</td>
+<td>0.755802</td>
+<td>0.016894</td>
+<td>0.183862</td>
+<td>-0.401010</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5390</th>
+<td>1.091513</td>
+<td>-1.606975</td>
+<td>-1.678945</td>
+<td>-0.706068</td>
+<td>-0.547585</td>
+<td>2.905629</td>
+<td>0.827132</td>
+<td>-0.997257</td>
+<td>-0.983815</td>
+<td>-0.609981</td>
+<td>...</td>
+<td>0.001994</td>
+<td>0.411601</td>
+<td>-0.809740</td>
+<td>-0.163079</td>
+<td>0.020689</td>
+<td>-0.731637</td>
+<td>-0.154384</td>
+<td>0.599125</td>
+<td>1.094542</td>
+<td>-1.020837</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">860</th>
+<td>-1.696127</td>
+<td>1.277728</td>
+<td>0.043566</td>
+<td>0.659020</td>
+<td>0.537680</td>
+<td>-1.793380</td>
+<td>-0.878325</td>
+<td>-0.168647</td>
+<td>-0.712758</td>
+<td>2.285642</td>
+<td>...</td>
+<td>0.233483</td>
+<td>0.551602</td>
+<td>0.139338</td>
+<td>0.805881</td>
+<td>-0.628342</td>
+<td>0.532257</td>
+<td>-0.107130</td>
+<td>1.449110</td>
+<td>-0.499819</td>
+<td>-0.826810</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7270</th>
+<td>2.113646</td>
+<td>-2.644226</td>
+<td>-0.097455</td>
+<td>-0.645787</td>
+<td>-1.748579</td>
+<td>2.288712</td>
+<td>0.920350</td>
+<td>1.266990</td>
+<td>0.545140</td>
+<td>-0.652207</td>
+<td>...</td>
+<td>-0.048207</td>
+<td>1.331188</td>
+<td>-0.683416</td>
+<td>-0.014705</td>
+<td>0.185842</td>
+<td>1.100054</td>
+<td>-0.244144</td>
+<td>-1.529671</td>
+<td>-1.914142</td>
+<td>0.072284</td>
+</tr>
+</tbody>
+</table>
+
+<p>8000 rows × 40 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="feature-selection" class="level1">
+<h1>Feature selection</h1>
+<p>Let’s go through a couple of different methods for feature selection</p>
+</section>
+<section id="feature-selection-methods-comparison" class="level1">
+<h1>Feature Selection Methods Comparison</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 26%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Pros</th>
+<th>Cons</th>
+<th>Best Used When</th>
+<th>Computational Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>F-statistic</td>
+<td>- Fast and simple<br>- Works well for linear relationships<br>- Easy to interpret</td>
+<td>- Assumes linear relationship<br>- Considers features independently<br>- May miss interaction effects</td>
+<td>- Initial screening<br>- Linear problems<br>- Need interpretable results</td>
+<td>O(n)</td>
+</tr>
+<tr class="even">
+<td>Mutual Information</td>
+<td>- Captures non-linear relationships<br>- No assumptions about distribution</td>
+<td>- Can be computationally intensive<br>- May overfit with small samples</td>
+<td>- Non-linear relationships<br>- Complex interactions</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="odd">
+<td>Logistic Regression</td>
+<td>- Fast for high-dimensional data<br>- Provides feature coefficients</td>
+<td>- Assumes linear decision boundary<br>- Sensitive to correlated features</td>
+<td>- Binary classification<br>- Need interpretable coefficients</td>
+<td>O(n^2)</td>
+</tr>
+<tr class="even">
+<td>Lasso (L1)</td>
+<td>- Fast for high-dimensional data<br>- Automatically does feature selection</td>
+<td>- May struggle with correlated features<br>- Can be sensitive to outliers</td>
+<td>- High-dimensional data<br>- Need sparse solutions</td>
+<td>O(n^2)</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>- Handles non-linear relationships<br>- Considers feature interactions</td>
+<td>- Can be computationally intensive<br>- May overfit with small samples</td>
+<td>- Complex relationships<br>- Large datasets</td>
+<td>O(n log n)</td>
+</tr>
+<tr class="even">
+<td>MRMR</td>
+<td>- Considers feature redundancy<br>- Good for correlated features</td>
+<td>- Can be computationally intensive<br>- May struggle with non-linear relationships</td>
+<td>- Datasets with correlated features<br>- Need diverse feature set</td>
+<td>O(n^2)</td>
+</tr>
+<tr class="odd">
+<td>RFE</td>
+<td>- Considers feature interactions<br>- Can capture complex relationships</td>
+<td>- Computationally intensive<br>- Can be unstable with small changes in data</td>
+<td>- When computational cost isn’t an issue<br>- Need very precise feature selection</td>
+<td>O(n^2 log n)</td>
+</tr>
+</tbody>
+</table>
+<section id="f-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="f-statistic">1. F-statistic</h3>
+<p>f_classif relies on the Analysis of Variance (ANOVA) F-statistic to evaluate the relationship between each feature and the target variable. It tests whether the mean values of the target variable differ significantly across the groups defined by each feature. The higher the F-value, the more likely it is that the feature discriminates between different classes. Assumes a linear relationship between the features and the target, and that the target is categorical.</p>
+<p>See: https://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection</p>
+<div id="cell-16" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.feature_selection <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> f_classif</span>
+<span id="cb9-2"></span>
+<span id="cb9-3">f <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> f_classif(X_train, y_train)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb9-4">f</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>array([2.40810399e+02, 6.64390517e+01, 5.42587843e+01, 1.71099993e-01,
+       4.27226542e+01, 9.64735668e+01, 4.72136845e+01, 5.71846457e+01,
+       1.27834979e+00, 1.42650284e+00, 3.40020422e-01, 4.08232233e-01,
+       1.30120819e-01, 3.36734714e+00, 4.55665866e-01, 3.62300510e-01,
+       1.57485437e-01, 6.93572687e-02, 1.64816305e+00, 2.91782944e+00,
+       1.24026934e+00, 9.32533895e-01, 7.07099908e-01, 1.87544216e+00,
+       1.10130690e+00, 3.54044700e-01, 1.15417945e+00, 2.59156089e-01,
+       7.45820681e-01, 7.75403854e-01, 1.35835715e-01, 3.34985292e+00,
+       8.36576456e-02, 5.15026453e-02, 4.33788709e-01, 3.12140721e-01,
+       3.55118575e+00, 7.37076241e+00, 1.17274619e+00, 4.36532461e+00])</code></pre>
+</div>
+</div>
+</section>
+<section id="mutual-information" class="level3">
+<h3 class="anchored" data-anchor-id="mutual-information">2. Mutual information</h3>
+<p>mutual_info_classif uses the concept of mutual information, which measures the dependency between each feature and the target variable. Mutual information quantifies the amount of information gained about the target by knowing the value of the feature. It captures both linear and non-linear dependencies.</p>
+<p>See: https://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection</p>
+<div id="cell-18" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.feature_selection <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> mutual_info_classif</span>
+<span id="cb11-2"></span>
+<span id="cb11-3">mi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mutual_info_classif(X_train, y_train)</span>
+<span id="cb11-4">mi</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>array([0.05548077, 0.01340894, 0.04092611, 0.00099355, 0.00516085,
+       0.06952759, 0.02752171, 0.04043945, 0.00083431, 0.        ,
+       0.        , 0.        , 0.        , 0.01146672, 0.        ,
+       0.00298292, 0.        , 0.        , 0.0068234 , 0.00961735,
+       0.00935105, 0.00586449, 0.00561433, 0.        , 0.        ,
+       0.        , 0.        , 0.        , 0.00876386, 0.00049355,
+       0.        , 0.00478042, 0.00487523, 0.00268551, 0.00118896,
+       0.        , 0.00583264, 0.        , 0.        , 0.        ])</code></pre>
+</div>
+</div>
+</section>
+<section id="logistic-regression" class="level3">
+<h3 class="anchored" data-anchor-id="logistic-regression">3. Logistic regression</h3>
+<p>Logistic regression is a linear model for classification rather than regression. It is used to estimate the probability that an instance belongs to a particular class. The coefficients of the model can be used to determine feature importance.</p>
+<div id="cell-20" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.linear_model <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> LogisticRegression</span>
+<span id="cb13-2"></span>
+<span id="cb13-3">logreg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> LogisticRegression().fit(X_train, y_train)</span>
+<span id="cb13-4">logreg.coef_</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>array([[-0.08669758,  0.06064912, -0.04063592,  0.00704782,  0.05079063,
+        -0.02366404, -0.03246196, -0.07613473, -0.02216845,  0.00405511,
+         0.00890925, -0.01289459, -0.00446435,  0.00330386,  0.01287983,
+        -0.00599418,  0.00494212, -0.00385749,  0.03721175, -0.03849129,
+        -0.0032749 , -0.01534965, -0.00908255,  0.02016669, -0.00175419,
+         0.00918138,  0.01908963,  0.01357562, -0.01804835,  0.00266229,
+         0.00180036, -0.00624841, -0.00351875,  0.00131487, -0.01573702,
+        -0.00485053, -0.03744854,  0.05047984,  0.0174477 , -0.00658735],
+       [ 0.22615114, -0.09497312, -0.04870109,  0.08462927, -0.00434942,
+         0.0845374 ,  0.05186658,  0.05312074,  0.01121456,  0.0271935 ,
+        -0.00027397,  0.01737956,  0.0080553 , -0.04770429, -0.00379082,
+        -0.00963934,  0.00274429,  0.00688572, -0.03159925,  0.02737958,
+        -0.0220797 , -0.00789503, -0.01134082, -0.02724488, -0.02432216,
+         0.00543336, -0.02498671, -0.00919296,  0.01043275,  0.01323123,
+        -0.00059363, -0.02632891, -0.00159478, -0.00753653,  0.01697607,
+         0.01247471,  0.04553467, -0.05091659, -0.02028138,  0.03615948],
+       [-0.13945356,  0.03432401,  0.089337  , -0.09167709, -0.04644121,
+        -0.06087336, -0.01940462,  0.02301399,  0.0109539 , -0.03124862,
+        -0.00863527, -0.00448497, -0.00359095,  0.04440043, -0.00908901,
+         0.01563352, -0.00768641, -0.00302823, -0.0056125 ,  0.01111171,
+         0.02535461,  0.02324468,  0.02042338,  0.0070782 ,  0.02607635,
+        -0.01461474,  0.00589708, -0.00438266,  0.0076156 , -0.01589352,
+        -0.00120673,  0.03257732,  0.00511353,  0.00622166, -0.00123904,
+        -0.00762418, -0.00808614,  0.00043674,  0.00283369, -0.02957212]])</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-selection-with-l1-lasso-regularization" class="level3">
+<h3 class="anchored" data-anchor-id="feature-selection-with-l1-lasso-regularization">3.5 Feature Selection with L1 (Lasso) Regularization</h3>
+<p>Lasso is a great feature selection technique. It’s fast, easy to use, and works well with high-dimensional data. I have often used it when very wide data, greater than 100 features (or even &gt;10k features) to help parse down the number of features. It uses L1 regularization to penalize the absolute size of the coefficients. This leads to sparse solutions, where many of the coefficients are zero. The features with non-zero coefficients are selected. Lasso can be used for feature selection by setting the regularization parameter to a value that results in a sparse solution. The regularization parameter can be tuned using cross-validation.</p>
+<p>Try modifying the regularization parameter to see how it affects the number of features selected.</p>
+<div id="cell-22" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.linear_model <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> LogisticRegression</span>
+<span id="cb15-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.preprocessing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> StandardScaler</span>
+<span id="cb15-3"></span>
+<span id="cb15-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Step 4: Standardize the features</span></span>
+<span id="cb15-5">scaler <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> StandardScaler()</span>
+<span id="cb15-6">X_train_scaled <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb15-7">X_test_scaled <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> scaler.transform(X_test)</span>
+<span id="cb15-8"></span>
+<span id="cb15-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Step 5: Apply Logistic Regression with L1 regularization for feature selection</span></span>
+<span id="cb15-10">logregL1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> LogisticRegression(penalty<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'l1'</span>, solver<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'saga'</span>, multi_class<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'multinomial'</span>, C<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># C is inverse of regularization strength</span></span>
+<span id="cb15-11">logregL1.fit(X_train_scaled, y_train)</span>
+<span id="cb15-12"></span>
+<span id="cb15-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Step 6: Get the selected features using the original DataFrame 'X'</span></span>
+<span id="cb15-14">selected_features <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.columns[(logregL1.coef_ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">any</span>(axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)]</span>
+<span id="cb15-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Selected features: "</span>, selected_features)</span>
+<span id="cb15-16"></span>
+<span id="cb15-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Optional: Check the coefficients</span></span>
+<span id="cb15-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#print("Logistic Regression coefficients: ", logreg.coef_)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Selected features:  Index([0, 1, 2, 4, 5, 13, 19, 36, 37], dtype='int64')</code></pre>
+</div>
+</div>
+</section>
+<section id="lightgbm" class="level3">
+<h3 class="anchored" data-anchor-id="lightgbm">4. LightGBM</h3>
+<p>LightGBM is a gradient boosting framework that uses tree-based learning algorithms. It is designed for efficiency and can handle large datasets. It can be used to determine feature importance.</p>
+<div id="cell-24" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> lightgbm <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> LGBMClassifier</span>
+<span id="cb17-2"></span>
+<span id="cb17-3">lgbm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> LGBMClassifier(</span>
+<span id="cb17-4">    objective <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'multiclass'</span>,</span>
+<span id="cb17-5">    metric <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'multi_logloss'</span>,</span>
+<span id="cb17-6">    importance_type <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'gain'</span></span>
+<span id="cb17-7">).fit(X_train, y_train)</span>
+<span id="cb17-8"></span>
+<span id="cb17-9">lgbm.feature_importances_</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.001096 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 10200
+[LightGBM] [Info] Number of data points in the train set: 8000, number of used features: 40
+[LightGBM] [Info] Start training from score -1.108284
+[LightGBM] [Info] Start training from score -1.094371
+[LightGBM] [Info] Start training from score -1.093252</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>array([7030.24782425, 4036.90086633, 7197.39050466, 5339.74033117,
+       2017.793881  , 8113.67321557, 3905.26838762, 4383.72206521,
+        550.03625131,  531.02187729,  472.12624365,  678.28547454,
+        526.57803982,  586.75292325,  552.92263156,  433.08122051,
+        552.18078488,  534.15573859,  566.58704376,  630.01932001,
+        635.43262064,  636.71719581,  560.95981157,  586.52648336,
+        553.7755444 ,  563.13766581,  547.99060541,  523.01072556,
+        676.76891661,  616.94216621,  634.27822083,  489.91742009,
+        680.71264285,  620.95509708,  618.59545827,  418.22946733,
+        568.21738124,  592.29172051,  553.43465978,  655.03435677])</code></pre>
+</div>
+</div>
+</section>
+<section id="boruta" class="level3">
+<h3 class="anchored" data-anchor-id="boruta">5. Boruta</h3>
+<p>Boruta is an all-relevant feature selection method. It is an extension of the Random Forest algorithm. It selects all features that are relevant to the target variable, rather than just the most important features.</p>
+<div id="cell-26" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">### long training time &gt; 1 hour</span></span>
+<span id="cb20-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> boruta <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BorutaPy</span>
+<span id="cb20-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.ensemble <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> RandomForestClassifier</span>
+<span id="cb20-4"></span>
+<span id="cb20-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#boruta = BorutaPy(</span></span>
+<span id="cb20-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#    estimator = RandomForestClassifier(max_depth = 5), </span></span>
+<span id="cb20-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#    n_estimators = 'auto', </span></span>
+<span id="cb20-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#    max_iter = 100</span></span>
+<span id="cb20-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#).fit(X_train, y_train)</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="mrmr" class="level3">
+<h3 class="anchored" data-anchor-id="mrmr">6. MRMR</h3>
+<p>MRMR (Minimum Redundancy Maximum Relevance) is a feature selection method that selects features based on their relevance to the target variable and their redundancy with other features. It aims to select features that are highly correlated with the target variable but uncorrelated with each other.</p>
+<p>There are several implementations of MRMR available in Python: https://github.com/smazzanti/mrmr https://koaning.github.io/scikit-lego/api/feature-selection/ https://github.com/AutoViML/featurewiz?tab=readme-ov-file</p>
+<div id="cell-28" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb21-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> mrmr <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> mrmr_classif</span>
+<span id="cb21-3"></span>
+<span id="cb21-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#mrmr = mrmr_classif(pd.DataFrame(X_train), pd.Series(y_train), K = 784)</span></span>
+<span id="cb21-5">mrmr <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mrmr_classif(pd.DataFrame(X_train), pd.Series(y_train), K <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>])</span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 40/40 [00:03&lt;00:00, 11.45it/s]</code></pre>
+</div>
+</div>
+</section>
+<section id="store-results" class="level3">
+<h3 class="anchored" data-anchor-id="store-results">Store results</h3>
+<div id="cell-30" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb23-2"></span>
+<span id="cb23-3">ranking <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(X_train.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]))</span>
+<span id="cb23-4"></span>
+<span id="cb23-5">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'f'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(f, index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.index).fillna(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>).rank(ascending <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb23-6">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mi'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(mi, index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.index).fillna(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>).rank(ascending <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb23-7">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'logreg'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(logreg.coef_).mean(axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.index).rank(ascending <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb23-8">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lasso'</span>]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(logregL1.coef_).mean(axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.index).rank(ascending <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb23-9">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lightgbm'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(lgbm.feature_importances_, index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.index).rank(ascending <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb23-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#ranking['boruta'] = boruta.support_* 1 + boruta.support_weak_ * 2 + (1 - boruta.support_ - boruta.support_weak_) * X_train.shape[1]</span></span>
+<span id="cb23-11">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mrmr'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(</span>
+<span id="cb23-12">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(mrmr) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> [<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(mrmr) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (X_train.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(mrmr)),</span>
+<span id="cb23-13">    index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mrmr <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(ranking.index) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(mrmr))</span>
+<span id="cb23-14">).sort_index()</span>
+<span id="cb23-15">ranking[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lasso'</span>]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.Series(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(logregL1.coef_).mean(axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.index).rank(ascending <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb23-16"></span>
+<span id="cb23-17"></span>
+<span id="cb23-18">ranking <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.replace(to_replace <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(), value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>])</span>
+<span id="cb23-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#ranking.to_csv('ranking.csv', index = False)</span></span></code></pre></div></div>
+</div>
+</section>
+</section>
+<section id="evaluate-feature-selection-methods" class="level1">
+<h1>Evaluate Feature Selection Methods</h1>
+<p>Let’s see how the predictive performance of the model changes as we add more features. We will use the top features selected by each method to train a model and evaluate its performance.</p>
+<div id="cell-32" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> catboost <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> CatBoostClassifier</span>
+<span id="cb24-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.metrics <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> accuracy_score, roc_auc_score</span>
+<span id="cb24-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## 22 minutes for mnist</span></span>
+<span id="cb24-4"></span>
+<span id="cb24-5">algos <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'f'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mi'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'logreg'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lasso'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lightgbm'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mrmr'</span>] <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">##Feel free to change this</span></span>
+<span id="cb24-6">ks <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>] </span>
+<span id="cb24-7">ks <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>] <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">##Feel free to change this</span></span>
+<span id="cb24-8"></span>
+<span id="cb24-9">accuracy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ks, columns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> algos)</span>
+<span id="cb24-10">roc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.DataFrame(index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ks, columns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> algos)</span>
+<span id="cb24-11"></span>
+<span id="cb24-12"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> algo <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> algos:</span>
+<span id="cb24-13">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (algo)</span>
+<span id="cb24-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> ks:</span>
+<span id="cb24-15">    </span>
+<span id="cb24-16">        cols <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ranking[algo].sort_values().head(k).index.to_list()</span>
+<span id="cb24-17">                </span>
+<span id="cb24-18">        clf <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> CatBoostClassifier().fit(</span>
+<span id="cb24-19">            X_train[cols], y_train,</span>
+<span id="cb24-20">            eval_set<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(X_test[cols], y_test),</span>
+<span id="cb24-21">            early_stopping_rounds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>,</span>
+<span id="cb24-22">            verbose <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb24-23">        )</span>
+<span id="cb24-24">                </span>
+<span id="cb24-25">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Store accuracy</span></span>
+<span id="cb24-26">        accuracy.loc[k, algo] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> accuracy_score(</span>
+<span id="cb24-27">            y_true<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>y_test, y_pred<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>clf.predict(X_test[cols])</span>
+<span id="cb24-28">        )</span>
+<span id="cb24-29">        </span>
+<span id="cb24-30">accuracy.to_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'accuracyMC.csv'</span>, index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb24-31">roc.to_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'rocMC.csv'</span>, index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>f
+mi
+logreg
+lasso
+lightgbm
+mrmr</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-selection-curves" class="level1">
+<h1>Feature Selection Curves</h1>
+<p>Let’s visualize how the model’s accuracy changes as a function of feature selection.<br>
+Notice how for Madelon, there is an optimal number of features. Too many features that are noise end up reducing the performance of the model</p>
+<div id="cell-34" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> algo, label, color <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(</span>
+<span id="cb26-2">    [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mrmr'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'f'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mi'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lightgbm'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'logreg'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lasso"</span>],</span>
+<span id="cb26-3">    [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MRMR'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'F-statistic'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Mutual Info'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'LightGBM'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Log Reg'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Log Reg (L1/Lasso)'</span>],</span>
+<span id="cb26-4">    [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'orangered'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'blue'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'yellow'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lime'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'black'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'pink'</span>]):</span>
+<span id="cb26-5">        plt.plot(accuracy.index, accuracy[algo], label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> label, color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> color, lw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb26-6"></span>
+<span id="cb26-7">plt.plot(</span>
+<span id="cb26-8">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>], [pd.Series(y_test).value_counts(normalize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>).iloc[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, </span>
+<span id="cb26-9">    label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'[Random]'</span>, color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'grey'</span>, ls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'--'</span>, lw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb26-10">)</span>
+<span id="cb26-11"></span>
+<span id="cb26-12">plt.legend(fontsize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>, loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'center left'</span>, bbox_to_anchor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))</span>
+<span id="cb26-13">plt.grid()</span>
+<span id="cb26-14">plt.xlabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Number of features'</span>, fontsize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>)</span>
+<span id="cb26-15">plt.ylabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Accuracy'</span>, fontsize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>)</span>
+<span id="cb26-16">plt.savefig(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'accuracy.png'</span>, dpi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>, bbox_inches <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'tight'</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/Feature_Selection_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-selection-combined-with-feature-elimination-techniques" class="level1">
+<h1>Feature Selection combined with Feature Elimination Techniques</h1>
+<section id="recursive-feature-elimination" class="level3">
+<h3 class="anchored" data-anchor-id="recursive-feature-elimination">Recursive Feature Elimination</h3>
+<p>One of the best methods for feature selection consistently is feature importance with LightGBM. We can refine and improve this in several ways: Recursive Feature Elimination uses the same feature importance method, but then iteratively removes the least important features. This iterative process requires training a model several times, but can provide an improvement in feature selection. This method is a version of Recursive Feature Elimination that is widely accepted as a best practice for feature selection.</p>
+<div id="cell-37" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.feature_selection <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> RFE</span>
+<span id="cb27-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> xgboost <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> XGBClassifier</span>
+<span id="cb27-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.svm <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> SVR</span>
+<span id="cb27-4">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> XGBClassifier(random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb27-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#model = SVR(kernel="linear")  #took 3 minutes, ok results but not as good as XGB on Madelon</span></span>
+<span id="cb27-6">rfe <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> RFE(model, n_features_to_select<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, step<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb27-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#rfe = RFE(model, n_features_to_select=50, step=200,verbose=2) #for MNIST</span></span>
+<span id="cb27-8">rfe.fit(X_train, y_train)</span>
+<span id="cb27-9">rfe.support_</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>array([ True,  True,  True,  True, False,  True,  True,  True, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False])</code></pre>
+</div>
+</div>
+<div id="cell-38" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Train an XGBoost model with the selected features from RFE</span></span>
+<span id="cb29-2">model_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> XGBClassifier(random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb29-3">X_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.loc[:, rfe.support_]</span>
+<span id="cb29-4">model_selected.fit(X_selected, y_train)</span>
+<span id="cb29-5"></span>
+<span id="cb29-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Make predictions on the test set with both models</span></span>
+<span id="cb29-7">y_pred_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> model_selected.predict(X_test.loc[:, rfe.support_])</span>
+<span id="cb29-8">accuracy_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> accuracy_score(y_test, y_pred_selected)</span>
+<span id="cb29-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Accuracy with selected features: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>accuracy_selected<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy with selected features: 0.7135</code></pre>
+</div>
+</div>
+<p>Compare with perfect on Madelon</p>
+<div id="cell-40" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">perfect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [ <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb31-2">       <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb31-3">       <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb31-4">       <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>,</span>
+<span id="cb31-5">       <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>]</span></code></pre></div></div>
+</div>
+<div id="cell-41" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Train an XGBoost model with the selected features from RFE</span></span>
+<span id="cb32-2">model_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> XGBClassifier(random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb32-3">X_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.loc[:, perfect]</span>
+<span id="cb32-4">model_selected.fit(X_selected, y_train)</span>
+<span id="cb32-5"></span>
+<span id="cb32-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Make predictions on the test set with both models</span></span>
+<span id="cb32-7">y_pred_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> model_selected.predict(X_test.loc[:, perfect])</span>
+<span id="cb32-8">accuracy_selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> accuracy_score(y_test, y_pred_selected)</span>
+<span id="cb32-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Accuracy with selected features: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>accuracy_selected<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy with selected features: 0.7140</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-elimination-with-fire" class="level3">
+<h3 class="anchored" data-anchor-id="feature-elimination-with-fire">Feature Elimination with FIRE</h3>
+<p>At DataRobot, we had a mighty AutoML engine that showed you how feature importance aggregated across different models (this is feature importance from four diverse models). <img src="https://docs.datarobot.com/en/docs/images/fire-2.png" class="img-fluid" alt="https://docs.datarobot.com/en/docs/images/fire-2.png"></p>
+<p>You can use this variance as part of feature selection. It takes a lot more compute, but in our experiments, can perform even better feature selection. Read more about feature importance rank ensembling (FIRE) here - https://docs.datarobot.com/en/docs/api/accelerators/adv-approaches/fire.html and a code snippet is here - https://github.com/datarobot-community/examples-for-data-scientists/blob/master/Feature%20Lists%20Manipulation/Python/Advanced%20Feature%20Selection.ipynb</p>
+</section>
+<section id="featureviz" class="level3">
+<h3 class="anchored" data-anchor-id="featureviz">FeatureViz</h3>
+<p>Featureviz looks like a cool feature selection package, but I wasn’t able to get it to work. It’s worth checking out. add links</p>
+</section>
+</section>
+<section id="other-great-feature-selection-resources" class="level1">
+<h1>Other great feature selection resources:</h1>
+<p>A classic dataset where many feature selection techniques have been applied is the <a href="https://www.kaggle.com/competitions/santander-customer-satisfaction">Kaggle Santader Customer Satisfaction</a> competition.</p>
+<p><a href="https://www.kaggle.com/code/solegalli/feature-selection-with-feature-engine/notebook">Feature Selection with Feature Engine</a></p>
+<p><a href="https://www.kaggle.com/code/adarshsng/extensive-advance-feature-selection-tutorial">Advance Feature Selection Tutorial</a></p>
+
+
+</section>
+
+ ]]></description>
+  <category>featureselection</category>
+  <category>MLOps</category>
+  <guid>https://rajivshah.com/blog/Feature_Selection.html</guid>
+  <pubDate>Tue, 08 Oct 2024 05:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Snowflake ML Intro Notebook - ML Forecasting</title>
+  <link>https://rajivshah.com/blog/Snowpark_Forecasting_Bus.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>This notebook introduces several key features of Snowflake ML in the process of training a machine learning model for forecasting Chicago bus ridership.</p>
+<ul>
+<li>Establish secure connection to Snowflake</li>
+<li>Load features and target from Snowflake table into Snowpark DataFrame</li>
+<li>Prepare features for model training</li>
+<li>Train ML model using Snowpark ML distributed processing</li>
+<li>Save the model to the Snowflake Model Registry</li>
+<li>Run model predictions inside Snowflake</li>
+</ul>
+<p>This notebook is intended to highlight Snowflake functionality and should not be taken as a best practice for time series forecasting.</p>
+<p><a href="https://github.com/rajshah4/snowflake-notebooks/blob/main/Forecasting_ChicagoBus/Snowpark_Forecasting_Bus.ipynb">Get Notebook</a></p>
+<p><a href="https://github.com/rajshah4/snowflake-notebooks/blob/main/Forecasting_ChicagoBus/">Go to folder with dataset</a></p>
+<p><a href="https://github.com/rajshah4/snowflake-notebooks/">See more snowflake notebooks from raj</a></p>
+<section id="setup-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setup-environment">1. Setup Environment</h2>
+<div id="persistent-reasoning" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;papermill&quot;,&quot;value&quot;:{&quot;duration&quot;:0.872363,&quot;end_time&quot;:&quot;2021-05-15T09:33:41.413139&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2021-05-15T09:33:40.540776&quot;,&quot;status&quot;:&quot;completed&quot;}}" data-tags="[]" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Snowflake connector</span></span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> connector</span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#from snowflake.ml.utils import connection_params</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Snowpark for Python</span></span>
+<span id="cb1-6"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.session <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Session</span>
+<span id="cb1-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.types <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Variant</span>
+<span id="cb1-8"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.version <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> VERSION</span>
+<span id="cb1-9"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> functions <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> F</span>
+<span id="cb1-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.types <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Snowpark ML</span></span>
+<span id="cb1-13"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.compose <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> ColumnTransformer</span>
+<span id="cb1-14"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.pipeline <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Pipeline</span>
+<span id="cb1-15"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.preprocessing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> StandardScaler, OrdinalEncoder</span>
+<span id="cb1-16"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.impute <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> SimpleImputer</span>
+<span id="cb1-17"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.model_selection <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> GridSearchCV</span>
+<span id="cb1-18"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.xgboost <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> XGBRegressor</span>
+<span id="cb1-19"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> version</span>
+<span id="cb1-20">mlversion <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> version.VERSION</span>
+<span id="cb1-21"></span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Misc</span></span>
+<span id="cb1-24"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb1-25"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> json</span>
+<span id="cb1-26"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> logging </span>
+<span id="cb1-27">logger <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> logging.getLogger(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"snowflake.snowpark.session"</span>)</span>
+<span id="cb1-28">logger.setLevel(logging.ERROR)</span></code></pre></div></div>
+</div>
+</section>
+<section id="establish-secure-connection-to-snowflake" class="level2">
+<h2 class="anchored" data-anchor-id="establish-secure-connection-to-snowflake">Establish Secure Connection to Snowflake</h2>
+<p>Using the Snowflake ML Python API, it’s quick and easy to establish a secure connection between Snowflake and Notebook. I prefer using a <code>toml</code> configuration file <a href="https://docs.snowflake.com/en/developer-guide/snowflake-python-api/snowflake-python-connecting-snowflake">as documented here</a>. <em>Note: Other connection options include Username/Password, MFA, OAuth, Okta, SSO</em></p>
+<p>The creds.json should look like this:</p>
+<pre><code>{
+    "account": "awb99999",
+    "user": "your_user_name",
+    "password": "your_password",
+    "warehouse": "your_warehouse"
+  }
+
+::: {#953f6906 .cell execution_count=2}
+``` {.python .cell-code}
+with open('../../creds.json') as f:
+    data = json.load(f)
+    USERNAME = data['user']
+    PASSWORD = data['password']
+    SF_ACCOUNT = data['account']
+    SF_WH = data['warehouse']
+
+CONNECTION_PARAMETERS = {
+   "account": SF_ACCOUNT,
+   "user": USERNAME,
+   "password": PASSWORD,
+}
+
+session = Session.builder.configs(CONNECTION_PARAMETERS).create()</code></pre>
+<p>:::</p>
+<p>Verify everything is connected. I like to do this to remind people to make sure they are using the latest versions.</p>
+<div id="4fb1f7af" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">snowflake_environment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'select current_user(), current_version()'</span>).collect()</span>
+<span id="cb3-2">snowpark_version <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> VERSION</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Current Environment Details</span></span>
+<span id="cb3-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'User                        : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(snowflake_environment[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>][<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]))</span>
+<span id="cb3-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Role                        : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(session.get_current_role()))</span>
+<span id="cb3-7"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Database                    : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(session.get_current_database()))</span>
+<span id="cb3-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Schema                      : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(session.get_current_schema()))</span>
+<span id="cb3-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Warehouse                   : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(session.get_current_warehouse()))</span>
+<span id="cb3-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Snowflake version           : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(snowflake_environment[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>][<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]))</span>
+<span id="cb3-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Snowpark for Python version : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">.</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">.</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(snowpark_version[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>],snowpark_version[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],snowpark_version[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]))</span>
+<span id="cb3-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Snowflake ML version        : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">.</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">.</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span>(mlversion[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>],mlversion[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>],mlversion[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>]))</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>User                        : RSHAH
+Role                        : "RAJIV"
+Database                    : "RAJIV"
+Schema                      : "DOCAI"
+Warehouse                   : "RAJIV"
+Snowflake version           : 8.19.2
+Snowpark for Python version : 1.15.0a1
+Snowflake ML version        : 1.5.0</code></pre>
+</div>
+</div>
+<p>Throughout this notebook, I will change warehouse sizes. For this notebook warehouse size really doesn’t matter much, but I want people to understand how easily and quickly you can change the warehouse size. This is one of my favorite features of Snowflake, just how its always ready for me.</p>
+<div id="e11789e5" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"create or replace warehouse snowpark_opt_wh with warehouse_size = 'SMALL'"</span>).collect()</span>
+<span id="cb5-2">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"USE SCHEMA PUBLIC"</span>).collect()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>[Row(status='Statement executed successfully.')]</code></pre>
+</div>
+</div>
+</section>
+<section id="load-data-in-snowflake" class="level2">
+<h2 class="anchored" data-anchor-id="load-data-in-snowflake">2. Load Data in Snowflake</h2>
+<p>Let’s get the data (900k rows) and also make the column names all upper cases. It’s easier to work with columns names that aren’t case sensitive.</p>
+<div id="8dfb28da" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">df_clean <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'CTA_Daily_Totals_by_Route.csv'</span>)</span>
+<span id="cb7-2">df_clean.columns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df_clean.columns.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>.upper()</span>
+<span id="cb7-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (df_clean.shape)</span>
+<span id="cb7-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (df_clean.dtypes)</span>
+<span id="cb7-5">df_clean.head()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(893603, 4)
+ROUTE      object
+DATE       object
+DAYTYPE    object
+RIDES       int64
+dtype: object</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ROUTE</th>
+<th data-quarto-table-cell-role="th">DATE</th>
+<th data-quarto-table-cell-role="th">DAYTYPE</th>
+<th data-quarto-table-cell-role="th">RIDES</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>3</td>
+<td>01/01/2001</td>
+<td>U</td>
+<td>7354</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>4</td>
+<td>01/01/2001</td>
+<td>U</td>
+<td>9288</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>6</td>
+<td>01/01/2001</td>
+<td>U</td>
+<td>6048</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>8</td>
+<td>01/01/2001</td>
+<td>U</td>
+<td>6309</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>9</td>
+<td>01/01/2001</td>
+<td>U</td>
+<td>11207</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Let’s create a Snowpark dataframe and split the data for test/train. This operation is done inside Snowflake and not in your local environment. We will also save this as a table so we don’t ever have to manually upload this dataset again.</p>
+<p>PRO TIP – Snowpark will inherit the schema of a pandas dataframe into Snowflake. Either change your schema before importing or after it has landed in snowflake. People that put models into production are very careful about data types.</p>
+<div id="77038199" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">input_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> session.create_dataframe(df_clean)</span>
+<span id="cb9-2">schema <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> input_df.schema</span>
+<span id="cb9-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(schema)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>StructType([StructField('ROUTE', StringType(16777216), nullable=True), StructField('DATE', StringType(16777216), nullable=True), StructField('DAYTYPE', StringType(16777216), nullable=True), StructField('RIDES', LongType(), nullable=True)])</code></pre>
+</div>
+</div>
+<div id="9a6209bd" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">input_df.write.mode(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'overwrite'</span>).save_as_table(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'CHICAGO_BUS_RIDES'</span>)</span></code></pre></div></div>
+</div>
+<p>Let’s read from the table, since that is generally what you will be doing in production. We have 893,000 rows of ridership data.</p>
+<div id="b2b86720" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> session.read.table(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'CHICAGO_BUS_RIDES'</span>)</span>
+<span id="cb12-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (df.count())</span>
+<span id="cb12-3">df.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>893603
+----------------------------------------------
+|"ROUTE"  |"DATE"      |"DAYTYPE"  |"RIDES"  |
+----------------------------------------------
+|3        |01/01/2001  |U          |7354     |
+|4        |01/01/2001  |U          |9288     |
+|6        |01/01/2001  |U          |6048     |
+|8        |01/01/2001  |U          |6309     |
+|9        |01/01/2001  |U          |11207    |
+|10       |01/01/2001  |U          |385      |
+|11       |01/01/2001  |U          |610      |
+|12       |01/01/2001  |U          |3678     |
+|18       |01/01/2001  |U          |375      |
+|20       |01/01/2001  |U          |7096     |
+----------------------------------------------
+</code></pre>
+</div>
+</div>
+</section>
+<section id="distributed-feature-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="distributed-feature-engineering">3. Distributed Feature Engineering</h2>
+<p>Let’s add the Day of the week and then Aggregate the data by day. Let’s join in weather data</p>
+<p>These operations are done inside the Snowpark warehouse which provides improved performance and scalability with distributed execution for these scikit-learn preprocessing functions. This dataset uses SMALL, but you can always move up to larger ones including Snowpark Optimized warehouses (16x memory per node than a standard warehouse), e.g., <code>session.sql("create or replace warehouse snowpark_opt_wh with warehouse_size = 'MEDIUM' warehouse_type = 'SNOWPARK-OPTIMIZED'").collect()</code></p>
+<div id="894622be" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"create or replace warehouse snowpark_opt_wh with warehouse_size = 'MEDIUM' warehouse_type = 'SNOWPARK-OPTIMIZED'"</span>).collect()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>[Row(status='Warehouse SNOWPARK_OPT_WH successfully created.')]</code></pre>
+</div>
+</div>
+<p>Simple feature engineering</p>
+<div id="50e5d5e9" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.functions <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> col, to_timestamp, dayofweek, month,<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>, listagg, lag</span>
+<span id="cb16-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Window</span>
+<span id="cb16-3"></span>
+<span id="cb16-4">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>, to_timestamp(col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MM/DD/YYYY'</span>))</span>
+<span id="cb16-5"></span>
+<span id="cb16-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add a new column for the day of the week</span></span>
+<span id="cb16-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The day of week is represented as an integer, with 0 = Sunday, 1 = Monday, ..., 6 = Saturday</span></span>
+<span id="cb16-8">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DAY_OF_WEEK'</span>, dayofweek(col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>)))</span>
+<span id="cb16-9"></span>
+<span id="cb16-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Show the resulting dataframe</span></span>
+<span id="cb16-11">df.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-----------------------------------------------------------------------
+|"ROUTE"  |"DAYTYPE"  |"RIDES"  |"DATE"               |"DAY_OF_WEEK"  |
+-----------------------------------------------------------------------
+|3        |U          |7354     |2001-01-01 00:00:00  |1              |
+|4        |U          |9288     |2001-01-01 00:00:00  |1              |
+|6        |U          |6048     |2001-01-01 00:00:00  |1              |
+|8        |U          |6309     |2001-01-01 00:00:00  |1              |
+|9        |U          |11207    |2001-01-01 00:00:00  |1              |
+|10       |U          |385      |2001-01-01 00:00:00  |1              |
+|11       |U          |610      |2001-01-01 00:00:00  |1              |
+|12       |U          |3678     |2001-01-01 00:00:00  |1              |
+|18       |U          |375      |2001-01-01 00:00:00  |1              |
+|20       |U          |7096     |2001-01-01 00:00:00  |1              |
+-----------------------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<p>A bit more feature engineering, but again, this is very familiar syntax.</p>
+<div id="0022d07b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add a new column for the month</span></span>
+<span id="cb18-2">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MONTH'</span>, month(col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>)))</span>
+<span id="cb18-3"></span>
+<span id="cb18-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Group by DATE, DAY_OF_WEEK, and MONTH, then aggregate</span></span>
+<span id="cb18-5">total_riders <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df.group_by(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DAY_OF_WEEK'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MONTH'</span>).agg(</span>
+<span id="cb18-6">    F.listagg(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DAYTYPE'</span>, is_distinct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>).alias(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DAYTYPE'</span>),</span>
+<span id="cb18-7">    F.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'RIDES'</span>).alias(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'TOTAL_RIDERS'</span>)</span>
+<span id="cb18-8">).order_by(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>)</span>
+<span id="cb18-9"></span>
+<span id="cb18-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#Define a window specification</span></span>
+<span id="cb18-11">window_spec <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Window.order_by(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>)</span>
+<span id="cb18-12"></span>
+<span id="cb18-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add a lagged column for total ridership of the previous day</span></span>
+<span id="cb18-14">total_riders <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> total_riders.with_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'PREV_DAY_RIDERS'</span>, lag(col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'TOTAL_RIDERS'</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>).over(window_spec))</span>
+<span id="cb18-15"></span>
+<span id="cb18-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Show the resulting dataframe</span></span>
+<span id="cb18-17"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (total_riders.count())</span>
+<span id="cb18-18"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (total_riders.show())</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>7364
+--------------------------------------------------------------------------------------------------
+|"DATE"               |"DAY_OF_WEEK"  |"MONTH"  |"DAYTYPE"  |"TOTAL_RIDERS"  |"PREV_DAY_RIDERS"  |
+--------------------------------------------------------------------------------------------------
+|2001-01-01 00:00:00  |1              |1        |U          |295439          |NULL               |
+|2001-01-02 00:00:00  |2              |1        |W          |776862          |295439             |
+|2001-01-03 00:00:00  |3              |1        |W          |820048          |776862             |
+|2001-01-04 00:00:00  |4              |1        |W          |867675          |820048             |
+|2001-01-05 00:00:00  |5              |1        |W          |887519          |867675             |
+|2001-01-06 00:00:00  |6              |1        |A          |575407          |887519             |
+|2001-01-07 00:00:00  |0              |1        |U          |374435          |575407             |
+|2001-01-08 00:00:00  |1              |1        |W          |980660          |374435             |
+|2001-01-09 00:00:00  |2              |1        |W          |974858          |980660             |
+|2001-01-10 00:00:00  |3              |1        |W          |980656          |974858             |
+--------------------------------------------------------------------------------------------------
+
+None</code></pre>
+</div>
+</div>
+<section id="also-you-can-use-chatgpt-to-generate-the-code-for-you." class="level3">
+<h3 class="anchored" data-anchor-id="also-you-can-use-chatgpt-to-generate-the-code-for-you.">Also, you can use ChatGPT to generate the code for you.</h3>
+<p><img src="https://rajivshah.com/blog/fe_forecasting.png" alt="Forecasting Visualization" width="600"></p>
+</section>
+</section>
+<section id="join-in-the-weather-data-from-the-snowflake-marketplace" class="level2">
+<h2 class="anchored" data-anchor-id="join-in-the-weather-data-from-the-snowflake-marketplace">Join in the Weather Data from the Snowflake Marketplace</h2>
+<p>Instead of downloading data and building pipelines, Snowflake has a lot of useful data, including weather data in it’s Marketplace. This means the data is only a SQL query away.</p>
+<p><a href="https://app.snowflake.com/marketplace/listing/GZTSZAS2KIM/cybersyn-inc-weather-environmental-essentials?search=weather">Cybersyn Weather</a></p>
+<p>SQL QUERY:</p>
+<pre><code>SELECT
+  ts.noaa_weather_station_id,
+  ts.DATE,
+  COALESCE(MAX(CASE WHEN ts.variable = 'minimum_temperature' THEN ts.Value ELSE NULL END), 0) AS minimum_temperature,
+  COALESCE(MAX(CASE WHEN ts.variable = 'precipitation' THEN ts.Value ELSE NULL END), 0) AS precipitation,
+  COALESCE(MAX(CASE WHEN ts.variable = 'maximum_temperature' THEN ts.Value ELSE NULL END), 0) AS maximum_temperature
+FROM
+  cybersyn.noaa_weather_metrics_timeseries AS ts
+JOIN
+  cybersyn.noaa_weather_station_index AS idx
+ON
+  (ts.noaa_weather_station_id = idx.noaa_weather_station_id)
+WHERE
+  idx.NOAA_WEATHER_STATION_ID = 'USW00014819'
+  AND (ts.VARIABLE = 'minimum_temperature' OR ts.VARIABLE = 'precipitation' OR ts.VARIABLE = 'maximum_temperature')
+GROUP BY
+  ts.noaa_weather_station_id,
+  ts.DATE
+LIMIT 1000;</code></pre>
+<div id="b56ea3fe" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">weather <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> session.read.table(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'CHICAGO_WEATHER'</span>)</span>
+<span id="cb21-2"></span>
+<span id="cb21-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.types <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> DoubleType</span>
+<span id="cb21-4">weather <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> weather.withColumn(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MINIMUM_TEMPERATURE'</span>, weather[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MINIMUM_TEMPERATURE'</span>].cast(DoubleType()))</span>
+<span id="cb21-5">weather <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> weather.withColumn(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MAXIMUM_TEMPERATURE'</span>, weather[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MAXIMUM_TEMPERATURE'</span>].cast(DoubleType()))</span>
+<span id="cb21-6">weather <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> weather.withColumn(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'PRECIPITATION'</span>, weather[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'PRECIPITATION'</span>].cast(DoubleType()))</span>
+<span id="cb21-7"></span>
+<span id="cb21-8">weather.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>------------------------------------------------------------------------------------------------------------
+|"NOAA_WEATHER_STATION_ID"  |"DATE"      |"MINIMUM_TEMPERATURE"  |"MAXIMUM_TEMPERATURE"  |"PRECIPITATION"  |
+------------------------------------------------------------------------------------------------------------
+|USW00014819                |2019-07-16  |22.2                   |28.9                   |3.8              |
+|USW00014819                |2002-01-06  |-3.9                   |3.3                    |0.0              |
+|USW00014819                |2008-03-17  |-0.5                   |4.4                    |2.0              |
+|USW00014819                |2000-01-29  |-6.7                   |-2.2                   |0.0              |
+|USW00014819                |2004-06-12  |16.7                   |26.7                   |6.6              |
+|USW00014819                |2017-07-15  |16.1                   |28.3                   |0.0              |
+|USW00014819                |2001-10-22  |12.2                   |18.9                   |2.3              |
+|USW00014819                |2021-05-01  |6.1                    |28.3                   |0.0              |
+|USW00014819                |2016-11-29  |7.2                    |14.4                   |0.0              |
+|USW00014819                |2020-08-01  |18.3                   |26.1                   |5.1              |
+------------------------------------------------------------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<div id="027f9449" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Perform the join operation</span></span>
+<span id="cb23-2">joined_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> weather.join(</span>
+<span id="cb23-3">    total_riders,</span>
+<span id="cb23-4">    weather[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DATE"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> total_riders[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DATE"</span>],</span>
+<span id="cb23-5">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"inner"</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This is the type of join: inner, outer, left, right,</span></span>
+<span id="cb23-6">    lsuffix<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"w"</span></span>
+<span id="cb23-7">)</span>
+<span id="cb23-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Show the result of the join</span></span>
+<span id="cb23-9">joined_df.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|"NOAA_WEATHER_STATION_ID"  |"DATEW"     |"MINIMUM_TEMPERATURE"  |"MAXIMUM_TEMPERATURE"  |"PRECIPITATION"  |"DATE"               |"DAY_OF_WEEK"  |"MONTH"  |"DAYTYPE"  |"TOTAL_RIDERS"  |"PREV_DAY_RIDERS"  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|USW00014819                |2005-10-15  |8.9                    |20.0                   |0.0              |2005-10-15 00:00:00  |6              |10       |A          |666129          |1087863            |
+|USW00014819                |2019-04-29  |6.1                    |11.7                   |29.0             |2019-04-29 00:00:00  |1              |4        |W          |724030          |332461             |
+|USW00014819                |2019-09-26  |13.9                   |22.8                   |0.0              |2019-09-26 00:00:00  |4              |9        |W          |847678          |852326             |
+|USW00014819                |2006-12-09  |-4.9                   |3.3                    |0.0              |2006-12-09 00:00:00  |6              |12       |A          |586623          |948538             |
+|USW00014819                |2015-05-05  |10.6                   |15.6                   |20.1             |2015-05-05 00:00:00  |2              |5        |W          |913079          |926775             |
+|USW00014819                |2006-05-05  |8.9                    |15.6                   |0.0              |2006-05-05 00:00:00  |5              |5        |W          |1018785         |1042392            |
+|USW00014819                |2019-11-04  |3.9                    |12.2                   |0.0              |2019-11-04 00:00:00  |1              |11       |W          |842258          |354020             |
+|USW00014819                |2013-02-07  |0.0                    |2.2                    |14.5             |2013-02-07 00:00:00  |4              |2        |W          |963866          |1026678            |
+|USW00014819                |2013-08-30  |20.6                   |35.6                   |11.9             |2013-08-30 00:00:00  |5              |8        |W          |1004986         |1029901            |
+|USW00014819                |2007-04-28  |4.4                    |22.2                   |0.0              |2007-04-28 00:00:00  |6              |4        |A          |662079          |1018455            |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<div id="c5237c42" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Dropping any null values</span></span>
+<span id="cb25-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.snowpark.functions <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> col, is_null</span>
+<span id="cb25-3"></span>
+<span id="cb25-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create a filter condition for non-finite values across all columns</span></span>
+<span id="cb25-5">non_finite_filter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span></span>
+<span id="cb25-6"></span>
+<span id="cb25-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Iterate over all columns and update the filter condition</span></span>
+<span id="cb25-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> column <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> joined_df.columns:</span>
+<span id="cb25-9">    current_filter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> is_null(col(column))</span>
+<span id="cb25-10">    non_finite_filter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> current_filter <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> non_finite_filter <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">is</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> (non_finite_filter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> current_filter)</span>
+<span id="cb25-11"></span>
+<span id="cb25-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Apply the filter to the DataFrame to exclude rows with any non-finite values</span></span>
+<span id="cb25-13">df_filtered <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> joined_df.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>non_finite_filter)</span></code></pre></div></div>
+</div>
+<div id="96a10c75" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#Split the data into training and test sets</span></span>
+<span id="cb26-2">train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df_filtered.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'2019-01-01'</span>)</span>
+<span id="cb26-3">test <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df_filtered.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">filter</span>(col(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DATE'</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'2019-01-01'</span>)</span></code></pre></div></div>
+</div>
+<div id="db5114b0" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (train.count())</span>
+<span id="cb27-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span> (test.count())</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>6570
+790</code></pre>
+</div>
+</div>
+</section>
+<section id="distributed-feature-engineering-in-a-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="distributed-feature-engineering-in-a-pipeline">4. Distributed Feature Engineering in a Pipeline</h2>
+<p>Feature engineering + XGBoost</p>
+<div id="dc637e73" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"create or replace warehouse snowpark_opt_wh with warehouse_size = 'MEDIUM' warehouse_type = 'SNOWPARK-OPTIMIZED'"</span>).collect()</span>
+<span id="cb29-2">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"alter warehouse snowpark_opt_wh set max_concurrency_level = 1"</span>).collect()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>[Row(status='Statement executed successfully.')]</code></pre>
+</div>
+</div>
+<div id="ad265fe5" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Distributed Preprocessing - 25X to 50X faster</span></span>
+<span id="cb31-2">numeric_features <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DAY_OF_WEEK'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MONTH'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'PREV_DAY_RIDERS'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MINIMUM_TEMPERATURE'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MAXIMUM_TEMPERATURE'</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'PRECIPITATION'</span>]</span>
+<span id="cb31-3">numeric_transformer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Pipeline(steps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'scaler'</span>, StandardScaler())])</span>
+<span id="cb31-4"></span>
+<span id="cb31-5">categorical_cols <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'DAYTYPE'</span>]</span>
+<span id="cb31-6">categorical_transformer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Pipeline(steps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[</span>
+<span id="cb31-7">    (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'imputer'</span>, SimpleImputer(strategy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'most_frequent'</span>)),</span>
+<span id="cb31-8">    (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'onehot'</span>, OrdinalEncoder(handle_unknown<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'use_encoded_value'</span>,unknown_value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">99999</span>))</span>
+<span id="cb31-9">])</span>
+<span id="cb31-10"></span>
+<span id="cb31-11">preprocessor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ColumnTransformer(</span>
+<span id="cb31-12">    transformers<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[</span>
+<span id="cb31-13">        (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'num'</span>, numeric_transformer, numeric_features),</span>
+<span id="cb31-14">        (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'cat'</span>, categorical_transformer, categorical_cols)</span>
+<span id="cb31-15">        ])</span>
+<span id="cb31-16"></span>
+<span id="cb31-17">pipeline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Pipeline(steps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'preprocessor'</span>, preprocessor),(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'model'</span>, XGBRegressor())])</span></code></pre></div></div>
+</div>
+</section>
+<section id="distributed-training" class="level2">
+<h2 class="anchored" data-anchor-id="distributed-training">5. Distributed Training</h2>
+<p>These operations are done inside the Snowpark warehouse which provides improved performance and scalability with distributed execution for these scikit-learn preprocessing functions and XGBoost training (and many other types of models).</p>
+<div id="a1c973e3" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Distributed HyperParameter Optimization</span></span>
+<span id="cb32-2">hyper_param <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb32-3">        model__max_depth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>],</span>
+<span id="cb32-4">        model__learning_rate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>],</span>
+<span id="cb32-5">    )</span>
+<span id="cb32-6"></span>
+<span id="cb32-7">xg_model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> GridSearchCV(</span>
+<span id="cb32-8">    estimator<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>pipeline,</span>
+<span id="cb32-9">    param_grid<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>hyper_param,</span>
+<span id="cb32-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#cv=5,</span></span>
+<span id="cb32-11">    input_cols<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>numeric_features <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> categorical_cols,</span>
+<span id="cb32-12">    label_cols<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'TOTAL_RIDERS'</span>],</span>
+<span id="cb32-13">    output_cols<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOTAL_RIDERS_FORECAST"</span>],</span>
+<span id="cb32-14">)</span>
+<span id="cb32-15"></span>
+<span id="cb32-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fit and Score</span></span>
+<span id="cb32-17">xg_model.fit(train)</span>
+<span id="cb32-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">##Takes 25 seconds</span></span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>&lt;snowflake.ml.modeling.model_selection.grid_search_cv.GridSearchCV at 0x173418df0&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation">6. Model Evaluation</h2>
+<p>Look at the results of the mode. cv_results is a dictionary, where each key is a string describing one of the metrics or parameters, and the corresponding value is an array with one entry per combination of parameters</p>
+<div id="5d0e9845" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"create or replace warehouse snowpark_opt_wh with warehouse_size = 'SMALL'"</span>).collect()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>[Row(status='Warehouse SNOWPARK_OPT_WH successfully created.')]</code></pre>
+</div>
+</div>
+<div id="70d680fd" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">cv_results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xg_model.to_sklearn().cv_results_</span>
+<span id="cb36-2"></span>
+<span id="cb36-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(cv_results[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'params'</span>])):</span>
+<span id="cb36-4">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Parameters: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>cv_results[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'params'</span>][i]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb36-5">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Mean Test Score: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>cv_results[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mean_test_score'</span>][i]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb36-6">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameters: {'model__learning_rate': 0.1, 'model__max_depth': 2}
+Mean Test Score: 0.927693653032996
+
+Parameters: {'model__learning_rate': 0.1, 'model__max_depth': 4}
+Mean Test Score: 0.9440192568004221
+
+Parameters: {'model__learning_rate': 0.3, 'model__max_depth': 2}
+Mean Test Score: 0.9367972284370352
+
+Parameters: {'model__learning_rate': 0.3, 'model__max_depth': 4}
+Mean Test Score: 0.9425057277525181
+</code></pre>
+</div>
+</div>
+<p>Look at the accuracy of the model</p>
+<div id="73c36d50" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.metrics <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> mean_absolute_error</span>
+<span id="cb38-2">testpreds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xg_model.predict(test)</span>
+<span id="cb38-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MSE:'</span>, mean_absolute_error(df<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>testpreds, y_true_col_names<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'TOTAL_RIDERS'</span>, y_pred_col_names<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'"TOTAL_RIDERS_FORECAST"'</span>))</span>
+<span id="cb38-4">testpreds.select(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DATEW"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOTAL_RIDERS"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOTAL_RIDERS_FORECAST"</span>).show(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)         </span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MSE: 183320.1351068038
+---------------------------------------------------------
+|"DATEW"     |"TOTAL_RIDERS"  |"TOTAL_RIDERS_FORECAST"  |
+---------------------------------------------------------
+|2019-11-09  |476467          |489406.65625             |
+|2019-05-31  |810422          |836847.0625              |
+|2020-12-15  |270178          |633812.25                |
+|2020-08-05  |315741          |710399.9375              |
+|2020-05-17  |118681          |347373.59375             |
+|2019-02-27  |793731          |792628.8125              |
+|2019-01-27  |257918          |286517.4375              |
+|2020-02-07  |771641          |789460.875               |
+|2020-12-06  |143231          |333279.25                |
+|2020-04-02  |213131          |656467.625               |
+---------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<p>Materialize the results to a table</p>
+<div id="d9489eb7" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1">testpreds.write.save_as_table(table_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'CHICAGO_BUS_RIDES_FORECAST'</span>, mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'overwrite'</span>)</span></code></pre></div></div>
+</div>
+<p>Using metrics from snowpark so calculation is done inside snowflake</p>
+</section>
+<section id="save-to-the-model-registry-and-use-for-predictions-python-sql" class="level2">
+<h2 class="anchored" data-anchor-id="save-to-the-model-registry-and-use-for-predictions-python-sql">7. Save to the Model Registry and use for Predictions (Python &amp; SQL)</h2>
+<p>Connect to the registry</p>
+<div id="c97f06d1" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.registry <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Registry</span>
+<span id="cb41-2">reg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Registry(session<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>session, database_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RAJIV"</span>, schema_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PUBLIC"</span>)</span></code></pre></div></div>
+</div>
+<div id="99012d7d" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">model_ref <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reg.log_model(</span>
+<span id="cb42-2">    model_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Forecasting_Bus_Ridership"</span>,</span>
+<span id="cb42-3">    version_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"v37"</span>,    </span>
+<span id="cb42-4">    model<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>xg_model,</span>
+<span id="cb42-5">    conda_dependencies<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"scikit-learn"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"xgboost"</span>],</span>
+<span id="cb42-6">    sample_input_data<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>train,</span>
+<span id="cb42-7">    comment<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"XGBoost model, run 36, May13"</span></span>
+<span id="cb42-8">)</span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/rajishah/anaconda3/envs/working38/lib/python3.8/contextlib.py:113: UserWarning: `relax_version` is not set and therefore defaulted to True. Dependency version constraints relaxed from ==x.y.z to &gt;=x.y, &lt;(x+1). To use specific dependency versions for compatibility, reproducibility, etc., set `options={'relax_version': False}` when logging the model.
+  return next(self.gen)
+/Users/rajishah/anaconda3/envs/working38/lib/python3.8/site-packages/snowflake/ml/model/_packager/model_packager.py:92: UserWarning: Inferring model signature from sample input or providing model signature for Snowpark ML Modeling model is not required. Model signature will automatically be inferred during fitting. 
+  handler.save_model(</code></pre>
+</div>
+</div>
+<div id="3ac62368" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1">reg.show_models()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">created_on</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">database_name</th>
+<th data-quarto-table-cell-role="th">schema_name</th>
+<th data-quarto-table-cell-role="th">comment</th>
+<th data-quarto-table-cell-role="th">owner</th>
+<th data-quarto-table-cell-role="th">default_version_name</th>
+<th data-quarto-table-cell-role="th">versions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2024-01-23 18:58:41.929000-08:00</td>
+<td>DIABETES_XGBOOSTER</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V2</td>
+<td>["V2","V3","V4","V5","V7"]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2024-02-19 17:12:27.005000-08:00</td>
+<td>E5_BASE_V2</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V1</td>
+<td>["V1"]</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2024-02-07 13:00:56.292000-08:00</td>
+<td>FINBERT</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V1</td>
+<td>["V1"]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2024-02-26 18:55:00.548000-08:00</td>
+<td>FORECASTING_BUS_RIDERSHIP</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V7</td>
+<td>["V10","V11","V12","V13","V14","V15","V16","V1...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2024-02-19 17:19:12.122000-08:00</td>
+<td>MINILMV2</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V1</td>
+<td>["V1","V2","V4","V5"]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>2024-02-07 13:14:44.823000-08:00</td>
+<td>MPNET_BASE</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V1</td>
+<td>["V1","V2","V3"]</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>2024-01-25 14:54:04.655000-08:00</td>
+<td>TPCDS_XGBOOST_DEMO</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V5</td>
+<td>["V5","V6","V7","V8","V9"]</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>2024-01-23 18:49:09.294000-08:00</td>
+<td>XGBOOSTER</td>
+<td>RAJIV</td>
+<td>PUBLIC</td>
+<td>None</td>
+<td>RAJIV</td>
+<td>V1</td>
+<td>["V1","V2"]</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Let’s retrieve the model from the registry</p>
+<div id="16f2b93f" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1">reg_model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reg.get_model(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Forecasting_Bus_Ridership"</span>).version(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"v37"</span>)</span></code></pre></div></div>
+</div>
+<p>Let’s do predictions inside the warehouse</p>
+<div id="bf7f3388" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1">remote_prediction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reg_model.run(test, function_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'predict'</span>)</span>
+<span id="cb46-2">remote_prediction.sort(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DATEW"</span>).select(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DATEW"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOTAL_RIDERS"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOTAL_RIDERS_FORECAST"</span>).show(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>---------------------------------------------------------
+|"DATEW"     |"TOTAL_RIDERS"  |"TOTAL_RIDERS_FORECAST"  |
+---------------------------------------------------------
+|2019-01-01  |247279          |290942.375               |
+|2019-01-02  |585996          |668251.3125              |
+|2019-01-03  |660631          |767229.875               |
+|2019-01-04  |662011          |759055.3125              |
+|2019-01-05  |440848          |491881.78125             |
+|2019-01-06  |316844          |351156.84375             |
+|2019-01-07  |717818          |762515.625               |
+|2019-01-08  |779946          |879376.0625              |
+|2019-01-09  |743021          |790567.625               |
+|2019-01-10  |743075          |764690.8125              |
+---------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<p>If you look in the activity view, you can find the SQL which will run a bit faster. This SQL command is showing the result in a snowflake dataframe. You could use <code>collect</code> to pull the info out into your local session.</p>
+<p>Modify the SQL with by adding in your specific model with this line: <code>WITH MODEL_VERSION_ALIAS AS MODEL RAJIV.PUBLIC.DIABETES_XGBOOSTER VERSION V7</code> and updating the location of your target predictions which is located here: <code>SNOWPARK_ML_MODEL_INFERENCE_INPUT</code></p>
+<div id="19ab86b4" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">sqlquery <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""SELECT "DATEW", "TOTAL_RIDERS",  CAST ("TMP_RESULT"['TOTAL_RIDERS_FORECAST'] AS DOUBLE) AS "TOTAL_RIDERS_FORECAST" FROM (WITH SNOWPARK_ML_MODEL_INFERENCE_INPUT AS (SELECT  *  FROM ( SELECT  *  FROM (( SELECT "NOAA_WEATHER_STATION_ID" AS "NOAA_WEATHER_STATION_ID", "DATE" AS "DATEW", "MINIMUM_TEMPERATURE" AS "MINIMUM_TEMPERATURE", "MAXIMUM_TEMPERATURE" AS "MAXIMUM_TEMPERATURE", "PRECIPITATION" AS "PRECIPITATION" FROM ( SELECT "NOAA_WEATHER_STATION_ID", "DATE",  CAST ("MINIMUM_TEMPERATURE" AS DOUBLE) AS "MINIMUM_TEMPERATURE",  CAST ("MAXIMUM_TEMPERATURE" AS DOUBLE) AS "MAXIMUM_TEMPERATURE",  CAST ("PRECIPITATION" AS DOUBLE) AS "PRECIPITATION" FROM CHICAGO_WEATHER)) AS SNOWPARK_LEFT INNER JOIN ( SELECT "DATE" AS "DATE", "DAY_OF_WEEK" AS "DAY_OF_WEEK", "MONTH" AS "MONTH", "DAYTYPE" AS "DAYTYPE", "TOTAL_RIDERS" AS "TOTAL_RIDERS", "PREV_DAY_RIDERS" AS "PREV_DAY_RIDERS" FROM ( SELECT "DATE", "DAY_OF_WEEK", "MONTH", "DAYTYPE", "TOTAL_RIDERS", LAG("TOTAL_RIDERS", 1, NULL) OVER (  ORDER BY "DATE" ASC NULLS FIRST ) AS "PREV_DAY_RIDERS" FROM ( SELECT "DATE", "DAY_OF_WEEK", "MONTH",  LISTAGG ( DISTINCT "DAYTYPE", '') AS "DAYTYPE", sum("RIDES") AS "TOTAL_RIDERS" FROM ( SELECT "ROUTE", "DAYTYPE", "RIDES", "DATE", dayofweek("DATE") AS "DAY_OF_WEEK", month("DATE") AS "MONTH" FROM ( SELECT "ROUTE", "DAYTYPE", "RIDES", to_timestamp("DATE", 'MM/DD/YYYY') AS "DATE" FROM CHICAGO_BUS_RIDES)) GROUP BY "DATE", "DAY_OF_WEEK", "MONTH") ORDER BY "DATE" ASC NULLS FIRST)) AS SNOWPARK_RIGHT ON ("DATEW" = "DATE"))) WHERE (NOT (((((((((("NOAA_WEATHER_STATION_ID" IS NULL OR "DATEW" IS NULL) OR "MINIMUM_TEMPERATURE" IS NULL) OR "MAXIMUM_TEMPERATURE" IS NULL) OR "PRECIPITATION" IS NULL) OR "DATE" IS NULL) OR "DAY_OF_WEEK" IS NULL) OR "MONTH" IS NULL) OR "DAYTYPE" IS NULL) OR "TOTAL_RIDERS" IS NULL) OR "PREV_DAY_RIDERS" IS NULL) AND ("DATE" &gt;= '2019-01-01'))),MODEL_VERSION_ALIAS AS MODEL RAJIV.PUBLIC.FORECASTING_BUS_RIDERSHIP VERSION V27</span></span>
+<span id="cb48-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                SELECT *,</span></span>
+<span id="cb48-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                    MODEL_VERSION_ALIAS!PREDICT(DAY_OF_WEEK, MONTH, PREV_DAY_RIDERS, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, PRECIPITATION, DAYTYPE) AS TMP_RESULT</span></span>
+<span id="cb48-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                FROM SNOWPARK_ML_MODEL_INFERENCE_INPUT) ORDER BY "DATEW" ASC NULLS FIRST LIMIT 10"""</span></span></code></pre></div></div>
+</div>
+<div id="6d60a60b" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1">results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> session.sql(sqlquery).show()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>---------------------------------------------------------
+|"DATEW"     |"TOTAL_RIDERS"  |"TOTAL_RIDERS_FORECAST"  |
+---------------------------------------------------------
+|2019-01-01  |247279          |290942.375               |
+|2019-01-02  |585996          |668251.3125              |
+|2019-01-03  |660631          |767229.875               |
+|2019-01-04  |662011          |759055.3125              |
+|2019-01-05  |440848          |491881.78125             |
+|2019-01-06  |316844          |351156.84375             |
+|2019-01-07  |717818          |762515.625               |
+|2019-01-08  |779946          |879376.0625              |
+|2019-01-09  |743021          |790567.625               |
+|2019-01-10  |743075          |764690.8125              |
+---------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<div id="0412e19f" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1">test.show()</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|"NOAA_WEATHER_STATION_ID"  |"DATEW"     |"MINIMUM_TEMPERATURE"  |"MAXIMUM_TEMPERATURE"  |"PRECIPITATION"  |"DATE"               |"DAY_OF_WEEK"  |"MONTH"  |"DAYTYPE"  |"TOTAL_RIDERS"  |"PREV_DAY_RIDERS"  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|USW00014819                |2019-07-23  |16.7                   |27.2                   |0.0              |2019-07-23 00:00:00  |2              |7        |W          |751862          |729088             |
+|USW00014819                |2020-12-25  |-12.7                  |-5.5                   |0.0              |2020-12-25 00:00:00  |5              |12       |U          |80199           |199439             |
+|USW00014819                |2020-07-23  |18.3                   |27.2                   |0.0              |2020-07-23 00:00:00  |4              |7        |W          |312243          |303124             |
+|USW00014819                |2021-01-15  |-2.1                   |3.3                    |0.0              |2021-01-15 00:00:00  |5              |1        |W          |274858          |273087             |
+|USW00014819                |2019-06-05  |15.6                   |30.0                   |9.7              |2019-06-05 00:00:00  |3              |6        |W          |814691          |794543             |
+|USW00014819                |2019-05-08  |8.3                    |24.4                   |9.7              |2019-05-08 00:00:00  |3              |5        |W          |820018          |802783             |
+|USW00014819                |2021-01-17  |-2.1                   |1.1                    |0.5              |2021-01-17 00:00:00  |0              |1        |U          |141354          |190486             |
+|USW00014819                |2019-12-09  |-3.8                   |9.4                    |0.5              |2019-12-09 00:00:00  |1              |12       |W          |780897          |341326             |
+|USW00014819                |2020-07-30  |22.2                   |28.3                   |0.0              |2020-07-30 00:00:00  |4              |7        |W          |304656          |302637             |
+|USW00014819                |2019-05-23  |17.8                   |24.4                   |0.5              |2019-05-23 00:00:00  |4              |5        |W          |799367          |805534             |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</code></pre>
+</div>
+</div>
+<p>Let’s calculate and save the metrics to the registry</p>
+<div id="a6bea723" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> snowflake.ml.modeling.metrics <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> mean_absolute_error</span>
+<span id="cb53-2">testpreds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> reg_model.run(test, function_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'predict'</span>)</span>
+<span id="cb53-3">mae <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mean_absolute_error(df<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>testpreds, y_true_col_names<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'TOTAL_RIDERS'</span>, y_pred_col_names<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'"TOTAL_RIDERS_FORECAST"'</span>)</span>
+<span id="cb53-4">reg_model.set_metric(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MAE"</span>, value<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>mae)</span></code></pre></div></div>
+</div>
+<div id="5c587021" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1">reg_model.show_metrics()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>{'MAE': 183320.1351068038}</code></pre>
+</div>
+</div>
+<div id="00315bbd" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1">session.sql(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"create or replace warehouse snowpark_opt_wh with warehouse_size = 'SMALL'"</span>).collect()</span></code></pre></div></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>[Row(status='Warehouse SNOWPARK_OPT_WH successfully created.')]</code></pre>
+</div>
+</div>
+<div id="6b233260" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#session.close()</span></span></code></pre></div></div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>snowflake</category>
+  <category>MLOps</category>
+  <guid>https://rajivshah.com/blog/Snowpark_Forecasting_Bus.html</guid>
+  <pubDate>Mon, 20 May 2024 05:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Reasoning in Large Language Models</title>
   <link>https://rajivshah.com/blog/HF-Reasoning.html</link>
   <description><![CDATA[ 
@@ -3417,153 +6657,6 @@ xgb.dump(model = bst, fname = 'xgb.dump', fmap = "fmap.txt", with.stats = TRUE)<
   <guid>https://rajivshah.com/blog/xgbfi.html</guid>
   <pubDate>Mon, 01 Aug 2016 05:00:00 GMT</pubDate>
   <media:content url="https://rajivshah.com/blog/images/firstinteraction.png" medium="image" type="image/png"/>
-</item>
-<item>
-  <title>Outlier App</title>
-  <link>https://rajivshah.com/blog/outlier_app.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/algorithms.gif" class="img-fluid figure-img"></p>
-<figcaption>algorithms</figcaption>
-</figure>
-</div>
-<section id="introduction" class="level3">
-<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>I was recently trying various outlier detection algorithms. For me, the best way to understand an algorithm is to tinker with it. I wanted to share my recent work on a shiny app that allows you to play around with various outlier algorithms.</p>
-<p>The <a href="https://rajivshah.com/blog/shiny/outlier/">shiny app is available on my site</a>, but even better, the <a href="https://github.com/rajshah4/outliers_shiny">code is on github</a> for you to run locally or improve! I also <a href="https://www.youtube.com/watch?v=1zPuRAgr1F4">posted a video</a> that provides background on the app. Let me give you a quick tour of the app:</p>
-</section>
-<section id="algorithms" class="level3">
-<h3 class="anchored" data-anchor-id="algorithms">Algorithms</h3>
-<p>The available algorithms include:</p>
-<ul>
-<li>Hierarchical Clustering (DMwR)</li>
-<li>Kmeans (distance metrics from proxy)
-<ul>
-<li>Kmeans Euclidean Distance</li>
-<li>Kmeans Mahalanobis</li>
-<li>Kmeans Manhattan</li>
-</ul></li>
-<li>Fuzzy kmeans (all from fclust)
-<ul>
-<li>Fuzzy kmeans - Gustafson and Kessel</li>
-<li>Fuzzy k-medoids</li>
-<li>Fuzzy k-means with polynomial fuzzifier</li>
-</ul></li>
-<li>Local Outlier Factor (dbscan)</li>
-<li>RandomForest (proximity from randomForest)
-<ul>
-<li>Isolation Forest (IsolationForest)</li>
-</ul></li>
-<li>Autoencoder (Autoencoder)</li>
-<li>FBOD and SOD (HighDimOut)</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/algorithms.gif" class="img-fluid figure-img"></p>
-<figcaption>algorithms</figcaption>
-</figure>
-</div>
-</section>
-<section id="datasets" class="level3">
-<h3 class="anchored" data-anchor-id="datasets">Datasets</h3>
-<p>There are also a wide range of datasets to try as well:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/datasets.png" class="img-fluid figure-img"></p>
-<figcaption>datasets</figcaption>
-</figure>
-</div>
-<p>Once the data is loaded, you can start exploring. One thing you can do is look at the effect scaling can have. In this example, you can see how outliers differ when scaling is used. The values on the far right no longer dominate the distance measurements, and there are now outliers from other areas:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/scaling.gif" class="img-fluid figure-img"></p>
-<figcaption>scaling</figcaption>
-</figure>
-</div>
-<p>By trying different algorithms, you can see how different algorithms will select outliers. In this case, you see a difference between the outliers selected using an autoencoder versus isolation forest.<img src="https://rajivshah.com/blog/images/auto_iso.gif" class="img-fluid" alt="auto_iso"></p>
-<p>Another example here is the difference between kmeans and fuzzy kmeans as show below:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/fuzzy.gif" class="img-fluid figure-img"></p>
-<figcaption>fuzzy</figcaption>
-</figure>
-</div>
-<p>A density based algorithm can also select different outliers versus a distance based algorithm. This example nicely shows the difference between kmeans and lof (local outlier factor from dbscan)</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/density.gif" class="img-fluid figure-img"></p>
-<figcaption>density</figcaption>
-</figure>
-</div>
-<p>An important part of using this visualization is studying the distance numbers that are calculated. Are these numbers meshing with your intuition? How big of a quantitative difference is there between outliers and other points?</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/outlier_table.png" class="img-fluid figure-img"></p>
-<figcaption>outlier_table</figcaption>
-</figure>
-</div>
-<p>So that is the 2D app. Please send me bug fixes, additional algorithms, or tighter code!</p>
-<p><strong>3D+ App?</strong></p>
-<p>The next thing is whether to expand this to larger datasets. This is something that you would run locally (large datasets take too long to run for my shiny server). The downside of larger datasets is that it gets tricker to visualize them. For now, I am using a TSNE plot. I am open to suggestions, but the intent here is a way to evaluate outlier algorithms on a variety of datasets.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://rajivshah.com/blog/images/multiD.gif" class="img-fluid figure-img"></p>
-<figcaption>datasets</figcaption>
-</figure>
-</div>
-
-
-</section>
-
- ]]></description>
-  <category>Outlier</category>
-  <category>Anomaly</category>
-  <guid>https://rajivshah.com/blog/outlier_app.html</guid>
-  <pubDate>Mon, 27 Jun 2016 05:00:00 GMT</pubDate>
-  <media:content url="https://rajivshah.com/blog/images/algorithms.gif" medium="image" type="image/gif"/>
-</item>
-<item>
-  <title>RNN Addition (1st Grade)</title>
-  <link>https://rajivshah.com/blog/rnn_addition.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-
-<section id="introduction" class="level3">
-<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>Ever since I ran across RNNs, they have intrigued me with their ability to learn. The best background is <a href="http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/">Denny Britz’s tutorial</a>, Karpathy’s totally accessible and fun post on <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">character-level language models</a>, and Colah’s detailed <a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">descriptions of LSTMs</a>. Besides all the fun examples of generating content with RNNs, other people have been applying them and winning <a href="http://blog.kaggle.com/2016/01/04/how-much-did-it-rain-ii-winners-interview-1st-place-pupa-aka-aaron-sim/">Kaggle competitions</a> and the ECML/PKDD challenge.</p>
-<p>I am still blown away by how RNN’s can learn to add. RNNs are trained through thousands of examples and can learn how to sum numbers. For example, the <a href="https://github.com/fchollet/keras/blob/master/examples/addition_rnn.py">Keras addition example</a> show how to add two sets of numbers up to 5 digital long each (e.g., 54678 + 78967). It achieves 99% train/test accuracy in 30 epochs with a one layer LSTM (128 HN) and 550k training examples.</p>
-<p>My eventual goal is to use RNNs to study various sequenced data (such as the NBA SportVu), so I thought I should start simple. I wanted to teach a RNN to add a series of numbers. For example: 5+7+9. The rest of the post discusses this journey.</p>
-</section>
-<section id="st-grade-model" class="level3">
-<h3 class="anchored" data-anchor-id="st-grade-model">1st Grade Model</h3>
-<p>My first model was teaching an RNN to add between 5 to 15 single digit numbers. This would be at the level of a first grader in the US. For example, using a 2 layer LSTM network with 100 hidden units, a batch of 50 training examples, and 5000 epochs, the RNN summed up:</p>
-<p>8+6+4+4+0+9+1+1+7+3+9+2+8 as 66.2154007</p>
-<p>This isn’t too far from the actual answer of 62. The Keras addition example show that with even more examples/training, the RNN can get much better. The <a href="https://gist.github.com/rajshah4/aa6c67944f4a43a7c9a1204301788e0c">code for this RNN is available as a gist using tensorflow</a>. I made this in a notebook format so its easy to play with.</p>
-<p>There are lots of parameters to tweak with RNN models, such as the number of hidden units, epochs, batch size, dropout, and training rate. Each of these has different sorts of effects on the model. For example, increasing the number of hidden units will provide more space for learning, but consequently take longer to learn/train. The chart below shows the effect of different choices. Please take the time to really study/investigate the role of hidden units. Its a dynamic plot so you can zoom in and examine each series individually by clicking on the legend.</p>
-<div>
-<a href="https://plot.ly/~rshah/6/" target="_blank" title="Cost by epoch for varying hidden units" style="display: block; text-align: center;"><img src="https://plot.ly/~rshah/6.png" alt="Cost by epoch" style="max-width: 100%;width: 600px;" width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';"></a>
-<script data-plotly="rshah:6" src="https://plot.ly/embed.js" async=""></script>
-</div>
-
-
-</section>
-
- ]]></description>
-  <category>RNN</category>
-  <category>Keras</category>
-  <guid>https://rajivshah.com/blog/rnn_addition.html</guid>
-  <pubDate>Tue, 05 Apr 2016 05:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
