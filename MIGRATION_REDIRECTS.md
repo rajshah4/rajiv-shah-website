@@ -19,26 +19,22 @@ This document tracks all content migrated from projects.rajivshah.com to rajivsh
 |---------|---------|--------|
 | `https://projects.rajivshah.com/rldemo/` | `https://rajivshah.com/projects/rldemo/` | ✅ Migrated |
 
-## Future Redirect Configuration
+## Redirect Configuration (LIVE)
 
-When ready to configure redirects, add these to `vercel.json`:
+301 redirects configured on projects.rajivshah.com Nginx server (`/etc/nginx/sites-available/projects.rajivshah.com`):
 
-```json
-{
-  "redirects": [
-    {
-      "source": "/sportvu/:path*",
-      "destination": "https://rajivshah.com/blog/sportvu/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/rldemo/:path*",
-      "destination": "https://rajivshah.com/projects/rldemo/:path*",
-      "permanent": true
-    }
-  ]
+```nginx
+# Redirects to new site
+location /blog {
+  return 301 https://rajivshah.com$request_uri;
+}
+
+location /sportvu {
+  return 301 https://rajivshah.com/blog$request_uri;
 }
 ```
+
+**Status:** ✅ Active as of Dec 31, 2025
 
 ## Notes
 
