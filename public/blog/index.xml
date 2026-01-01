@@ -21,7 +21,12 @@
 
 
 
-<p><img src="https://cdn-images-1.medium.com/max/1600/1*jL9fT-oAR6Ki3HOvXpwMLQ.png" class="img-fluid" alt="img"> Source: Yuriy Guts selection from Shutterstock</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rajivshah.com/blog/images/target_leakage.jpg" class="img-fluid figure-img"></p>
+<figcaption>img</figcaption>
+</figure>
+</div>
 <p>Machine learning is a glass cannon. When used correctly, it can be a truly transformative technology, but just a small oversight can cause it to become misleading and even actively harmful. Even if all the code runs and the model seems to be spitting out reasonable answers, it’s possible for a model to encode fundamental data science mistakes that invalidate its results. These errors might seem small, but the effects can be disastrous when the model is used to make decisions in the real world.</p>
 <p>The promise and power of AI lead many researchers to gloss over the ways in which things can go wrong when building and operationalizing machine learning models. As a data scientist, one of my passions is to reproduce research papers as a learning exercise. Along the way, I have uncovered cases where the research was published with faulty methodologies. My hope is that this analysis can increase awareness about data science mistakes and raise the standards for machine learning in research. For example, last year I shared an analysis of a project by Harvard and Google researchers that contained fundamental errors. The researchers refused to fix their mistake even when confronted with it directly.</p>
 <p>Over the holidays, I used DataRobot to reproduce a few machine learning benchmarks. I found many examples of machine learning code that ran without errors but that were built using flawed data science practices. The examples I share in this post come from the world’s best data scientists and affect hundreds of peer-reviewed research publications. As these examples show, errors in machine learning can be subtle. The key to finding these errors is to work with a tool that offers guardrails and insights along the way.</p>
@@ -107,7 +112,7 @@
   <category>SARCOS</category>
   <guid>https://rajivshah.com/blog/running-code-failing-models.html</guid>
   <pubDate>Fri, 26 Dec 2025 06:00:00 GMT</pubDate>
-  <media:content url="https://cdn-images-1.medium.com/max/1600/1*jL9fT-oAR6Ki3HOvXpwMLQ.png" medium="image" type="image/png"/>
+  <media:content url="https://rajivshah.com/blog/images/target_leakage.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>A Practical Guide to Evaluating Generative AI Applications</title>
