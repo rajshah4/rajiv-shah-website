@@ -283,7 +283,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div className="space-x-8 block md:hidden mt-4">
+      <div className="flex flex-wrap gap-4 md:hidden mt-4">
         <Link
           href="/bio"
           className="text-base font-normal text-gray-600 dark:text-gray-300"
@@ -291,10 +291,10 @@ export default function Navbar() {
           Bio
         </Link>
         <Link
-          href="/publications"
+          href="/blog/"
           className="text-base font-normal text-gray-600 dark:text-gray-300"
         >
-          Publications
+          Blog
         </Link>
         <Link
           href="/talks"
