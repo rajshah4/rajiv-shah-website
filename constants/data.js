@@ -47,6 +47,9 @@ const userData = {
     title2: "I keep a side mission of educating folks about AI - follow @rajistics.",
     currentPosition: "Chief Evangelist at Contextual AI",
     currentPositiontUrl: "https://www.contextual.ai",
+    courseTitle: "AI Problem Framing",
+    courseUrl: "https://maven.com/rajistics/ai-problem-framing",
+    courseDate: "Feb 16th",
   },
   bio: {
     description: [

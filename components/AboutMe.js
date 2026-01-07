@@ -20,10 +20,19 @@ export default function AboutMe() {
             Currently {" "}
             <a
               className="bg-red-500 rounded-md px-2 py-1 text-white"
-              href={userData.about.currentPositionUrl}
+              href={userData.about.currentPositiontUrl}
             >
               {userData.about.currentPosition}
             </a>
+            {<br></br>}
+            Teaching {" "}
+            <a
+              className="bg-red-500 rounded-md px-2 py-1 text-white"
+              href={userData.about.courseUrl}
+            >
+              {userData.about.courseTitle}
+            </a>
+            {" "} (first cohort starts {userData.about.courseDate})
           </p>
         </div>
         </div>
