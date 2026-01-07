@@ -19,7 +19,7 @@ export default function AboutMe() {
             {userData.about.title2} {<br></br>}
             Currently {" "}
             <a
-              className="bg-red-500 rounded-md px-2 py-1 text-white"
+              className="underline"
               href={userData.about.currentPositiontUrl}
             >
               {userData.about.currentPosition}
