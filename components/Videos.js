@@ -179,6 +179,7 @@ const VideoCard = ({ title, date, source, link }) => {
 
 const GroupVideoCard = ({ group, variant = "default" }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const description = group.description || "";
   const truncatedDescription =
     description.length > 140 ? description.substring(0, 140) + "..." : description;
@@ -188,6 +189,7 @@ const GroupVideoCard = ({ group, variant = "default" }) => {
   const youtube = platforms.youtube;
   const topics = group.topics || [];
   const thumbnail = pickThumbnail(platforms);
+  const showThumbnail = thumbnail && !imageFailed;
   const isHighlight = variant === "highlight";
   const titleLimit = isHighlight ? 72 : 56;
   const titleText = truncateText(group.title || "", titleLimit);
@@ -201,17 +203,18 @@ const GroupVideoCard = ({ group, variant = "default" }) => {
       }`}
     >
       <div className={`flex ${isHighlight ? "flex-row" : `flex-col ${thumbnail ? "md:flex-row" : ""}`} gap-5`}>
-        {thumbnail && (
+        {showThumbnail && (
           <div className={`${thumbWidthClass} shrink-0`}>
             <img
               src={thumbnail}
               alt=""
               referrerPolicy="no-referrer"
+              onError={() => setImageFailed(true)}
               className={`${thumbHeightClass} w-full object-cover rounded-xl border border-slate-100 dark:border-slate-800`}
             />
           </div>
         )}
-        {!thumbnail && (
+        {!showThumbnail && (
           <div className={`${thumbWidthClass} shrink-0`}>
             <div
               className={`${thumbHeightClass} w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-br from-slate-200 via-slate-100 to-amber-100 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center text-xs uppercase tracking-[0.3em] text-slate-500`}
