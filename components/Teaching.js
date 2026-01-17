@@ -23,16 +23,22 @@ export default function Teaching() {
               <h2 className="text-2xl font-semibold mb-3">Courses</h2>
               <ul className="space-y-2">
                 <li>
-                  AI Problem Framing for AI Practitioners (2026) -{" "}
-                  <a className="underline" href="https://maven.com/rajistics/ai-problem-framing">
+                  <a
+                    className="underline"
+                    href="https://maven.com/rajistics/ai-problem-framing"
+                  >
                     AI Problem Framing for AI Practitioners
-                  </a>
+                  </a>{" "}
+                  (2026)
                 </li>
                 <li>
-                  AI Executive Program (2025) -{" "}
-                  <a className="underline" href="https://genai.works/executive-program">
-                    https://genai.works/executive-program
-                  </a>
+                  <a
+                    className="underline"
+                    href="https://genai.works/executive-program"
+                  >
+                    AI Executive Program
+                  </a>{" "}
+                  (2025)
                 </li>
                 <li>Machine Learning using Transformers (2023)</li>
               </ul>
