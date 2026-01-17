@@ -574,7 +574,7 @@ const userData = {
       title: "Get RAG Into Production in 15 Minutes",
       date: "July 2025",
       source: "GenAI World: Tools, Infra & Open Source Stack",
-      link: "",
+      link: "https://youtu.be/RYZeTrNjE7E?si=eKW9QlblqrkL0l0E",
     },
     {
       title: "Evaluation for Generative AI",
