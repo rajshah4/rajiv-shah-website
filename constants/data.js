@@ -365,6 +365,24 @@ const userData = {
   ],
   video: [
     {
+      title: "Train Mixture of Experts Model from Scratch - Simpsons Edition",
+      date: "Nov 2025",
+      source: "Youtube",
+      link: "https://youtu.be/w9vude94TxU",
+    },
+    {
+      title: "A Practical Guide to Evaluating Generative AI Applications - Updated",
+      date: "Nov 2025",
+      source: "Youtube",
+      link: "https://youtu.be/qPHsWTZP58U",
+    },
+    {
+      title: "RAG Retrieval Deep Dive: BM25, Embeddings, and the Power of Agentic Search",
+      date: "Oct 2025",
+      source: "Youtube",
+      link: "https://youtu.be/AS_HlJbJjH8",
+    },
+    {
       title: "Evaluation for Generative AI - A simply explained starting point",
       date:  "May 2025",
       source: "Youtube",
@@ -522,6 +540,42 @@ const userData = {
     }
   ],
   talks: [
+    {
+      title: "The Context Layer: Your Shortcut to AI-Driven Alpha",
+      date: "December 2025",
+      source: "AI Summit",
+      link: "https://newyork.theaisummit.com/",
+    },
+    {
+      title: "95% Failures. 5% Winners. How to Beat the Odds in AI.",
+      date: "November 2025",
+      source: "Midwest AI Summit",
+      link: "https://midwestaisummit.com/rajiv-shah",
+    },
+    {
+      title: "Power of Context Engineering and RAG",
+      date: "November 2025",
+      source: "WandB",
+      link: "https://www.youtube.com/watch?v=JYZXsH1Xz0I",
+    },
+    {
+      title: "From Vectors to Agents: Managing RAG in an Agentic World",
+      date: "October 2025",
+      source: "MLOps World | GenAI Summit 2025 — Austin, TX",
+      link: "https://www.youtube.com/watch?v=GZSj_IIK5yE",
+    },
+    {
+      title: "We've all done RAG, now what?",
+      date: "September 2025",
+      source: "Practical AI Podcast",
+      link: "https://practicalai.fm/330",
+    },
+    {
+      title: "Get RAG Into Production in 15 Minutes",
+      date: "July 2025",
+      source: "GenAI World: Tools, Infra & Open Source Stack",
+      link: "",
+    },
     {
       title: "Evaluation for Generative AI",
       date: "May 2025",
@@ -742,4 +796,3 @@ const userData = {
 };
 
 export default userData;
-
