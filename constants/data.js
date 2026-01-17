@@ -547,6 +547,12 @@ const userData = {
       link: "https://newyork.theaisummit.com/",
     },
     {
+      title: "Forget RAG Pipelines—Build Production Ready Agents in 15 Mins",
+      date: "June 2025",
+      source: "AI Engineer",
+      link: "https://www.youtube.com/watch?v=lArgRvBV3tQ",
+    },
+    {
       title: "95% Failures. 5% Winners. How to Beat the Odds in AI.",
       date: "November 2025",
       source: "Midwest AI Summit",
