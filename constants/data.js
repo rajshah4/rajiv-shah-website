@@ -375,12 +375,14 @@ const userData = {
       date: "Nov 2025",
       source: "Youtube",
       link: "https://youtu.be/qPHsWTZP58U",
+      blogLink: "/blog/genai-evaluation-guide.html",
     },
     {
       title: "RAG Retrieval Deep Dive: BM25, Embeddings, and the Power of Agentic Search",
       date: "Oct 2025",
       source: "Youtube",
       link: "https://youtu.be/AS_HlJbJjH8",
+      blogLink: "/blog/rag-agentic-world.html",
     },
     {
       title: "Evaluation for Generative AI - A simply explained starting point",
@@ -430,18 +432,21 @@ const userData = {
       date:  "Sep 2024",
       source: "Youtube",
       link: "https://youtu.be/OyY4uxUShys",
+      blogLink: "/blog/practical-rag-text-to-sql.html",
     },
     {
       title: "Spark of AI: How Transfer Learning Unlocked AI's Potential",
       date:  "Sep 2024",
       source: "Youtube",
       link: "https://youtu.be/6NuGEukBfcA?si=--wU8BUi75rxPOoY",
+      blogLink: "/blog/spark-of-ai-transfer-learning.html",
     },
     {
-      title: "Rules: A Simple & Effective Machine Learning Approach",
+      title: "Interpretable ML Models",
       date:  "Aug 2024",
       source: "Youtube",
       link: "https://youtu.be/lx4SJOVtxI8?si=J-lxG8ECG9tbvPi0",
+      blogLink: "/blog/interpretable-ml-models.html",
     },
     {
       title: "Intro to Generative AI and Trends (March 2024)",
@@ -466,6 +471,7 @@ const userData = {
       date:  "Nov 2023",
       source: "Youtube",
       link: "https://youtu.be/iQl03pQlYWY?si=kvQxuiYzUVDyIuCm",
+      blogLink: "/blog/evaluating-llms-deep-dive.html",
     },
     {
       title: "NanoGPT using Simpsons Data: Get Started with Large Language Models",
