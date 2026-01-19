@@ -417,6 +417,7 @@ const userData = {
       date:  "Oct 2024",
       source: "Youtube",
       link: "https://youtu.be/jm7TYGv32zs",
+      blogLink: "/blog/Feature_Selection.html",
     },
     {
       title: "Start using Llama 3.2 Vision Models with Hugging Face Transformers (on Snowflake)",
@@ -507,18 +508,21 @@ const userData = {
       date: "Nov 2022",
       source: "Youtube",
       link: "https://youtu.be/jA6VDKO7XfA", 
+      blogLink: "https://medium.com/@rajistics/text-style-transfer-in-a-spreadsheet-using-hugging-face-inference-endpoints-cc55e4bd58b",
     },
     {
       title: "SetFit: Few Shot Learning for Text Classification",
       date: "Oct 2022",
       source: "Youtube",
       link: "https://youtu.be/ZUK4zR0IeLU", 
+      blogLink: "https://medium.com/@rajistics/few-shot-text-classification-with-setfit-63ff7a02da5e",
     },
     {
       title: "Prediction Intervals with Conformal Inference: An Intuitive Explanation",
       date: "Sep 2022",
       source: "Youtube",
       link: "https://youtu.be/ZUK4zR0IeLU", 
+      blogLink: "https://medium.com/@rajistics/getting-predictions-intervals-with-conformal-inference-caff5be40eff",
     },
     {
       title: "LayoutLMv3 Training with CORD (receipts dataset)",
@@ -537,6 +541,7 @@ const userData = {
       date: "Aug 2022",
       source: "Youtube",
       link: "https://youtu.be/ahgB8c_TgA8", 
+      blogLink: "https://medium.com/@rajistics/explaining-predictions-from-transformer-models-55ab9c6cab24",
     }
   ],
   talks: [

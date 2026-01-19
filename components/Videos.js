@@ -95,6 +95,7 @@ export default function Videos() {
                     date={video.date}
                     source={video.source}
                     link={video.link}
+                    blogLink={video.blogLink}
                   />
                 ))}
               </div>
@@ -165,7 +166,7 @@ export default function Videos() {
   );
 }
 
-const VideoCard = ({ title, date, source, link }) => {
+const VideoCard = ({ title, date, source, link, blogLink }) => {
   return (
     <p className="text-slate-700 dark:text-slate-300">
       {title},{" "}
@@ -173,6 +174,15 @@ const VideoCard = ({ title, date, source, link }) => {
         {source}
       </a>{" "}
       ({date})
+      {blogLink && (
+        <>
+          {" "}
+          ·{" "}
+          <a href={blogLink} className="underline-link text-blue-500">
+            Blog post
+          </a>
+        </>
+      )}
     </p>
   );
 };
