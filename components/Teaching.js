@@ -41,6 +41,11 @@ export default function Teaching() {
                   (2025)
                 </li>
                 <li>Machine Learning using Transformers (2023)</li>
+                <li>
+                  <a className="underline" href="/problem-framing/case-studies">
+                    Case Study Library (students)
+                  </a>
+                </li>
               </ul>
             </div>
             <div>

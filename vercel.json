@@ -21,6 +21,11 @@
   ],
   "redirects": [
     {
+      "source": "/case-studies",
+      "destination": "/problem-framing/case-studies",
+      "permanent": true
+    },
+    {
       "source": "/blog/:path*",
       "has": [
         {

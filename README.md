@@ -13,3 +13,19 @@ The website is deployed on [Vercel](https://vercel.com) and uses:
 - [tailwindcss](https://tailwindcss.com) for styling.
 - [React Rough Notation](https://roughnotation.com) for Hero section highlighting.
 - [Vercel](https://vercel.com) for deployments and CI/CD.
+
+## Case Study Library (protected)
+
+The case study browser lives at `/problem-framing/case-studies` and is protected by Basic Auth.
+
+Required environment variables:
+
+- `CASE_STUDIES_USER`
+- `CASE_STUDIES_PASSWORD`
+
+To set them in Vercel:
+
+1. Open the Vercel dashboard and select the project.
+2. Go to `Settings` -> `Environment Variables`.
+3. Add `CASE_STUDIES_USER` and `CASE_STUDIES_PASSWORD` for `Production` (and `Preview` if you want).
+4. Redeploy after saving.
